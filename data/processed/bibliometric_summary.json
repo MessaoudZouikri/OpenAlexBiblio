@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-04-12T16:40:48.621078",
+  "n_records": 150,
+  "year_range": [
+    1995,
+    2023
+  ],
+  "total_citations": 7069,
+  "h_index_corpus": 39,
+  "g_index_corpus": 82,
+  "unique_authors": 20,
+  "unique_journals": 18,
+  "unique_institutions": 10,
+  "domain_distribution": {
+    "Political Science": 88,
+    "Economics": 40,
+    "Sociology": 19,
+    "Other": 3
+  }
+}

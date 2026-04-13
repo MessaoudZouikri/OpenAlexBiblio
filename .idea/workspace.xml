@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5e93e977-8d09-4210-ab0b-13e0e65bc5e6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/bibliometric_analysis.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/classification.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/data_cleaning.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/data_collection.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/network_analysis.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/orchestrator.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/validation/data_validation.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/agents/validation/validation_agents.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/llm.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/openalex.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/clean/cleaning_report.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/clean/openalex_clean.parquet" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/figures/citation_distribution.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/figures/concept_landscape.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/figures/cross_domain_heatmap.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/figures/domain_distribution.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/figures/publication_trends.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/figures/top_authors.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/networks/bibcoupling_network.graphml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/networks/coauthorship_network.graphml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/networks/cocitation_network.graphml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/networks/keyword_cooccurrence_network.graphml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/outputs/reports/report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/bibliometric_summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/citation_stats.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/classification_report.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/classified_works.parquet" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/cluster_assignments.parquet" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/concept_landscape.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/interdisciplinary_bridges.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/network_metrics.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/prototypes.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/prototypes_metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/publication_trends.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/subcategory_taxonomy.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/top_authors.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/top_institutions.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/top_journals.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/raw/collection_manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/raw/openalex_raw_20260412_164037.parquet" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/bibliometric_analysis.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/classification.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/classification_validator.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/data_cleaning.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/data_collection.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/data_validator.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/network_analysis.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/network_validator.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/statistical_validator.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/validation_classification.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/validation_data_D1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/validation_data_D2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/validation_network.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/validation_statistical.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/visualization.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/check_setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/bibliometric_analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/classification.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/data_cleaning.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/data_collection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/network_analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/orchestrator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/validation/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/validation/validators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/agents/visualization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/embedding_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/io_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/llm_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/logging_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/openalex_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/prototype_store.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/generate_test_data.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline" value="3CH3sUFMiqq8FBx6bkrNOFHui3U" />
+    </persistenceIdMap>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3CH3sUFMiqq8FBx6bkrNOFHui3U" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "master",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.32098.74" />
+        <option value="bundled-python-sdk-1cd77e80b48f-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.32098.74" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5e93e977-8d09-4210-ab0b-13e0e65bc5e6" name="Changes" comment="" />
+      <created>1776028874552</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776028874552</updated>
+      <workItem from="1776028875559" duration="7865000" />
+      <workItem from="1776058869403" duration="302000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

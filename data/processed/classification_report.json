@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-04-12T23:13:28.241001",
+  "n_records": 150,
+  "backend": "specter2:proximity",
+  "domain_distribution": {
+    "Political Science": 75,
+    "Economics": 44,
+    "Sociology": 19,
+    "Other": 12
+  },
+  "subcategory_distribution": {
+    "radical_right": 17,
+    "latin_american_politics": 17,
+    "media_communication": 15,
+    "financial_crisis": 15,
+    "trade_globalization": 14,
+    "political_economy": 13,
+    "european_politics": 11,
+    "electoral_politics": 9,
+    "interdisciplinary": 9,
+    "political_theory": 9,
+    "democratic_theory": 7,
+    "comparative_politics": 5,
+    "geography": 3,
+    "culture_values": 3,
+    "redistribution": 2,
+    "social_movements": 1
+  },
+  "source_distribution": {
+    "embedding": 101,
+    "rule": 49
+  },
+  "confidence_mean": 0.9423,
+  "confidence_median": 0.9383,
+  "outlier_count": 0,
+  "routing_stats": {
+    "stage1": {
+      "count": 49,
+      "rate": 0.3267
+    },
+    "stage2_high": {
+      "count": 101,
+      "rate": 0.6733
+    }
+  },
+  "feedback_loop_updates": {
+    "Political Science::electoral_politics": 8,
+    "Political Science::radical_right": 15,
+    "Other::interdisciplinary": 9,
+    "Economics::trade_globalization": 13,
+    "Political Science::latin_american_politics": 17,
+    "Political Science::democratic_theory": 5,
+    "Political Science::political_theory": 9,
+    "Political Science::european_politics": 9,
+    "Sociology::media_communication": 15,
+    "Economics::political_economy": 13,
+    "Economics::financial_crisis": 15,
+    "Political Science::comparative_politics": 5
+  },
+  "deterministic_rate": 1.0,
+  "llm_call_rate": 0.0
+}

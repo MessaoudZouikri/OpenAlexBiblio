@@ -1,0 +1,54 @@
+# ============================================================
+# Bibliometric Pipeline — Python Dependencies
+# Tested with Python 3.10+  |  Recommended: Python 3.11+
+# ============================================================
+
+# ── Core data ─────────────────────────────────────────────────────────────
+pandas>=2.0.0
+numpy>=1.24.0
+pyarrow>=12.0.0            # Parquet I/O
+
+# ── HTTP / API ────────────────────────────────────────────────────────────
+requests>=2.31.0
+
+# ── Config ────────────────────────────────────────────────────────────────
+pyyaml>=6.0
+
+# ── Scientific computing ──────────────────────────────────────────────────
+scipy>=1.11.0
+scikit-learn>=1.3.0        # TF-IDF LSA fallback + clustering utilities
+
+# ── Network analysis ──────────────────────────────────────────────────────
+networkx>=3.1
+python-louvain>=0.16       # Louvain community detection  (import: community)
+
+# ── Visualization ─────────────────────────────────────────────────────────
+matplotlib>=3.7.0
+
+# ── Embedding — Tier 1: SPECTER2 (RECOMMENDED) ───────────────────────────
+# Citation-supervised scientific text embeddings from AllenAI.
+# Best subcategory discrimination. Best bridge geometry.
+# Downloads ~440 MB model on first use (cached in ~/.cache/huggingface).
+#
+# Apple M4 (MPS): ~1500-3000 emb/sec  |  CPU only: ~200-400 emb/sec
+#
+sentence-transformers>=2.7.0
+torch>=2.2.0               # MPS backend included on Apple Silicon (no extras needed)
+peft>=0.10.0               # Required for SPECTER2 proximity adapter loading
+                           # Without this, SPECTER2 runs in degraded mode (base model only)
+#
+# NVIDIA GPU alternative:
+# torch>=2.2.0+cu121  -- via: pip install torch --index-url https://download.pytorch.org/whl/cu121
+
+# ── Embedding — Tier 2: Ollama (fallback) ─────────────────────────────────
+# No Python package — runs as local server: https://ollama.ai
+# ollama pull nomic-embed-text    (274 MB, 768d)
+# ollama pull mxbai-embed-large   (670 MB, 1024d)
+
+# ── Clustering (advanced analysis) ────────────────────────────────────────
+hdbscan>=0.8.33            # Density-based clustering for embedding-space analysis
+# umap-learn>=0.5.5        # Optional: UMAP projection for visualization
+
+# ── Optional ──────────────────────────────────────────────────────────────
+# tqdm>=4.65.0             # Progress bars
+# pyalex>=0.10             # Higher-level OpenAlex client

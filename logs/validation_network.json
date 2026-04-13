@@ -1,0 +1,80 @@
+{
+  "agent": "network_validator",
+  "stage": "",
+  "timestamp": "2026-04-12T23:13:29.937902",
+  "status": "PASS",
+  "errors": [],
+  "warnings": [],
+  "checks": [
+    {
+      "name": "file_exists_bibcoupling_network.graphml",
+      "passed": true,
+      "detail": "data/outputs/networks/bibcoupling_network.graphml"
+    },
+    {
+      "name": "parseable_bibcoupling_network.graphml",
+      "passed": true,
+      "detail": "150 nodes"
+    },
+    {
+      "name": "no_self_loops_bibcoupling_network.graphml",
+      "passed": true,
+      "detail": "0 self-loops"
+    },
+    {
+      "name": "file_exists_cocitation_network.graphml",
+      "passed": true,
+      "detail": "data/outputs/networks/cocitation_network.graphml"
+    },
+    {
+      "name": "parseable_cocitation_network.graphml",
+      "passed": true,
+      "detail": "80 nodes"
+    },
+    {
+      "name": "no_self_loops_cocitation_network.graphml",
+      "passed": true,
+      "detail": "0 self-loops"
+    },
+    {
+      "name": "file_exists_coauthorship_network.graphml",
+      "passed": true,
+      "detail": "data/outputs/networks/coauthorship_network.graphml"
+    },
+    {
+      "name": "parseable_coauthorship_network.graphml",
+      "passed": true,
+      "detail": "20 nodes"
+    },
+    {
+      "name": "no_self_loops_coauthorship_network.graphml",
+      "passed": true,
+      "detail": "0 self-loops"
+    },
+    {
+      "name": "network_metrics_exists",
+      "passed": true,
+      "detail": "data/processed/network_metrics.json"
+    },
+    {
+      "name": "metrics_has_bibcoupling",
+      "passed": true,
+      "detail": "['timestamp', 'bibcoupling', 'cross_domain_matrix', 'cocitation', 'coauthorship', 'concept_cooccurrence', 'interdisciplinary_bridges_count']"
+    },
+    {
+      "name": "cluster_assignments_schema",
+      "passed": true,
+      "detail": "Missing: set()"
+    },
+    {
+      "name": "betweenness_centrality_in_range",
+      "passed": "True",
+      "detail": "All BC values in [0,1]"
+    },
+    {
+      "name": "cluster_coverage_90pct",
+      "passed": "True",
+      "detail": "Unassigned: 0.0%"
+    }
+  ]
+}

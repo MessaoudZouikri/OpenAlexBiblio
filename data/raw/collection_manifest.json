@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-04-12T16:40:37.722991",
+  "mode": "test_synthetic",
+  "total_records": 150,
+  "output_file": "data/raw/openalex_raw_20260412_164037.parquet",
+  "query_stats": [
+    {
+      "term": "populism",
+      "new_records": 150,
+      "elapsed_s": 0.0
+    }
+  ],
+  "api_parameters": {
+    "source": "synthetic_generator",
+    "seed": 42
+  },
+  "columns": [
+    "id",
+    "doi",
+    "title",
+    "abstract",
+    "year",
+    "publication_date",
+    "cited_by_count",
+    "authors",
+    "institutions",
+    "concepts",
+    "journal",
+    "journal_id",
+    "open_access",
+    "type",
+    "references",
+    "mesh_terms",
+    "keywords_matched",
+    "query_batch"
+  ],
+  "abstract_coverage": 150,
+  "concept_coverage": 150
+}

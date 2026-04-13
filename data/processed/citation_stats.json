@@ -1,0 +1,25 @@
+{
+  "total_citations": 7069,
+  "mean": 47.13,
+  "median": 15.0,
+  "std": 109.25,
+  "min": 0,
+  "max": 912,
+  "percentiles": {
+    "p25": 4.25,
+    "p50": 15.0,
+    "p75": 39.0,
+    "p90": 111.19999999999999,
+    "p95": 191.449999999999,
+    "p99": 548.9899999999968
+  },
+  "h_index_corpus": 39,
+  "g_index_corpus": 82,
+  "zero_citation_count": 7,
+  "zero_citation_rate": 0.0467,
+  "top1pct_threshold": 548.9899999999968,
+  "top10pct_threshold": 111.19999999999999,
+  "top1pct_count": 2,
+  "top10pct_count": 15,
+  "n": 150
+}

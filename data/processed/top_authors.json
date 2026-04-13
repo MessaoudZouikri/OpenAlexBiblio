@@ -1,0 +1,331 @@
+{
+  "unique_authors": 20,
+  "top_by_output": [
+    {
+      "id": "https://openalex.org/A03655776",
+      "name": "Michael Sandel",
+      "paper_count": 24,
+      "total_citations": 2935,
+      "mean_citations_per_paper": 122.29,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A09314257",
+      "name": "Jan-Werner Müller",
+      "paper_count": 23,
+      "total_citations": 1499,
+      "mean_citations_per_paper": 65.17,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A06865051",
+      "name": "Dani Rodrik",
+      "paper_count": 21,
+      "total_citations": 1329,
+      "mean_citations_per_paper": 63.29,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A07961768",
+      "name": "Cristóbal Rovira Kaltwasser",
+      "paper_count": 19,
+      "total_citations": 812,
+      "mean_citations_per_paper": 42.74,
+      "h_index": 12
+    },
+    {
+      "id": "https://openalex.org/A02362920",
+      "name": "Ronald Inglehart",
+      "paper_count": 19,
+      "total_citations": 591,
+      "mean_citations_per_paper": 31.11,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A03638384",
+      "name": "Yascha Mounk",
+      "paper_count": 18,
+      "total_citations": 277,
+      "mean_citations_per_paper": 15.39,
+      "h_index": 9
+    },
+    {
+      "id": "https://openalex.org/A07571845",
+      "name": "Pippa Norris",
+      "paper_count": 15,
+      "total_citations": 1172,
+      "mean_citations_per_paper": 78.13,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A09643615",
+      "name": "Benjamin Moffitt",
+      "paper_count": 15,
+      "total_citations": 1262,
+      "mean_citations_per_paper": 84.13,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A00725707",
+      "name": "Nadia Urbinati",
+      "paper_count": 15,
+      "total_citations": 324,
+      "mean_citations_per_paper": 21.6,
+      "h_index": 10
+    },
+    {
+      "id": "https://openalex.org/A02065648",
+      "name": "Daniel Ziblatt",
+      "paper_count": 14,
+      "total_citations": 368,
+      "mean_citations_per_paper": 26.29,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A02388037",
+      "name": "Chantal Mouffe",
+      "paper_count": 13,
+      "total_citations": 593,
+      "mean_citations_per_paper": 45.62,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A02464218",
+      "name": "Kirk Hawkins",
+      "paper_count": 13,
+      "total_citations": 463,
+      "mean_citations_per_paper": 35.62,
+      "h_index": 9
+    },
+    {
+      "id": "https://openalex.org/A07477400",
+      "name": "Anna Grzymala-Busse",
+      "paper_count": 13,
+      "total_citations": 446,
+      "mean_citations_per_paper": 34.31,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A07465283",
+      "name": "Frances Fukuyama",
+      "paper_count": 12,
+      "total_citations": 328,
+      "mean_citations_per_paper": 27.33,
+      "h_index": 6
+    },
+    {
+      "id": "https://openalex.org/A04265340",
+      "name": "Wendy Brown",
+      "paper_count": 11,
+      "total_citations": 504,
+      "mean_citations_per_paper": 45.82,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A00160791",
+      "name": "Ruth Levitas",
+      "paper_count": 11,
+      "total_citations": 111,
+      "mean_citations_per_paper": 10.09,
+      "h_index": 7
+    },
+    {
+      "id": "https://openalex.org/A04801344",
+      "name": "Steven Levitsky",
+      "paper_count": 10,
+      "total_citations": 245,
+      "mean_citations_per_paper": 24.5,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A03383884",
+      "name": "Ernesto Laclau",
+      "paper_count": 10,
+      "total_citations": 252,
+      "mean_citations_per_paper": 25.2,
+      "h_index": 7
+    },
+    {
+      "id": "https://openalex.org/A07886081",
+      "name": "Thomas Piketty",
+      "paper_count": 9,
+      "total_citations": 254,
+      "mean_citations_per_paper": 28.22,
+      "h_index": 7
+    },
+    {
+      "id": "https://openalex.org/A02149022",
+      "name": "Cas Mudde",
+      "paper_count": 7,
+      "total_citations": 359,
+      "mean_citations_per_paper": 51.29,
+      "h_index": 5
+    }
+  ],
+  "top_by_citations": [
+    {
+      "id": "https://openalex.org/A03655776",
+      "name": "Michael Sandel",
+      "paper_count": 24,
+      "total_citations": 2935,
+      "mean_citations_per_paper": 122.29,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A09314257",
+      "name": "Jan-Werner Müller",
+      "paper_count": 23,
+      "total_citations": 1499,
+      "mean_citations_per_paper": 65.17,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A06865051",
+      "name": "Dani Rodrik",
+      "paper_count": 21,
+      "total_citations": 1329,
+      "mean_citations_per_paper": 63.29,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A09643615",
+      "name": "Benjamin Moffitt",
+      "paper_count": 15,
+      "total_citations": 1262,
+      "mean_citations_per_paper": 84.13,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A07571845",
+      "name": "Pippa Norris",
+      "paper_count": 15,
+      "total_citations": 1172,
+      "mean_citations_per_paper": 78.13,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A07961768",
+      "name": "Cristóbal Rovira Kaltwasser",
+      "paper_count": 19,
+      "total_citations": 812,
+      "mean_citations_per_paper": 42.74,
+      "h_index": 12
+    },
+    {
+      "id": "https://openalex.org/A02388037",
+      "name": "Chantal Mouffe",
+      "paper_count": 13,
+      "total_citations": 593,
+      "mean_citations_per_paper": 45.62,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A02362920",
+      "name": "Ronald Inglehart",
+      "paper_count": 19,
+      "total_citations": 591,
+      "mean_citations_per_paper": 31.11,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A04265340",
+      "name": "Wendy Brown",
+      "paper_count": 11,
+      "total_citations": 504,
+      "mean_citations_per_paper": 45.82,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A02464218",
+      "name": "Kirk Hawkins",
+      "paper_count": 13,
+      "total_citations": 463,
+      "mean_citations_per_paper": 35.62,
+      "h_index": 9
+    },
+    {
+      "id": "https://openalex.org/A07477400",
+      "name": "Anna Grzymala-Busse",
+      "paper_count": 13,
+      "total_citations": 446,
+      "mean_citations_per_paper": 34.31,
+      "h_index": 11
+    },
+    {
+      "id": "https://openalex.org/A02065648",
+      "name": "Daniel Ziblatt",
+      "paper_count": 14,
+      "total_citations": 368,
+      "mean_citations_per_paper": 26.29,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A02149022",
+      "name": "Cas Mudde",
+      "paper_count": 7,
+      "total_citations": 359,
+      "mean_citations_per_paper": 51.29,
+      "h_index": 5
+    },
+    {
+      "id": "https://openalex.org/A07465283",
+      "name": "Frances Fukuyama",
+      "paper_count": 12,
+      "total_citations": 328,
+      "mean_citations_per_paper": 27.33,
+      "h_index": 6
+    },
+    {
+      "id": "https://openalex.org/A00725707",
+      "name": "Nadia Urbinati",
+      "paper_count": 15,
+      "total_citations": 324,
+      "mean_citations_per_paper": 21.6,
+      "h_index": 10
+    },
+    {
+      "id": "https://openalex.org/A03638384",
+      "name": "Yascha Mounk",
+      "paper_count": 18,
+      "total_citations": 277,
+      "mean_citations_per_paper": 15.39,
+      "h_index": 9
+    },
+    {
+      "id": "https://openalex.org/A07886081",
+      "name": "Thomas Piketty",
+      "paper_count": 9,
+      "total_citations": 254,
+      "mean_citations_per_paper": 28.22,
+      "h_index": 7
+    },
+    {
+      "id": "https://openalex.org/A03383884",
+      "name": "Ernesto Laclau",
+      "paper_count": 10,
+      "total_citations": 252,
+      "mean_citations_per_paper": 25.2,
+      "h_index": 7
+    },
+    {
+      "id": "https://openalex.org/A04801344",
+      "name": "Steven Levitsky",
+      "paper_count": 10,
+      "total_citations": 245,
+      "mean_citations_per_paper": 24.5,
+      "h_index": 8
+    },
+    {
+      "id": "https://openalex.org/A00160791",
+      "name": "Ruth Levitas",
+      "paper_count": 11,
+      "total_citations": 111,
+      "mean_citations_per_paper": 10.09,
+      "h_index": 7
+    }
+  ],
+  "lotka_alpha": 0.1356,
+  "lotka_r2": 0.0131,
+  "single_paper_authors": 0,
+  "n_authors_analyzed": 20
+}

@@ -1,0 +1,99 @@
+2026-04-12 16:38:26 [INFO] classification: === Classification Agent starting ===
+2026-04-12 16:38:26 [INFO] classification: Loaded 150 records
+2026-04-12 16:38:26 [WARNING] classification: Ollama not available — will use rule-based classification only
+2026-04-12 16:38:30 [INFO] classification: === Classification Agent starting ===
+2026-04-12 16:38:30 [INFO] classification: Loaded 150 records
+2026-04-12 16:38:30 [WARNING] classification: Ollama not available — will use rule-based classification only
+2026-04-12 16:38:35 [INFO] classification: === Classification Agent starting ===
+2026-04-12 16:38:35 [INFO] classification: Loaded 150 records
+2026-04-12 16:38:35 [WARNING] classification: Ollama not available — will use rule-based classification only
+2026-04-12 16:39:40 [INFO] classification: === Classification Agent starting ===
+2026-04-12 16:39:40 [INFO] classification: Loaded 150 records
+2026-04-12 16:39:40 [WARNING] classification: Ollama not available — will use rule-based classification only
+2026-04-12 16:39:40 [INFO] classification: Classification complete: 150 records
+2026-04-12 16:39:40 [INFO] classification: LLM calls: 0, failures: 0
+2026-04-12 16:39:40 [INFO] classification: Source distribution: {'rule': 150}
+2026-04-12 16:39:40 [INFO] classification: === Classification Agent complete ===
+2026-04-12 16:39:40 [INFO] classification: Domain distribution: {'Political Science': 93, 'Economics': 38, 'Sociology': 18, 'Other': 1}
+2026-04-12 16:40:51 [INFO] classification: === Classification Agent starting ===
+2026-04-12 16:40:51 [INFO] classification: Loaded 150 records
+2026-04-12 16:40:51 [WARNING] classification: Ollama not available — will use rule-based classification only
+2026-04-12 16:40:51 [INFO] classification: Classification complete: 150 records
+2026-04-12 16:40:51 [INFO] classification: LLM calls: 0, failures: 0
+2026-04-12 16:40:51 [INFO] classification: Source distribution: {'rule': 150}
+2026-04-12 16:40:51 [INFO] classification: === Classification Agent complete ===
+2026-04-12 16:40:51 [INFO] classification: Domain distribution: {'Political Science': 98, 'Economics': 35, 'Sociology': 15, 'Other': 2}
+2026-04-12 19:48:37 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-12 19:48:37 [INFO] classification: Loaded 150 records
+2026-04-12 19:48:40 [INFO] classification: Embedding backend: tfidf_lsa_fallback
+2026-04-12 19:48:41 [WARNING] classification: LLM unavailable — Stage 3 disabled
+2026-04-12 19:48:41 [INFO] classification: 3-stage classification of 150 records
+2026-04-12 19:48:41 [INFO] classification: Stage 1: rule-based...
+2026-04-12 19:48:41 [INFO] classification:   Stage 1 accepted: 49 / 150
+2026-04-12 19:48:41 [INFO] classification: Stage 2: embedding similarity for 101 records...
+2026-04-12 19:48:41 [INFO] classification:   Stage 2: accepted=0, to LLM=7, outliers=94
+2026-04-12 19:48:41 [WARNING] classification: LLM unavailable — 7 ambiguous records use best embedding result
+2026-04-12 19:48:41 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-12 19:48:41 [INFO] classification:   embedding_ambiguous             7  (  4.7%)
+2026-04-12 19:48:41 [INFO] classification:   embedding_outlier              94  ( 62.7%)
+2026-04-12 19:48:41 [INFO] classification:   stage1                         49  ( 32.7%)
+2026-04-12 19:48:41 [INFO] classification:   Deterministic rate: 32.7%  |  LLM rate: 0.0%
+2026-04-12 19:48:41 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-12 19:48:41 [INFO] classification:   High-confidence records: 41 / 150
+2026-04-12 19:48:41 [INFO] classification: === Classification Agent complete ===
+2026-04-12 19:48:41 [INFO] classification: Deterministic: 32.7% | LLM: 0.0% | Outliers: 94
+2026-04-12 21:00:53 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-12 21:00:53 [INFO] classification: Loaded 150 records
+2026-04-12 21:00:56 [INFO] classification: Embedding backend: tfidf_lsa_fallback
+2026-04-12 21:00:56 [WARNING] classification: LLM unavailable — Stage 3 disabled
+2026-04-12 21:00:56 [INFO] classification: 3-stage classification of 150 records
+2026-04-12 21:00:56 [INFO] classification: Stage 1: rule-based...
+2026-04-12 21:00:56 [INFO] classification:   Stage 1 accepted: 49 / 150
+2026-04-12 21:00:56 [INFO] classification: Stage 2: embedding similarity for 101 records...
+2026-04-12 21:00:56 [INFO] classification:   Stage 2: accepted=0, to LLM=7, outliers=94
+2026-04-12 21:00:56 [WARNING] classification: LLM unavailable — 7 ambiguous records use best embedding result
+2026-04-12 21:00:56 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-12 21:00:56 [INFO] classification:   embedding_ambiguous             7  (  4.7%)
+2026-04-12 21:00:56 [INFO] classification:   embedding_outlier              94  ( 62.7%)
+2026-04-12 21:00:56 [INFO] classification:   stage1                         49  ( 32.7%)
+2026-04-12 21:00:56 [INFO] classification:   Deterministic rate: 32.7%  |  LLM rate: 0.0%
+2026-04-12 21:00:56 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-12 21:00:56 [INFO] classification:   High-confidence records: 41 / 150
+2026-04-12 21:00:56 [INFO] classification: === Classification Agent complete ===
+2026-04-12 21:00:56 [INFO] classification: Deterministic: 32.7% | LLM: 0.0% | Outliers: 94
+2026-04-12 21:05:09 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-12 21:05:09 [INFO] classification: Loaded 150 records
+2026-04-12 21:05:12 [INFO] classification: Embedding backend: tfidf_lsa_fallback
+2026-04-12 21:05:12 [WARNING] classification: LLM unavailable — Stage 3 disabled
+2026-04-12 21:05:12 [INFO] classification: 3-stage classification of 150 records
+2026-04-12 21:05:12 [INFO] classification: Stage 1: rule-based...
+2026-04-12 21:05:12 [INFO] classification:   Stage 1 accepted: 49 / 150
+2026-04-12 21:05:12 [INFO] classification: Stage 2: embedding similarity for 101 records...
+2026-04-12 21:05:12 [INFO] classification:   Stage 2: accepted=0, to LLM=0, outliers=101
+2026-04-12 21:05:12 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-12 21:05:12 [INFO] classification:   embedding_outlier             101  ( 67.3%)
+2026-04-12 21:05:12 [INFO] classification:   stage1                         49  ( 32.7%)
+2026-04-12 21:05:12 [INFO] classification:   Deterministic rate: 32.7%  |  LLM rate: 0.0%
+2026-04-12 21:05:12 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-12 21:05:12 [INFO] classification:   High-confidence records: 41 / 150
+2026-04-12 21:05:12 [INFO] classification: === Classification Agent complete ===
+2026-04-12 21:05:12 [INFO] classification: Deterministic: 32.7% | LLM: 0.0% | Outliers: 101
+2026-04-13 00:29:53 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-13 00:29:53 [INFO] classification: Loaded 150 records
+2026-04-13 00:29:55 [INFO] classification: Embedding backend: specter2:not_loaded
+2026-04-13 01:13:22 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-13 01:13:22 [INFO] classification: Loaded 150 records
+2026-04-13 01:13:23 [INFO] classification: Embedding backend: specter2:selected
+2026-04-13 01:13:27 [INFO] classification: 3-stage classification of 150 records
+2026-04-13 01:13:27 [INFO] classification: Stage 1: rule-based...
+2026-04-13 01:13:27 [INFO] classification:   Stage 1 accepted: 49 / 150
+2026-04-13 01:13:27 [INFO] classification: Stage 2: embedding similarity for 101 records...
+2026-04-13 01:13:27 [INFO] classification:   Stage 2: accepted=101, to LLM=0, outliers=0
+2026-04-13 01:13:27 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-13 01:13:27 [INFO] classification:   stage1                         49  ( 32.7%)
+2026-04-13 01:13:27 [INFO] classification:   stage2_high                   101  ( 67.3%)
+2026-04-13 01:13:27 [INFO] classification:   Deterministic rate: 100.0%  |  LLM rate: 0.0%
+2026-04-13 01:13:27 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-13 01:13:27 [INFO] classification:   High-confidence records: 142 / 150
+2026-04-13 01:13:28 [INFO] classification: === Classification Agent complete ===
+2026-04-13 01:13:28 [INFO] classification: Deterministic: 100.0% | LLM: 0.0% | Outliers: 0

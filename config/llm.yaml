@@ -1,0 +1,116 @@
+# ============================================================
+# LLM + Embedding Configuration
+# Bibliometric Pipeline — Populism Studies
+# ============================================================
+
+# ── LLM (Stage 3 — selective disambiguation) ─────────────────────────────
+provider: "ollama"
+endpoint: "http://localhost:11434"
+
+# Recommended for Apple M4 128 GB — runs fully in unified memory
+model: "qwen2.5:72b"
+
+# Fallback chain if primary model unavailable
+fallback_models:
+  - "phi4:latest"               # Microsoft Phi-4:14b — strong JSON + scientific reasoning
+  - "qwen2.5:32b"        # Good quality, fits in 22 GB Q4
+  - "qwen2.5:14b"        # Solid subcategory discrimination
+  - "qwen2.5:7b"         # Acceptable for coarse domain only
+
+generation:
+  temperature: 0.05      # Near-deterministic — low stochasticity for classification
+  max_tokens: 256
+  top_p: 0.9
+
+# ── Embedding (Stage 2 — core classification engine) ──────────────────────
+#
+# Backend priority (automatic, overridable with 'backend' key):
+#   1. SPECTER2    — Citation-supervised, AllenAI, 768d
+#                    Best subcategory discrimination + bridge geometry
+#                    Requires: pip install sentence-transformers torch
+#                    Downloads ~440 MB on first run
+#
+#   2. Ollama      — General neural, nomic-embed-text / mxbai-embed-large
+#                    Good quality, no extra Python dependencies
+#                    Requires: ollama pull nomic-embed-text
+#
+#   3. TF-IDF LSA  — Always available, deterministic, lower quality
+#                    High outlier rate (~60%) — use only as last resort
+#
+embeddings:
+  # Force a specific backend (leave null for auto-selection)
+  # backend: null               # auto (SPECTER2 → Ollama → TF-IDF)
+  # backend: "specter2"         # force SPECTER2
+  # backend: "ollama"           # force Ollama
+  # backend: "tfidf"            # force TF-IDF (testing only)
+
+  # SPECTER2 settings
+  specter2_device: null         # null = auto-detect (mps on M4, cuda on GPU, cpu otherwise)
+  specter2_batch: 64            # Batch size — increase for M4 Max/Ultra (more memory bandwidth)
+                                # Recommended: 32 (M4), 64 (M4 Pro), 128 (M4 Max/Ultra)
+
+  # Ollama fallback settings
+  ollama_model: "nomic-embed-text"
+  # ollama_model: "mxbai-embed-large"      # Higher quality, 1024d, 670 MB
+
+  # TF-IDF last-resort settings
+  tfidf_components: 256         # LSA dimensions — irrelevant when SPECTER2 is active
+
+  # ── Routing thresholds ──────────────────────────────────────────────────
+  # These values are calibrated for SPECTER2 (cosine similarity, 768d L2-normed).
+  # If using Ollama or TF-IDF, consider lowering thresholds by ~0.10.
+  #
+  # Stage 1 (rule-based):   confidence >= rule_threshold → accept immediately
+  rule_threshold: 0.75
+
+  # Stage 2 (embedding):    cosine >= embed_high_threshold → accept
+  embed_high_threshold: 0.82    # Raised from 0.80 — SPECTER2 similarity is well-calibrated
+
+  # Stage 2 → Stage 3:      cosine in [embed_low, embed_high] → send to LLM
+  # cosine < embed_low:      outlier (possible new subcategory / interdisciplinary)
+  embed_low_threshold: 0.60     # Raised from 0.55 — SPECTER2 low scores are more meaningful
+
+  # Expected routing with SPECTER2 on a real populism corpus:
+  #   Stage 1 (rule):        ~30-40%   free, instant
+  #   Stage 2 (embedding):   ~40-50%   ~1500 emb/sec on M4
+  #   Stage 3 (LLM 72B):     ~10-20%   ~15-20 tok/sec on M4
+  #   Outliers:               ~5-10%   flagged for review
+
+# ── Classification task ────────────────────────────────────────────────────
+classification:
+  batch_size: 20
+  confidence_threshold: 0.60    # Matches embed_low_threshold
+  max_retries: 3
+  retry_on_invalid_json: true
+  fallback_label: "Other"
+  fallback_subcategory: "interdisciplinary"
+
+# ── Prompt templates (Stage 3 LLM) ────────────────────────────────────────
+prompts:
+  classification_system: |
+    You are a bibliometric classifier specialising in populism research.
+    Your task is to classify academic works into domains and subcategories.
+    You MUST respond ONLY with a valid JSON object. No explanation. No markdown. No preamble.
+    The JSON must have exactly these keys: "domain", "subcategory", "confidence", "reasoning"
+    confidence must be a float between 0.0 and 1.0.
+
+  classification_user: |
+    Classify this academic work about populism:
+
+    Title: {title}
+    Abstract: {abstract}
+    OpenAlex Concepts: {concepts}
+
+    Available domains and subcategories:
+    - Political Science: comparative_politics, political_theory, electoral_politics, democratic_theory, radical_right, latin_american_politics, european_politics
+    - Economics: political_economy, redistribution, trade_globalization, financial_crisis
+    - Sociology: social_movements, identity_politics, media_communication, culture_values
+    - Other: international_relations, history, psychology, geography, interdisciplinary
+
+    Respond ONLY with JSON: {{"domain": "...", "subcategory": "...", "confidence": 0.0, "reasoning": "..."}}
+
+# ── Health check ───────────────────────────────────────────────────────────
+health_check:
+  enabled: true
+  timeout: 5
+  test_prompt: "Respond with: {\"status\": \"ok\"}"

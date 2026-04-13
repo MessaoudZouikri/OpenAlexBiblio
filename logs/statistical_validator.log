@@ -1,0 +1,6 @@
+2026-04-12 16:34:45 [INFO] statistical_validator: === Statistical Validator starting ===
+2026-04-12 16:34:45 [INFO] statistical_validator: Statistical Validator: FAIL (0 warnings)
+2026-04-12 16:38:24 [INFO] statistical_validator: === Statistical Validator starting ===
+2026-04-12 16:38:24 [INFO] statistical_validator: Statistical Validator: PASS (2 warnings)
+2026-04-12 16:40:49 [INFO] statistical_validator: === Statistical Validator starting ===
+2026-04-12 16:40:49 [INFO] statistical_validator: Statistical Validator: PASS (2 warnings)

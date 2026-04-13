@@ -1,0 +1,76 @@
+# ============================================================
+# Global Pipeline Configuration
+# Bibliometric Pipeline — Populism Studies
+# ============================================================
+
+project:
+  name: "populism_bibliometrics"
+  version: "0.1.0"
+  description: "Bibliometric analysis of populism literature via OpenAlex"
+
+# ---- Paths ------------------------------------------------
+paths:
+  data_raw: "data/raw"
+  data_clean: "data/clean"
+  data_processed: "data/processed"
+  outputs: "data/outputs"
+  logs: "logs"
+  checkpoints: "checkpoints"
+
+# ---- Pipeline Execution -----------------------------------
+pipeline:
+  mode: "test"          # "test" | "full"
+  test_max_records: 200  # Records per query in test mode
+  full_max_records: 50000
+  random_seed: 42
+
+# ---- Step Definitions (ordered) --------------------------
+steps:
+  - name: data_collection
+    enabled: true
+    script: "src/agents/data_collection.py"
+  - name: validate_raw
+    enabled: true
+    script: "src/agents/validation/data_validator.py"
+    stage: "D1"
+  - name: data_cleaning
+    enabled: true
+    script: "src/agents/data_cleaning.py"
+  - name: validate_clean
+    enabled: true
+    script: "src/agents/validation/data_validator.py"
+    stage: "D2"
+  - name: bibliometric_analysis
+    enabled: true
+    script: "src/agents/bibliometric_analysis.py"
+  - name: validate_statistical
+    enabled: true
+    script: "src/agents/validation/statistical_validator.py"
+  - name: classification
+    enabled: true
+    script: "src/agents/classification.py"
+  - name: validate_classification
+    enabled: true
+    script: "src/agents/validation/classification_validator.py"
+  - name: network_analysis
+    enabled: true
+    script: "src/agents/network_analysis.py"
+  - name: validate_network
+    enabled: true
+    script: "src/agents/validation/network_validator.py"
+  - name: visualization
+    enabled: true
+    script: "src/agents/visualization.py"
+
+# ---- Logging ----------------------------------------------
+logging:
+  level: "INFO"           # DEBUG | INFO | WARNING | ERROR
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+  file_per_agent: true
+  console: true
+
+# ---- Failure Handling -------------------------------------
+failure:
+  on_validation_fail: "halt"    # halt | warn | skip
+  on_agent_error: "halt"
+  max_retries: 2

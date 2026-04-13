@@ -1,0 +1,68 @@
+# ============================================================
+# OpenAlex API Configuration
+# ============================================================
+
+api:
+  base_url: "https://api.openalex.org"
+  polite_email: "mzouikri@parisnanterre.fr"   # Replace with your email for polite pool
+  per_page: 200          # Max per page (API limit)
+  rate_limit_delay: 0.15 # Seconds between requests (> 1/10s for polite pool)
+  max_retries: 3
+  retry_backoff: 2.0     # Exponential backoff multiplier
+  timeout: 30            # Request timeout in seconds
+
+queries:
+  keywords:
+    - term: "populism"
+      field: "title_and_abstract.search"
+    - term: "populist"
+      field: "title_and_abstract.search"
+    - term: "populists"
+      field: "title_and_abstract.search"
+
+  filters:
+    type: "article"           # article | book-chapter | null (all)
+    from_publication_date: "1990-01-01"
+    to_publication_date: null  # null = no upper bound
+    open_access_only: false
+
+  sort:
+    field: "cited_by_count"
+    order: "desc"
+
+# Domain → OpenAlex Concept ID Mapping (for rule-based classification)
+domain_concepts:
+  political_science:
+    - "C17744445"    # Political science
+    - "C199539241"   # Politics
+    - "C150903083"   # Democracy
+    - "C2780916012"  # Populism
+    - "C2776943663"  # Far-right politics
+    - "C108827166"   # Public administration
+  economics:
+    - "C162324750"   # Economics
+    - "C175444787"   # Political economy
+    - "C144133560"   # Business
+    - "C2778793908"  # Economic inequality
+  sociology:
+    - "C144024400"   # Sociology
+    - "C2778154952"  # Social movement
+    - "C523546767"   # Identity politics
+    - "C136229726"   # Media studies
+
+subcategory_keywords:
+  comparative_politics: ["comparative", "cross-national", "party", "parties"]
+  political_theory: ["theory", "theoretical", "concept", "definition", "normative"]
+  electoral_politics: ["election", "electoral", "voting", "vote", "ballot"]
+  democratic_theory: ["democracy", "democratic", "backsliding", "illiberal"]
+  radical_right: ["far-right", "radical right", "extreme right", "right-wing"]
+  latin_american_politics: ["latin america", "brazil", "venezuela", "argentina", "mexico", "peru", "chile"]
+  european_politics: ["europe", "european", "EU", "france", "germany", "italy", "spain", "netherlands"]
+  political_economy: ["political economy", "macroeconomic", "fiscal", "monetary"]
+  redistribution: ["redistribution", "welfare", "inequality", "social protection"]
+  trade_globalization: ["trade", "globalization", "import", "export", "protectionism"]
+  financial_crisis: ["crisis", "recession", "austerity", "financial"]
+  social_movements: ["movement", "mobilization", "protest", "civil society"]
+  identity_politics: ["identity", "ethnic", "nationalism", "religion", "cultural"]
+  media_communication: ["media", "communication", "framing", "social media", "twitter"]
+  culture_values: ["culture", "values", "post-material", "backlash"]

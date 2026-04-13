@@ -1,0 +1,48 @@
+{
+  "agent": "statistical_validator",
+  "stage": "",
+  "timestamp": "2026-04-12T16:40:49.928298",
+  "status": "PASS",
+  "errors": [],
+  "warnings": [
+    "lotka_alpha_plausible: α=0.136 (expected ~2.0)",
+    "lotka_r2_acceptable: R²=0.013"
+  ],
+  "checks": [
+    {
+      "name": "file_exists_bibliometric_summary.json",
+      "passed": true,
+      "detail": "data/processed/bibliometric_summary.json"
+    },
+    {
+      "name": "file_exists_publication_trends.json",
+      "passed": true,
+      "detail": "data/processed/publication_trends.json"
+    },
+    {
+      "name": "file_exists_top_authors.json",
+      "passed": true,
+      "detail": "data/processed/top_authors.json"
+    },
+    {
+      "name": "n_records_positive",
+      "passed": true,
+      "detail": "150"
+    },
+    {
+      "name": "no_extreme_yoy_spike",
+      "passed": true,
+      "detail": "Max YoY growth: 400.0%"
+    },
+    {
+      "name": "lotka_alpha_plausible",
+      "passed": false,
+      "detail": "α=0.136 (expected ~2.0)"
+    },
+    {
+      "name": "lotka_r2_acceptable",
+      "passed": false,
+      "detail": "R²=0.013"
+    }
+  ]
+}

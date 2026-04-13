@@ -1,0 +1,3 @@
+2026-04-12 16:33:22 [INFO] data_collection: === Data Collection Agent starting ===
+2026-04-12 16:33:22 [INFO] data_collection: Mode: TEST
+2026-04-12 16:33:22 [INFO] data_collection: Querying: field=title_and_abstract.search, term='populism', max=200

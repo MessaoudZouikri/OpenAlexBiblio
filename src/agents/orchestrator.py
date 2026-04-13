@@ -1,0 +1,223 @@
+"""
+Orchestrator Agent
+==================
+Central pipeline coordinator. Manages execution order, checkpointing,
+partial re-runs, and audit trail. Stateless — all state stored on disk.
+
+Usage:
+    python src/agents/orchestrator.py                          # full run
+    python src/agents/orchestrator.py --from-step data_cleaning
+    python src/agents/orchestrator.py --dry-run
+    python src/agents/orchestrator.py --list-steps
+"""
+import argparse
+import logging
+import subprocess
+import sys
+import time
+from datetime import datetime, UTC
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from src.utils.io_utils import (
+    load_yaml, load_checkpoint, save_checkpoint, mark_step_complete,
+    is_step_complete, reset_from_step,
+)
+from src.utils.logging_utils import setup_logger, AuditTrail
+
+
+# ── Step Definitions ──────────────────────────────────────────────────────
+# Each step is a (name, module_path, extra_args) tuple.
+# Module path is relative to project root, using Python module notation.
+
+STEP_DEFINITIONS = [
+    ("data_collection",        "src.agents.data_collection",       []),
+    ("validate_raw",           "src.agents.validation.validators",  ["--validator", "data", "--stage", "D1"]),
+    ("data_cleaning",          "src.agents.data_cleaning",          []),
+    ("validate_clean",         "src.agents.validation.validators",  ["--validator", "data", "--stage", "D2"]),
+    ("bibliometric_analysis",  "src.agents.bibliometric_analysis",  []),
+    ("validate_statistical",   "src.agents.validation.validators",  ["--validator", "statistical"]),
+    ("classification",         "src.agents.classification",         []),
+    ("validate_classification","src.agents.validation.validators",  ["--validator", "classification"]),
+    ("network_analysis",       "src.agents.network_analysis",       []),
+    ("validate_network",       "src.agents.validation.validators",  ["--validator", "network"]),
+]
+
+ALL_STEP_NAMES = [s[0] for s in STEP_DEFINITIONS]
+
+
+def run_step(
+    step_name: str,
+    module_path: str,
+    extra_args: list,
+    config_path: str,
+    logger: logging.Logger,
+    dry_run: bool = False,
+) -> tuple[bool, float]:
+    """
+    Execute a single pipeline step via Python -m.
+    Returns (success: bool, duration_seconds: float).
+    """
+    cmd = [
+        sys.executable, "-m", module_path,
+        "--config", config_path,
+    ] + extra_args
+
+    logger.info("▶ Step [%s]: %s", step_name, " ".join(cmd))
+
+    if dry_run:
+        logger.info("  [DRY RUN] skipping execution")
+        return True, 0.0
+
+    t0 = time.time()
+    try:
+        result = subprocess.run(
+            cmd,
+            capture_output=False,
+            text=True,
+            check=False,
+        )
+        duration = time.time() - t0
+        success = result.returncode == 0
+
+        if success:
+            logger.info("  ✓ Step [%s] completed in %.1fs", step_name, duration)
+        else:
+            logger.error(
+                "  ✗ Step [%s] FAILED (rc=%d) in %.1fs",
+                step_name, result.returncode, duration
+            )
+        return success, duration
+
+    except Exception as exc:
+        duration = time.time() - t0
+        logger.error("  ✗ Step [%s] raised exception: %s", step_name, exc)
+        return False, duration
+
+
+def get_start_index(from_step: str) -> int:
+    if from_step in ALL_STEP_NAMES:
+        return ALL_STEP_NAMES.index(from_step)
+    raise ValueError(f"Unknown step: '{from_step}'. Valid: {ALL_STEP_NAMES}")
+
+
+def run_pipeline(
+    config_path: str = "config/config.yaml",
+    from_step: str = None,
+    dry_run: bool = False,
+    force: bool = False,
+) -> bool:
+    """
+    Execute the full pipeline (or from a specific step).
+    Returns True if all steps passed.
+    """
+    config = load_yaml(config_path)
+    run_id = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
+    logger = setup_logger("orchestrator", config["paths"]["logs"])
+    audit = AuditTrail(run_id, config["paths"]["logs"])
+
+    logger.info("=" * 60)
+    logger.info("BIBLIOMETRIC PIPELINE — Run ID: %s", run_id)
+    logger.info("Mode: %s | From: %s | DryRun: %s",
+                config["pipeline"]["mode"], from_step or "start", dry_run)
+    logger.info("=" * 60)
+
+    # Determine start index
+    start_idx = 0
+    if from_step:
+        start_idx = get_start_index(from_step)
+        reset_from_step(from_step, ALL_STEP_NAMES)
+        logger.info("Resetting checkpoint from step: %s", from_step)
+
+    # Update checkpoint with run ID
+    state = load_checkpoint()
+    state["run_id"] = run_id
+    save_checkpoint(state)
+
+    overall_success = True
+    failure_handling = config.get("failure", {}).get("on_validation_fail", "halt")
+
+    for i, (step_name, module_path, extra_args) in enumerate(STEP_DEFINITIONS):
+        if i < start_idx:
+            logger.info("  [SKIP] %s (before start step)", step_name)
+            continue
+
+        # Skip already completed steps (unless force)
+        if not force and is_step_complete(step_name):
+            logger.info("  [CACHED] %s — already complete", step_name)
+            continue
+
+        success, duration = run_step(
+            step_name, module_path, extra_args, config_path, logger, dry_run
+        )
+
+        audit.record(
+            step=step_name,
+            status="success" if success else "failure",
+            outputs={"duration_s": round(duration, 2)},
+            duration_s=round(duration, 2),
+        )
+
+        if success:
+            mark_step_complete(step_name)
+        else:
+            overall_success = False
+            is_validation = step_name.startswith("validate_")
+            should_halt = (
+                failure_handling == "halt"
+                or (not is_validation and config.get("failure", {}).get("on_agent_error") == "halt")
+            )
+            if should_halt:
+                logger.error("Pipeline HALTED at step: %s", step_name)
+                audit.finalize("FAILED")
+                return False
+            else:
+                logger.warning("Step %s failed — continuing (failure_handling=warn)", step_name)
+
+    final_status = "SUCCESS" if overall_success else "PARTIAL"
+    audit.finalize(final_status)
+    logger.info("=" * 60)
+    logger.info("Pipeline %s — Run ID: %s", final_status, run_id)
+    logger.info("=" * 60)
+    return overall_success
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Bibliometric Pipeline Orchestrator",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python src/agents/orchestrator.py                          Run full pipeline
+  python src/agents/orchestrator.py --from-step data_cleaning  Resume from cleaning
+  python src/agents/orchestrator.py --dry-run               Show steps without running
+  python src/agents/orchestrator.py --list-steps            List available steps
+        """
+    )
+    parser.add_argument("--config", default="config/config.yaml")
+    parser.add_argument("--from-step", metavar="STEP",
+                        help="Start execution from this step (resets downstream)")
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--force", action="store_true",
+                        help="Re-run even completed steps")
+    parser.add_argument("--list-steps", action="store_true")
+    args = parser.parse_args()
+
+    if args.list_steps:
+        print("\nAvailable pipeline steps:")
+        for i, name in enumerate(ALL_STEP_NAMES):
+            print(f"  {i+1:2d}. {name}")
+        return
+
+    success = run_pipeline(
+        config_path=args.config,
+        from_step=args.from_step,
+        dry_run=args.dry_run,
+        force=args.force,
+    )
+    sys.exit(0 if success else 1)
+
+
+if __name__ == "__main__":
+    main()

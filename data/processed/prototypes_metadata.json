@@ -1,0 +1,41 @@
+{
+  "backend": "specter2:proximity",
+  "n_labels": 20,
+  "labels": [
+    "Political Science::comparative_politics",
+    "Political Science::political_theory",
+    "Political Science::electoral_politics",
+    "Political Science::democratic_theory",
+    "Political Science::radical_right",
+    "Political Science::latin_american_politics",
+    "Political Science::european_politics",
+    "Economics::political_economy",
+    "Economics::redistribution",
+    "Economics::trade_globalization",
+    "Economics::financial_crisis",
+    "Sociology::social_movements",
+    "Sociology::identity_politics",
+    "Sociology::media_communication",
+    "Sociology::culture_values",
+    "Other::international_relations",
+    "Other::history",
+    "Other::psychology",
+    "Other::geography",
+    "Other::interdisciplinary"
+  ],
+  "source": "seeds+corpus_feedback",
+  "corpus_update": {
+    "Political Science::electoral_politics": 8,
+    "Political Science::radical_right": 15,
+    "Other::interdisciplinary": 9,
+    "Economics::trade_globalization": 13,
+    "Political Science::latin_american_politics": 17,
+    "Political Science::democratic_theory": 5,
+    "Political Science::political_theory": 9,
+    "Political Science::european_politics": 9,
+    "Sociology::media_communication": 15,
+    "Economics::political_economy": 13,
+    "Economics::financial_crisis": 15,
+    "Political Science::comparative_politics": 5
+  }
+}

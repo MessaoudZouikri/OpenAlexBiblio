@@ -1,0 +1,73 @@
+{
+  "timestamp": "2026-04-12T23:13:28.994992",
+  "bibcoupling": {
+    "network": "bibcoupling",
+    "n_nodes": 150,
+    "n_edges": 5669,
+    "density": 0.507293,
+    "n_components": 1,
+    "largest_component_size": 150,
+    "avg_clustering": 0.2035,
+    "avg_path_length_lcc": 1.4927,
+    "modularity": 0.0933
+  },
+  "cross_domain_matrix": {
+    "Political Science": {
+      "Political Science": 3705,
+      "Economics": 4395,
+      "Sociology": 2055,
+      "Other": 1231
+    },
+    "Economics": {
+      "Political Science": 4395,
+      "Economics": 1209,
+      "Sociology": 1195,
+      "Other": 741
+    },
+    "Sociology": {
+      "Political Science": 2055,
+      "Economics": 1195,
+      "Sociology": 256,
+      "Other": 372
+    },
+    "Other": {
+      "Political Science": 1231,
+      "Economics": 741,
+      "Sociology": 372,
+      "Other": 90
+    }
+  },
+  "cocitation": {
+    "network": "cocitation",
+    "n_nodes": 80,
+    "n_edges": 2538,
+    "density": 0.803165,
+    "n_components": 1,
+    "largest_component_size": 80,
+    "avg_clustering": 0.2663,
+    "avg_path_length_lcc": 1.1968,
+    "modularity": 0.0571
+  },
+  "coauthorship": {
+    "network": "coauthorship",
+    "n_nodes": 20,
+    "n_edges": 118,
+    "density": 0.621053,
+    "n_components": 1,
+    "largest_component_size": 20,
+    "avg_clustering": 0.2076,
+    "avg_path_length_lcc": 1.3789,
+    "modularity": 0.1459
+  },
+  "concept_cooccurrence": {
+    "network": "concept_cooccurrence",
+    "n_nodes": 19,
+    "n_edges": 167,
+    "density": 0.976608,
+    "n_components": 1,
+    "largest_component_size": 19,
+    "avg_clustering": 0.4654,
+    "avg_path_length_lcc": 1.0234
+  },
+  "interdisciplinary_bridges_count": 38
+}

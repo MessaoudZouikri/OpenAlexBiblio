@@ -1,0 +1,51 @@
+{
+  "agent": "classification_validator",
+  "stage": "",
+  "timestamp": "2026-04-12T23:13:28.738239",
+  "status": "PASS",
+  "errors": [],
+  "warnings": [],
+  "checks": [
+    {
+      "name": "file_exists",
+      "passed": true,
+      "detail": "data/processed/classified_works.parquet"
+    },
+    {
+      "name": "null_domain_under_5pct",
+      "passed": "True",
+      "detail": "Null domain rate: 0.0%"
+    },
+    {
+      "name": "all_domains_valid",
+      "passed": true,
+      "detail": "Invalid: set()"
+    },
+    {
+      "name": "all_subcategories_valid",
+      "passed": true,
+      "detail": "0 invalid subcategory/domain pairs"
+    },
+    {
+      "name": "confidence_in_range",
+      "passed": "True",
+      "detail": "All confidence values in [0,1]"
+    },
+    {
+      "name": "other_interdisciplinary_under_40pct",
+      "passed": "True",
+      "detail": "Other/interdisciplinary rate: 6.0%"
+    }
+  ],
+  "n_records": 150,
+  "domain_distribution": {
+    "Political Science": 75,
+    "Economics": 44,
+    "Sociology": 19,
+    "Other": 12
+  },
+  "source_distribution": {
+    "embedding": 101,
+    "rule": 49
+  }
+}

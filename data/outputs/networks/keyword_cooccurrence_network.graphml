@@ -1,0 +1,565 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d1" for="edge" attr.name="weight" attr.type="long" />
+  <key id="d0" for="node" attr.name="frequency" attr.type="long" />
+  <graph edgedefault="undirected">
+    <node id="Politics">
+      <data key="d0">37</data>
+    </node>
+    <node id="Social movement">
+      <data key="d0">34</data>
+    </node>
+    <node id="Voting behavior">
+      <data key="d0">32</data>
+    </node>
+    <node id="Political economy">
+      <data key="d0">32</data>
+    </node>
+    <node id="Sociology">
+      <data key="d0">32</data>
+    </node>
+    <node id="Democracy">
+      <data key="d0">32</data>
+    </node>
+    <node id="Identity politics">
+      <data key="d0">30</data>
+    </node>
+    <node id="Public administration">
+      <data key="d0">30</data>
+    </node>
+    <node id="Nationalism">
+      <data key="d0">29</data>
+    </node>
+    <node id="Political science">
+      <data key="d0">29</data>
+    </node>
+    <node id="Economic inequality">
+      <data key="d0">29</data>
+    </node>
+    <node id="Immigration">
+      <data key="d0">27</data>
+    </node>
+    <node id="Populism">
+      <data key="d0">26</data>
+    </node>
+    <node id="Elections">
+      <data key="d0">25</data>
+    </node>
+    <node id="Economics">
+      <data key="d0">25</data>
+    </node>
+    <node id="Globalization">
+      <data key="d0">24</data>
+    </node>
+    <node id="Far-right politics">
+      <data key="d0">20</data>
+    </node>
+    <node id="Media studies">
+      <data key="d0">19</data>
+    </node>
+    <node id="Political parties">
+      <data key="d0">16</data>
+    </node>
+    <edge source="Politics" target="Democracy">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Politics" target="Globalization">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Political economy">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Political science">
+      <data key="d1">8</data>
+    </edge>
+    <edge source="Politics" target="Public administration">
+      <data key="d1">9</data>
+    </edge>
+    <edge source="Politics" target="Elections">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Politics" target="Far-right politics">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Politics" target="Populism">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Politics" target="Economic inequality">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Politics" target="Sociology">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Identity politics">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Immigration">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Social movement">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Voting behavior">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Politics" target="Economics">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Politics" target="Political parties">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Politics" target="Nationalism">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Politics" target="Media studies">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Social movement" target="Globalization">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Social movement" target="Immigration">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Social movement" target="Populism">
+      <data key="d1">9</data>
+    </edge>
+    <edge source="Social movement" target="Voting behavior">
+      <data key="d1">8</data>
+    </edge>
+    <edge source="Social movement" target="Democracy">
+      <data key="d1">8</data>
+    </edge>
+    <edge source="Social movement" target="Political economy">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Social movement" target="Political science">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Social movement" target="Nationalism">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Social movement" target="Public administration">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Social movement" target="Economics">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Social movement" target="Media studies">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Social movement" target="Political parties">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Social movement" target="Elections">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Social movement" target="Identity politics">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Social movement" target="Far-right politics">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Social movement" target="Sociology">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Social movement" target="Economic inequality">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Voting behavior" target="Globalization">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Voting behavior" target="Immigration">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Voting behavior" target="Populism">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Voting behavior" target="Democracy">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Voting behavior" target="Nationalism">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Voting behavior" target="Elections">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Voting behavior" target="Identity politics">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Voting behavior" target="Political economy">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Voting behavior" target="Political science">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Voting behavior" target="Economic inequality">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Voting behavior" target="Political parties">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Voting behavior" target="Public administration">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Voting behavior" target="Sociology">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Voting behavior" target="Media studies">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Voting behavior" target="Economics">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Voting behavior" target="Far-right politics">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Political economy" target="Globalization">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Political economy" target="Identity politics">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Political economy" target="Immigration">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Political economy" target="Economic inequality">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Political economy" target="Nationalism">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Political economy" target="Political science">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Political economy" target="Populism">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Political economy" target="Democracy">
+      <data key="d1">8</data>
+    </edge>
+    <edge source="Political economy" target="Public administration">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Political economy" target="Elections">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Political economy" target="Economics">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Political economy" target="Media studies">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Political economy" target="Far-right politics">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Political economy" target="Sociology">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Sociology" target="Economics">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Political parties">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Democracy">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Sociology" target="Economic inequality">
+      <data key="d1">8</data>
+    </edge>
+    <edge source="Sociology" target="Globalization">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Immigration">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Media studies">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Political science">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Sociology" target="Public administration">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Elections">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Sociology" target="Populism">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Sociology" target="Identity politics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Sociology" target="Far-right politics">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Sociology" target="Nationalism">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Democracy" target="Immigration">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Democracy" target="Political science">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Democracy" target="Globalization">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Democracy" target="Economic inequality">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Democracy" target="Nationalism">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Democracy" target="Identity politics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Democracy" target="Media studies">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Democracy" target="Public administration">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Democracy" target="Economics">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Democracy" target="Elections">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Democracy" target="Political parties">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Democracy" target="Far-right politics">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Democracy" target="Populism">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Identity politics" target="Globalization">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Identity politics" target="Immigration">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Identity politics" target="Media studies">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Identity politics" target="Public administration">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Identity politics" target="Economic inequality">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Identity politics" target="Far-right politics">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Identity politics" target="Political science">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Identity politics" target="Nationalism">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Identity politics" target="Populism">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Identity politics" target="Elections">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Identity politics" target="Economics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Identity politics" target="Political parties">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Public administration" target="Globalization">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Public administration" target="Political science">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Public administration" target="Elections">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Public administration" target="Far-right politics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Public administration" target="Populism">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Public administration" target="Economic inequality">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Public administration" target="Media studies">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Public administration" target="Immigration">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Public administration" target="Nationalism">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Public administration" target="Political parties">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Public administration" target="Economics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Nationalism" target="Elections">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Nationalism" target="Globalization">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Nationalism" target="Political parties">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Nationalism" target="Populism">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Nationalism" target="Economic inequality">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Nationalism" target="Political science">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Nationalism" target="Far-right politics">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Nationalism" target="Immigration">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Nationalism" target="Media studies">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Nationalism" target="Economics">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Political science" target="Economic inequality">
+      <data key="d1">7</data>
+    </edge>
+    <edge source="Political science" target="Populism">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Political science" target="Immigration">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Political science" target="Globalization">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Political science" target="Far-right politics">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Political science" target="Media studies">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Political science" target="Economics">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Political science" target="Elections">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Economic inequality" target="Populism">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Economic inequality" target="Globalization">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Economic inequality" target="Far-right politics">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Economic inequality" target="Economics">
+      <data key="d1">8</data>
+    </edge>
+    <edge source="Economic inequality" target="Immigration">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Economic inequality" target="Media studies">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Economic inequality" target="Political parties">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Economic inequality" target="Elections">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Immigration" target="Globalization">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Immigration" target="Populism">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Immigration" target="Economics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Immigration" target="Media studies">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Immigration" target="Elections">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Immigration" target="Political parties">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Immigration" target="Far-right politics">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Populism" target="Elections">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Populism" target="Globalization">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Populism" target="Political parties">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Populism" target="Far-right politics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Populism" target="Media studies">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Elections" target="Globalization">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Elections" target="Political parties">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Elections" target="Far-right politics">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Elections" target="Economics">
+      <data key="d1">6</data>
+    </edge>
+    <edge source="Elections" target="Media studies">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Economics" target="Political parties">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Economics" target="Media studies">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Economics" target="Far-right politics">
+      <data key="d1">4</data>
+    </edge>
+    <edge source="Economics" target="Globalization">
+      <data key="d1">3</data>
+    </edge>
+    <edge source="Globalization" target="Political parties">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Globalization" target="Far-right politics">
+      <data key="d1">5</data>
+    </edge>
+    <edge source="Far-right politics" target="Political parties">
+      <data key="d1">1</data>
+    </edge>
+    <edge source="Far-right politics" target="Media studies">
+      <data key="d1">2</data>
+    </edge>
+    <edge source="Media studies" target="Political parties">
+      <data key="d1">2</data>
+    </edge>
+  </graph>
+</graphml>

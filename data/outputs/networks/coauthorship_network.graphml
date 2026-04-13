@@ -1,0 +1,442 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d2" for="edge" attr.name="weight" attr.type="long" />
+  <key id="d1" for="node" attr.name="paper_count" attr.type="long" />
+  <key id="d0" for="node" attr.name="name" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="https://openalex.org/A07886081">
+      <data key="d0">Thomas Piketty</data>
+      <data key="d1">9</data>
+    </node>
+    <node id="https://openalex.org/A02149022">
+      <data key="d0">Cas Mudde</data>
+      <data key="d1">7</data>
+    </node>
+    <node id="https://openalex.org/A03383884">
+      <data key="d0">Ernesto Laclau</data>
+      <data key="d1">10</data>
+    </node>
+    <node id="https://openalex.org/A00160791">
+      <data key="d0">Ruth Levitas</data>
+      <data key="d1">11</data>
+    </node>
+    <node id="https://openalex.org/A00725707">
+      <data key="d0">Nadia Urbinati</data>
+      <data key="d1">15</data>
+    </node>
+    <node id="https://openalex.org/A06865051">
+      <data key="d0">Dani Rodrik</data>
+      <data key="d1">21</data>
+    </node>
+    <node id="https://openalex.org/A09643615">
+      <data key="d0">Benjamin Moffitt</data>
+      <data key="d1">15</data>
+    </node>
+    <node id="https://openalex.org/A03638384">
+      <data key="d0">Yascha Mounk</data>
+      <data key="d1">18</data>
+    </node>
+    <node id="https://openalex.org/A07571845">
+      <data key="d0">Pippa Norris</data>
+      <data key="d1">15</data>
+    </node>
+    <node id="https://openalex.org/A09314257">
+      <data key="d0">Jan-Werner Müller</data>
+      <data key="d1">23</data>
+    </node>
+    <node id="https://openalex.org/A02464218">
+      <data key="d0">Kirk Hawkins</data>
+      <data key="d1">13</data>
+    </node>
+    <node id="https://openalex.org/A02362920">
+      <data key="d0">Ronald Inglehart</data>
+      <data key="d1">19</data>
+    </node>
+    <node id="https://openalex.org/A07465283">
+      <data key="d0">Frances Fukuyama</data>
+      <data key="d1">12</data>
+    </node>
+    <node id="https://openalex.org/A02388037">
+      <data key="d0">Chantal Mouffe</data>
+      <data key="d1">13</data>
+    </node>
+    <node id="https://openalex.org/A07477400">
+      <data key="d0">Anna Grzymala-Busse</data>
+      <data key="d1">13</data>
+    </node>
+    <node id="https://openalex.org/A02065648">
+      <data key="d0">Daniel Ziblatt</data>
+      <data key="d1">14</data>
+    </node>
+    <node id="https://openalex.org/A04801344">
+      <data key="d0">Steven Levitsky</data>
+      <data key="d1">10</data>
+    </node>
+    <node id="https://openalex.org/A03655776">
+      <data key="d0">Michael Sandel</data>
+      <data key="d1">24</data>
+    </node>
+    <node id="https://openalex.org/A07961768">
+      <data key="d0">Cristóbal Rovira Kaltwasser</data>
+      <data key="d1">19</data>
+    </node>
+    <node id="https://openalex.org/A04265340">
+      <data key="d0">Wendy Brown</data>
+      <data key="d1">11</data>
+    </node>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A02464218">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A02065648">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A02362920">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A02149022">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A00160791">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A03638384">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A06865051">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A04801344">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A09314257">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07886081" target="https://openalex.org/A07571845">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A06865051">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A07961768">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A07465283">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A07571845">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A09314257">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A00725707">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02149022" target="https://openalex.org/A02065648">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A00725707">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A02464218">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A09314257">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A03655776">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A04265340">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A09643615">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A04801344">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A06865051">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A07571845">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03383884" target="https://openalex.org/A02362920">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A03638384">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A04265340">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A07477400">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A02388037">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A02065648">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A00725707">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A09643615">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A07465283">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A07571845">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00160791" target="https://openalex.org/A02464218">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A03655776">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A02464218">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A09314257">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A06865051">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A03638384">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A07961768">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A07571845">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A02065648">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A04801344">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A09643615">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A04265340">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A00725707" target="https://openalex.org/A07465283">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A03655776">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A02388037">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A07477400">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A09643615">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A03638384">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A04801344">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A02065648">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A09314257">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A07961768">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A02464218">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A06865051" target="https://openalex.org/A02362920">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A03655776">
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A09314257">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A02362920">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A07961768">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A04801344">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A02464218">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A02065648">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A07477400">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A03638384">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A07571845">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09643615" target="https://openalex.org/A07465283">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A07961768">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A02388037">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A03655776">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A07477400">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A04265340">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A09314257">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A07571845">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A03638384" target="https://openalex.org/A02362920">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A03655776">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A09314257">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A07961768">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A02065648">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A02464218">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A04801344">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07571845" target="https://openalex.org/A07477400">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A03655776">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A02362920">
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A02065648">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A07477400">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A07961768">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A02464218">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A09314257" target="https://openalex.org/A02388037">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02464218" target="https://openalex.org/A02065648">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A02464218" target="https://openalex.org/A02388037">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02464218" target="https://openalex.org/A04801344">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02464218" target="https://openalex.org/A02362920">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02362920" target="https://openalex.org/A07465283">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02362920" target="https://openalex.org/A03655776">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02362920" target="https://openalex.org/A02065648">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07465283" target="https://openalex.org/A07961768">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07465283" target="https://openalex.org/A02065648">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07465283" target="https://openalex.org/A03655776">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07465283" target="https://openalex.org/A02388037">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02388037" target="https://openalex.org/A07477400">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02388037" target="https://openalex.org/A07961768">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02388037" target="https://openalex.org/A02065648">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02388037" target="https://openalex.org/A04801344">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02388037" target="https://openalex.org/A04265340">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07477400" target="https://openalex.org/A07961768">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A07477400" target="https://openalex.org/A04265340">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02065648" target="https://openalex.org/A03655776">
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/A02065648" target="https://openalex.org/A07961768">
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/A02065648" target="https://openalex.org/A04801344">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A02065648" target="https://openalex.org/A04265340">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A04801344" target="https://openalex.org/A07961768">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A04801344" target="https://openalex.org/A03655776">
+      <data key="d2">1</data>
+    </edge>
+    <edge source="https://openalex.org/A07961768" target="https://openalex.org/A04265340">
+      <data key="d2">2</data>
+    </edge>
+  </graph>
+</graphml>

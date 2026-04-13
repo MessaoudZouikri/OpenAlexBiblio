@@ -1,0 +1,264 @@
+{
+  "unique_journals": 18,
+  "top_by_output": [
+    {
+      "journal": "Socio-Economic Review",
+      "paper_count": 13,
+      "total_citations": 307,
+      "mean_citations": 23.62,
+      "cumsum": 13
+    },
+    {
+      "journal": "European Journal of Political Research",
+      "paper_count": 11,
+      "total_citations": 395,
+      "mean_citations": 35.91,
+      "cumsum": 24
+    },
+    {
+      "journal": "World Politics",
+      "paper_count": 11,
+      "total_citations": 438,
+      "mean_citations": 39.82,
+      "cumsum": 35
+    },
+    {
+      "journal": "Journal of European Public Policy",
+      "paper_count": 11,
+      "total_citations": 502,
+      "mean_citations": 45.64,
+      "cumsum": 46
+    },
+    {
+      "journal": "Political Geography",
+      "paper_count": 11,
+      "total_citations": 799,
+      "mean_citations": 72.64,
+      "cumsum": 57
+    },
+    {
+      "journal": "Comparative Political Studies",
+      "paper_count": 10,
+      "total_citations": 262,
+      "mean_citations": 26.2,
+      "cumsum": 67
+    },
+    {
+      "journal": "Nations and Nationalism",
+      "paper_count": 10,
+      "total_citations": 997,
+      "mean_citations": 99.7,
+      "cumsum": 77
+    },
+    {
+      "journal": "Political Studies",
+      "paper_count": 10,
+      "total_citations": 1095,
+      "mean_citations": 109.5,
+      "cumsum": 87
+    },
+    {
+      "journal": "Political Research Quarterly",
+      "paper_count": 9,
+      "total_citations": 458,
+      "mean_citations": 50.89,
+      "cumsum": 96
+    },
+    {
+      "journal": "Electoral Studies",
+      "paper_count": 7,
+      "total_citations": 276,
+      "mean_citations": 39.43,
+      "cumsum": 103
+    },
+    {
+      "journal": "Government and Opposition",
+      "paper_count": 7,
+      "total_citations": 598,
+      "mean_citations": 85.43,
+      "cumsum": 110
+    },
+    {
+      "journal": "Politics & Society",
+      "paper_count": 7,
+      "total_citations": 230,
+      "mean_citations": 32.86,
+      "cumsum": 117
+    },
+    {
+      "journal": "New Political Economy",
+      "paper_count": 7,
+      "total_citations": 213,
+      "mean_citations": 30.43,
+      "cumsum": 124
+    },
+    {
+      "journal": "American Political Science Review",
+      "paper_count": 6,
+      "total_citations": 130,
+      "mean_citations": 21.67,
+      "cumsum": 130
+    },
+    {
+      "journal": "Party Politics",
+      "paper_count": 6,
+      "total_citations": 145,
+      "mean_citations": 24.17,
+      "cumsum": 136
+    },
+    {
+      "journal": "Democratization",
+      "paper_count": 6,
+      "total_citations": 121,
+      "mean_citations": 20.17,
+      "cumsum": 142
+    },
+    {
+      "journal": "Journal of Democracy",
+      "paper_count": 5,
+      "total_citations": 14,
+      "mean_citations": 2.8,
+      "cumsum": 147
+    },
+    {
+      "journal": "West European Politics",
+      "paper_count": 3,
+      "total_citations": 89,
+      "mean_citations": 29.67,
+      "cumsum": 150
+    }
+  ],
+  "top_by_citations": [
+    {
+      "journal": "Political Studies",
+      "paper_count": 10,
+      "total_citations": 1095,
+      "mean_citations": 109.5,
+      "cumsum": 87
+    },
+    {
+      "journal": "Nations and Nationalism",
+      "paper_count": 10,
+      "total_citations": 997,
+      "mean_citations": 99.7,
+      "cumsum": 77
+    },
+    {
+      "journal": "Political Geography",
+      "paper_count": 11,
+      "total_citations": 799,
+      "mean_citations": 72.64,
+      "cumsum": 57
+    },
+    {
+      "journal": "Government and Opposition",
+      "paper_count": 7,
+      "total_citations": 598,
+      "mean_citations": 85.43,
+      "cumsum": 110
+    },
+    {
+      "journal": "Journal of European Public Policy",
+      "paper_count": 11,
+      "total_citations": 502,
+      "mean_citations": 45.64,
+      "cumsum": 46
+    },
+    {
+      "journal": "Political Research Quarterly",
+      "paper_count": 9,
+      "total_citations": 458,
+      "mean_citations": 50.89,
+      "cumsum": 96
+    },
+    {
+      "journal": "World Politics",
+      "paper_count": 11,
+      "total_citations": 438,
+      "mean_citations": 39.82,
+      "cumsum": 35
+    },
+    {
+      "journal": "European Journal of Political Research",
+      "paper_count": 11,
+      "total_citations": 395,
+      "mean_citations": 35.91,
+      "cumsum": 24
+    },
+    {
+      "journal": "Socio-Economic Review",
+      "paper_count": 13,
+      "total_citations": 307,
+      "mean_citations": 23.62,
+      "cumsum": 13
+    },
+    {
+      "journal": "Electoral Studies",
+      "paper_count": 7,
+      "total_citations": 276,
+      "mean_citations": 39.43,
+      "cumsum": 103
+    },
+    {
+      "journal": "Comparative Political Studies",
+      "paper_count": 10,
+      "total_citations": 262,
+      "mean_citations": 26.2,
+      "cumsum": 67
+    },
+    {
+      "journal": "Politics & Society",
+      "paper_count": 7,
+      "total_citations": 230,
+      "mean_citations": 32.86,
+      "cumsum": 117
+    },
+    {
+      "journal": "New Political Economy",
+      "paper_count": 7,
+      "total_citations": 213,
+      "mean_citations": 30.43,
+      "cumsum": 124
+    },
+    {
+      "journal": "Party Politics",
+      "paper_count": 6,
+      "total_citations": 145,
+      "mean_citations": 24.17,
+      "cumsum": 136
+    },
+    {
+      "journal": "American Political Science Review",
+      "paper_count": 6,
+      "total_citations": 130,
+      "mean_citations": 21.67,
+      "cumsum": 130
+    },
+    {
+      "journal": "Democratization",
+      "paper_count": 6,
+      "total_citations": 121,
+      "mean_citations": 20.17,
+      "cumsum": 142
+    },
+    {
+      "journal": "West European Politics",
+      "paper_count": 3,
+      "total_citations": 89,
+      "mean_citations": 29.67,
+      "cumsum": 150
+    },
+    {
+      "journal": "Journal of Democracy",
+      "paper_count": 5,
+      "total_citations": 14,
+      "mean_citations": 2.8,
+      "cumsum": 147
+    }
+  ],
+  "bradford_zones": {
+    "zone1_journals": 4,
+    "zone2_journals": 5,
+    "zone3_journals": 9
+  }
+}
