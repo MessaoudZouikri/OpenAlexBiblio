@@ -3,6 +3,9 @@
 A modular, reproducible, multi-agent bibliometric pipeline for the study of
 **populism**, **populist**, and **populists** using the [OpenAlex](https://openalex.org) database.
 
+**Documentation**:
+[Quick Start](QUICKSTART.md) — [Tutorial](BIBLIOMETRIC_PIPELINE_TUTORIAL.md) — [Agent Specs](agents/)
+
 ---
 
 ## Repository Contents
@@ -81,6 +84,14 @@ data_collection → validate_raw(D1) → data_cleaning → validate_clean(D2)
 
 ---
 
+## Prerequisites
+
+- Python 3.10 or later
+- Network access to [api.openalex.org](https://api.openalex.org) (free, no API key required)
+- [Ollama](https://ollama.ai) with a local model — optional but recommended for LLM-assisted classification
+
+---
+
 ## Setup
 
 ### 1. Python environment
@@ -120,9 +131,34 @@ queries:
       field: "title_and_abstract.search"
   filters:
     type: "article OR book-chapter OR dissertation OR preprint"  # Multiple types
+    from_publication_date: "1980-01-01"
+    to_publication_date: null   # null = no upper bound
+    open_access_only: false
 ```
 
 **Supported Publication Types**: article, book-chapter, dissertation, preprint, book, dataset, and more.
+
+### 4. Tune network thresholds (optional)
+
+Edit `config/config.yaml` to override the automatic threshold selection:
+```yaml
+network:
+  min_shared_refs: null   # null = auto-scale by corpus size (recommended)
+  min_cocitations: null   # null = auto-scale by corpus size (recommended)
+  vos_threshold: 1.0      # Association-strength cutoff for VOSviewer-style filtering
+  subfield_analysis: false
+```
+
+Auto-scaling rules:
+
+| Corpus size | min_shared_refs / min_cocitations |
+|-------------|-----------------------------------|
+| < 5,000 records | 2 |
+| 5,000 – 14,999 | 3 |
+| 15,000 – 29,999 | 5 |
+| ≥ 30,000 | 10 |
+
+Override with an explicit integer to fix the threshold regardless of corpus size.
 
 ---
 
@@ -242,34 +278,47 @@ Each agent is a **stateless processing unit**:
 
 ## Scaling to Full Dataset
 
-Change `config/config.yaml`:
+See [QUICKSTART.md](QUICKSTART.md) for the complete step-by-step production checklist.
+
+**Minimum changes required in `config/config.yaml`**:
 ```yaml
 pipeline:
-  mode: "full"            # was "test"
-  full_max_records: null  # null = unlimited downloads, or set to a number for safety
+  mode: "full"
+  full_max_records: 10000   # Start here; set null for all ~57,000 records
+  min_year: 1980
 ```
 
-**Important**: OpenAlex has no inherent result limits. Setting `full_max_records: null` will download ALL matching articles. For very broad searches, this could result in millions of records. Consider setting a reasonable limit if you have storage or processing constraints.
-
-For datasets > 10k records, network construction may require:
-```yaml
-# In code: bibcoupling min_shared threshold raised to 3-5
-# coauthorship min_papers raised to 3
+**Always reset the checkpoint before a full run**:
+```bash
+rm -f checkpoints/pipeline_state.json
+python src/agents/orchestrator.py --config config/config.yaml
 ```
+
+Network thresholds scale automatically with corpus size — no manual code edits required.
+See the `network:` section in `config/config.yaml` to override if needed.
 
 ---
 
-## Validated Test Run (150 synthetic records)
+## Validated Test Run (200 synthetic records)
 
 | Metric | Value |
 |--------|-------|
 | Corpus h-index | 39 |
 | Corpus g-index | 82 |
 | Total citations | 7,069 |
-| Political Science share | 58.7% |
-| Economics share | 26.7% |
-| Sociology share | 12.7% |
-| Bib. coupling edges | 5,669 |
-| Cross-domain bridges | 38 |
+| Political Science share | ~58% |
+| Economics share | ~27% |
+| Sociology share | ~13% |
+| Bib. coupling edges | 5,669+ |
+| Cross-domain bridges | 38+ |
 | Bradford Zone 1 journals | 4 |
-| All pipeline steps | ✅ PASS |
+| All pipeline steps | ✅ PASS (76/76 checks) |
+
+To reproduce this validation:
+
+```bash
+python tests/generate_test_data.py --n 200
+rm -f checkpoints/pipeline_state.json
+python src/agents/orchestrator.py --config config/config.yaml
+python tests/test_pipeline_consistency.py
+```

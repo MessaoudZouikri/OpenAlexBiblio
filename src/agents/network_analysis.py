@@ -421,7 +421,7 @@ def vos_layout(G: nx.Graph, dim: int = 2, max_iter: int = 50) -> dict:
         pos = nx.spring_layout(G, dim=dim, weight="weight", iterations=max_iter,
                              seed=42, scale=100)
         return pos
-    except:
+    except Exception:
         return nx.random_layout(G, dim=dim)
 
 
@@ -466,27 +466,53 @@ def enhanced_graph_metrics(G: nx.Graph, name: str) -> dict:
 
 # ── Main ──────────────────────────────────────────────────────────────────
 
+def _auto_min_shared(n: int) -> int:
+    """Scale minimum shared references with corpus size to avoid O(n²) edge explosion."""
+    if n < 5_000:
+        return 2
+    if n < 15_000:
+        return 3
+    if n < 30_000:
+        return 5
+    return 10
+
+
 def main():
     parser = argparse.ArgumentParser(description="Network Analysis Agent")
     parser.add_argument("--config", default="config/config.yaml")
-    parser.add_argument("--vos_threshold", type=float, default=1.0,
-                       help="Minimum association strength threshold (VOSviewer style)")
+    parser.add_argument("--vos_threshold", type=float, default=None,
+                       help="Minimum association strength threshold (VOSviewer style). Overrides config.")
     parser.add_argument("--subfield_analysis", action="store_true",
-                       help="Perform sub-field network analysis")
+                       help="Perform sub-field network analysis. Overrides config.")
     args = parser.parse_args()
 
     config = load_yaml(args.config)
+    net_cfg = config.get("network", {})
+
+    # Resolve thresholds: CLI flag > config > default
+    vos_threshold     = args.vos_threshold if args.vos_threshold is not None else net_cfg.get("vos_threshold", 1.0)
+    subfield_analysis = args.subfield_analysis or net_cfg.get("subfield_analysis", False)
+
     logger = setup_logger("network_analysis", config["paths"]["logs"])
     logger.info("=== Network Analysis Agent starting ===")
     logger.info("VOSviewer-inspired analysis: threshold=%.1f, subfield=%s",
-                args.vos_threshold, args.subfield_analysis)
+                vos_threshold, subfield_analysis)
 
     proc_dir = config["paths"]["data_processed"]
     net_dir = config["paths"]["outputs"] + "/networks"
     Path(net_dir).mkdir(parents=True, exist_ok=True)
 
     df = load_parquet(f"{proc_dir}/classified_works.parquet")
-    logger.info("Loaded %d classified works", len(df))
+    n = len(df)
+    logger.info("Loaded %d classified works", n)
+
+    # Auto-scale min_shared thresholds from config or corpus size
+    cfg_min_shared = net_cfg.get("min_shared_refs")
+    cfg_min_cocit  = net_cfg.get("min_cocitations")
+    min_shared    = cfg_min_shared if cfg_min_shared is not None else _auto_min_shared(n)
+    min_cocit     = cfg_min_cocit  if cfg_min_cocit  is not None else _auto_min_shared(n)
+    logger.info("Thresholds — min_shared_refs=%d, min_cocitations=%d  (corpus n=%d)",
+                min_shared, min_cocit, n)
 
     domain_map = df.set_index("id")["domain"].to_dict()
     subcategory_map = df.set_index("id")["subcategory"].to_dict()
@@ -494,13 +520,13 @@ def main():
 
     # ── 1. Bibliographic Coupling ────────────────────────────────────
     logger.info("Building bibliographic coupling network...")
-    G_bib = build_bibcoupling_network(df, min_shared=2)
+    G_bib = build_bibcoupling_network(df, min_shared=min_shared)
     logger.info("  Bib coupling: %d nodes, %d edges", G_bib.number_of_nodes(), G_bib.number_of_edges())
 
     if G_bib.number_of_nodes() >= 5:
         # Apply VOSviewer-style normalization and thresholding
         G_bib_norm = association_strength_normalization(G_bib)
-        G_bib_filtered = apply_vos_thresholding(G_bib_norm, args.vos_threshold)
+        G_bib_filtered = apply_vos_thresholding(G_bib_norm, vos_threshold)
 
         logger.info("  After VOS filtering: %d nodes, %d edges",
                    G_bib_filtered.number_of_nodes(), G_bib_filtered.number_of_edges())
@@ -522,7 +548,7 @@ def main():
 
         metrics["bibcoupling"] = enhanced_graph_metrics(G_bib_analysis, "bibcoupling")
         metrics["bibcoupling"]["modularity"] = modularity
-        metrics["bibcoupling"]["vos_threshold"] = args.vos_threshold
+        metrics["bibcoupling"]["vos_threshold"] = vos_threshold
         metrics["cross_domain_matrix"] = cross_domain_matrix(G_bib_analysis, domain_map)
 
         # Cluster assignments with enhanced metrics
@@ -553,13 +579,13 @@ def main():
 
     # ── 2. Co-Citation Network ────────────────────────────────────────
     logger.info("Building co-citation network...")
-    G_cc = build_cocitation_network(df, min_cocitations=2)
+    G_cc = build_cocitation_network(df, min_cocitations=min_cocit)
     logger.info("  Co-citation: %d nodes, %d edges", G_cc.number_of_nodes(), G_cc.number_of_edges())
 
     if G_cc.number_of_nodes() >= 5:
         # Apply VOSviewer-style normalization and thresholding
         G_cc_norm = association_strength_normalization(G_cc)
-        G_cc_filtered = apply_vos_thresholding(G_cc_norm, args.vos_threshold)
+        G_cc_filtered = apply_vos_thresholding(G_cc_norm, vos_threshold)
 
         logger.info("  After VOS filtering: %d nodes, %d edges",
                    G_cc_filtered.number_of_nodes(), G_cc_filtered.number_of_edges())
@@ -574,10 +600,10 @@ def main():
         _, cc_modularity = detect_communities(G_cc_analysis)
         metrics["cocitation"] = enhanced_graph_metrics(G_cc_analysis, "cocitation")
         metrics["cocitation"]["modularity"] = cc_modularity
-        metrics["cocitation"]["vos_threshold"] = args.vos_threshold
+        metrics["cocitation"]["vos_threshold"] = vos_threshold
 
     # ── 3. Sub-field Analysis ─────────────────────────────────────────
-    if args.subfield_analysis:
+    if subfield_analysis:
         logger.info("Performing sub-field network analysis...")
         subfield_metrics = {}
 
@@ -589,23 +615,23 @@ def main():
             logger.info(f"Analyzing sub-field: {subcat}")
 
             # Co-citation network for this sub-field
-            G_sub_cc = build_subfield_cocitation_network(df, subcat, min_cocitations=2)
+            G_sub_cc = build_subfield_cocitation_network(df, subcat, min_cocitations=min_cocit)
             if G_sub_cc.number_of_nodes() >= 5:
                 G_sub_cc_norm = association_strength_normalization(G_sub_cc)
-                G_sub_cc_filtered = apply_vos_thresholding(G_sub_cc_norm, args.vos_threshold)
+                G_sub_cc_filtered = apply_vos_thresholding(G_sub_cc_norm, vos_threshold)
 
                 save_network(G_sub_cc_filtered, f"{net_dir}/cocitation_{subcat.replace(' ', '_')}_vos.graphml")
 
                 subfield_metrics[f"cocitation_{subcat}"] = {
                     **enhanced_graph_metrics(G_sub_cc_filtered, f"cocitation_{subcat}"),
-                    "vos_threshold": args.vos_threshold
+                    "vos_threshold": vos_threshold
                 }
 
             # Bibliographic coupling for this sub-field
-            G_sub_bib = build_subfield_bibcoupling_network(df, subcat, min_shared=2)
+            G_sub_bib = build_subfield_bibcoupling_network(df, subcat, min_shared=min_shared)
             if G_sub_bib.number_of_nodes() >= 5:
                 G_sub_bib_norm = association_strength_normalization(G_sub_bib)
-                G_sub_bib_filtered = apply_vos_thresholding(G_sub_bib_norm, args.vos_threshold)
+                G_sub_bib_filtered = apply_vos_thresholding(G_sub_bib_norm, vos_threshold)
 
                 save_network(G_sub_bib_filtered, f"{net_dir}/bibcoupling_{subcat.replace(' ', '_')}_vos.graphml")
 
@@ -613,7 +639,7 @@ def main():
                 subfield_metrics[f"bibcoupling_{subcat}"] = {
                     **enhanced_graph_metrics(G_sub_bib_filtered, f"bibcoupling_{subcat}"),
                     "modularity": sub_modularity,
-                    "vos_threshold": args.vos_threshold
+                    "vos_threshold": vos_threshold
                 }
 
         if subfield_metrics:
@@ -645,11 +671,11 @@ def main():
     if G_concept.number_of_nodes() >= 5:
         # Apply normalization to concept network too
         G_concept_norm = association_strength_normalization(G_concept)
-        G_concept_filtered = apply_vos_thresholding(G_concept_norm, args.vos_threshold)
+        G_concept_filtered = apply_vos_thresholding(G_concept_norm, vos_threshold)
 
         save_network(G_concept_filtered, f"{net_dir}/keyword_cooccurrence_network_vos.graphml")
         metrics["concept_cooccurrence"] = enhanced_graph_metrics(G_concept_filtered, "concept_cooccurrence")
-        metrics["concept_cooccurrence"]["vos_threshold"] = args.vos_threshold
+        metrics["concept_cooccurrence"]["vos_threshold"] = vos_threshold
 
     # ── 6. Bridge Detection ───────────────────────────────────────────
     if 'G_bib_analysis' in locals() and G_bib_analysis.number_of_nodes() >= 10:
@@ -674,7 +700,7 @@ def main():
 
     save_json(metrics, f"{proc_dir}/network_metrics.json")
     logger.info("=== Network Analysis Agent complete ===")
-    logger.info("VOSviewer-inspired analysis completed with threshold %.1f", args.vos_threshold)
+    logger.info("VOSviewer-inspired analysis completed with threshold %.1f", vos_threshold)
 
 
 if __name__ == "__main__":

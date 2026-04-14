@@ -1,12 +1,29 @@
 # Bibliometric Pipeline Tutorial: Understanding Populism Research Through Data
 
+> **Navigation**: [Quick Start](QUICKSTART.md) — [README](README.md) — [Agent Specs](agents/)
+
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Pipeline Architecture Overview](#pipeline-architecture-overview)
-3. [Step-by-Step Function Guide](#step-by-step-function-guide)
-4. [Analysis Objectives and Function Applications](#analysis-objectives-and-function-applications)
-5. [Practical Examples](#practical-examples)
-6. [Troubleshooting and Best Practices](#troubleshooting-and-best-practices)
+1. [Before You Start](#before-you-start)
+2. [Introduction](#introduction)
+3. [Pipeline Architecture Overview](#pipeline-architecture-overview)
+4. [Step-by-Step Function Guide](#step-by-step-function-guide)
+5. [Reading Your Results](#reading-your-results)
+6. [Analysis Objectives and Function Applications](#analysis-objectives-and-function-applications)
+7. [Practical Examples](#practical-examples)
+8. [Troubleshooting and Best Practices](#troubleshooting-and-best-practices)
+
+---
+
+## Before You Start
+
+**If you just want to run the pipeline**, skip this tutorial and go to [QUICKSTART.md](QUICKSTART.md).
+Come back here when you want to understand *what the pipeline is doing and why*.
+
+**If this is your first contact with bibliometrics**, start at the [Introduction](#introduction) below
+and read from top to bottom — it builds concepts progressively.
+
+**If you already know bibliometrics** and want to understand how a specific component works,
+jump directly to the [Step-by-Step Function Guide](#step-by-step-function-guide).
 
 ---
 
@@ -187,15 +204,30 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 - **How it works**: Converts paper content to numerical vectors for comparison
 - **Purpose**: Handles papers that don't match clear keyword patterns
 
+  > **What is an embedding?** Imagine representing a paper not as text but as a point in a
+  > 768-dimensional space, where papers about similar topics end up near each other. This pipeline
+  > uses **SPECTER2** (from AllenAI), a model specifically trained on scientific citation graphs —
+  > meaning "near each other" here reflects *intellectual similarity*, not just word overlap.
+  > A paper about "populism and economic redistribution" will land closer to economics papers than
+  > a keyword-match alone would predict.
+  >
+  > If SPECTER2 is unavailable, the pipeline falls back to **TF-IDF + LSA** (a classical,
+  > dictionary-based method), which is always available and still reliable.
+
 **Stage 3 - LLM Classification** (when needed):
-- **What it does**: Uses AI language models for complex cases
-- **When triggered**: Low confidence from previous stages
-- **Validation**: Ensures AI responses match the expected taxonomy
+- **What it does**: Uses an AI language model (running locally via Ollama) for complex cases
+- **When triggered**: When confidence from both rule-based and embedding stages is below 0.6
+- **What it produces**: A JSON response with domain, subcategory, confidence, and reasoning
+- **Validation**: Every LLM response is checked against the official taxonomy before acceptance;
+  invalid or hallucinated labels are rejected and fall back to `Other/interdisciplinary`
+
+  > **Why run the LLM locally?** Because the papers contain academic text, which cloud LLMs
+  > may retain in training data. Using Ollama means your data never leaves your machine.
 
 **`EmbeddingClient`** (from `embedding_client.py`):
 - **What it does**: Generates numerical representations of paper content
-- **Models used**: Sentence transformers for semantic understanding
-- **For users**: Enables intelligent grouping of similar research
+- **Models used**: SPECTER2 (preferred) → TF-IDF/LSA (fallback)
+- **For users**: Enables intelligent grouping of similar research without manual labeling
 
 ### 6. Network Analysis Agent (`network_analysis.py`)
 
@@ -222,6 +254,26 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 - **What it does**: Adjusts link strengths to account for field differences
 - **Why important**: Some fields cite more than others; this normalizes for fair comparison
 - **For users**: Ensures network analysis isn't biased by citation culture differences
+
+  > **Analogy**: Two papers each have 30 references. Paper A and B share 3 references in common.
+  > Is that a strong connection? It depends: if both papers have only 5 references each, sharing 3
+  > is very significant. If both have 200 references, sharing 3 is almost random overlap.
+  > Association strength normalizes by the total reference counts, making comparisons fair across
+  > fields with different citation cultures.
+
+**Automatic threshold scaling**:
+The minimum number of shared references required to draw an edge is scaled automatically:
+
+| Corpus size | Threshold applied |
+|-------------|------------------|
+| < 5,000 papers | 2 shared references |
+| 5,000 – 14,999 | 3 shared references |
+| 15,000 – 29,999 | 5 shared references |
+| ≥ 30,000 | 10 shared references |
+
+This prevents the network from becoming a hairball on large corpora (57K papers could produce
+1.6 billion candidate pairs without thresholding). You can override this in `config/config.yaml`
+under the `network:` section.
 
 **`detect_communities()`**
 - **What it does**: Groups papers into research communities
@@ -278,6 +330,69 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 - **What they do**: Create detailed logs and audit trails
 - **For users**: Full traceability of what happened and when
 - **For debugging**: Complete record of pipeline execution
+
+---
+
+## Reading Your Results
+
+Once the pipeline completes, open `data/outputs/reports/report.html` in your browser for an
+integrated visual summary. Below is a guide to interpreting each key output.
+
+### Publication trends (`publication_trends.json`)
+
+```json
+{ "annual": [{"year": 2016, "count": 312}, {"year": 2017, "count": 487}, ...] }
+```
+
+A spike in 2016–2018 reflects the real-world wave of populist electoral victories (Trump, Brexit,
+Macron, etc.) and the academic response that followed. If your corpus shows no such spike, your
+search terms may be too narrow or your `from_publication_date` too recent.
+
+### Citation statistics (`citation_stats.json`)
+
+Key figures to check:
+- **`h_index_corpus`**: the field-level h-index. A value of 50 means 50 papers each have at least
+  50 citations — a sign the field is mature and internally coherent.
+- **`zero_citation_rate`**: if above 40–50%, a large portion of papers have never been cited.
+  This is normal for a field with many recent publications (young papers haven't had time to
+  accumulate citations).
+- **`percentiles`**: compare p50 vs. p90 and p99. A large gap indicates a highly skewed
+  distribution — a small number of papers receive most citations.
+
+### Classification (`classified_works.parquet`)
+
+Key columns to check in the Parquet file:
+- **`domain_source`**: tells you *how* each paper was classified — `rule`, `embedding`, or `llm`.
+  A high fraction of `llm` may indicate your keyword taxonomy needs tuning.
+- **`confidence`**: scores near 0.5 mean borderline cases; near 1.0 means unambiguous.
+- **`classification_notes`**: present when the rule and LLM stages disagreed — useful for
+  auditing.
+
+### Network files (`.graphml`)
+
+Open the `_vos.graphml` files in [VOSviewer](https://www.vosviewer.com) (free) or
+[Gephi](https://gephi.org) (free). The pipeline generates four networks:
+
+| File | What it shows |
+|------|--------------|
+| `bibcoupling_network_vos.graphml` | Papers sharing references → research communities |
+| `cocitation_network_vos.graphml` | Papers cited together → intellectual cores |
+| `coauthorship_network.graphml` | Authors who collaborated → research teams |
+| `keyword_cooccurrence_network_vos.graphml` | Concepts co-occurring → topic clusters |
+
+The `_vos` versions have already been filtered by association strength; the `_raw` versions
+retain all edges above the minimum threshold.
+
+### Cluster assignments (`cluster_assignments.parquet`)
+
+Each paper has:
+- **`cluster_id_louvain`**: the community it belongs to (integer)
+- **`betweenness_centrality`**: how often this paper lies on the shortest path between others.
+  High betweenness = a bridge paper connecting communities.
+
+Papers in `interdisciplinary_bridges.json` are those with high betweenness *and* cross-domain
+connections — they are the best candidates for a literature review section on interdisciplinary
+connections in populism research.
 
 ---
 
@@ -388,17 +503,48 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 
 ### Common Issues and Solutions
 
-**Issue**: Pipeline fails at data collection
-**Solution**: Check your OpenAlex API email configuration and internet connection
+**Issue**: Pipeline fails at data collection with a connection error
+**Cause**: OpenAlex is unreachable or rate-limiting your IP (anonymous pool).
+**Solution**: Add your email to `config/openalex.yaml` under `polite_email`. Check connectivity
+with `curl -s "https://api.openalex.org/works?per-page=1"`.
 
-**Issue**: Classification seems inaccurate
-**Solution**: Review the taxonomy in `config/openalex.yaml` and adjust keyword mappings
+**Issue**: `classified_works.parquet` is stale (ID mismatch warnings from the consistency test)
+**Cause**: You re-ran data collection or cleaning without re-running classification.
+**Solution**: Run `python src/agents/classification.py --config config/config.yaml` to reclassify,
+then re-run network analysis and visualization.
 
-**Issue**: Network analysis runs very slowly
-**Solution**: Increase thresholds in `network_analysis.py` for larger datasets
+**Issue**: Classification assigns most papers to `Other/interdisciplinary`
+**Cause**: The keyword taxonomy in `config/openalex.yaml` does not match the concepts in your corpus.
+**Solution**: Open `data/processed/concept_landscape.json` and look at the top 50 concepts.
+Add any missing high-frequency concepts to `domain_concepts` in `openalex.yaml`.
 
-**Issue**: Memory errors with large datasets
-**Solution**: Process data in batches or increase system memory
+**Issue**: Network analysis takes a very long time on a large corpus
+**Cause**: Bibliographic coupling is O(n²) — it checks every pair of papers.
+**Solution**: The pipeline auto-scales thresholds, but you can raise them further in `config.yaml`:
+```yaml
+network:
+  min_shared_refs: 5   # raise from auto-selected value
+  min_cocitations: 5
+```
+
+**Issue**: `UnboundLocalError` or import error when running an agent directly
+**Cause**: Running from a subdirectory instead of the project root.
+**Solution**: Always run from `bibliometric_pipeline/`:
+```bash
+cd bibliometric_pipeline
+python src/agents/classification.py --config config/config.yaml
+```
+
+**Issue**: LLM classification gives unexpected domains (hallucinated categories)
+**Cause**: The LLM model returned a valid-looking but non-taxonomy label.
+**Solution**: This is handled automatically — all LLM outputs are validated against the taxonomy
+before acceptance. Check `classification_notes` in `classified_works.parquet` for cases
+where the LLM was overridden.
+
+**Issue**: Memory error during network analysis on a full corpus
+**Cause**: Building the full adjacency matrix for 57K papers requires significant RAM.
+**Solution**: Raise `min_shared_refs` and `min_cocitations` to 5 or 10 in `config.yaml`,
+and set `subfield_analysis: false`.
 
 ### Best Practices for Researchers
 
@@ -440,4 +586,5 @@ Whether you're a student exploring the field, a researcher positioning your work
 
 The modular design ensures that each component can be understood and modified independently, while the comprehensive validation and logging systems maintain research integrity and reproducibility.
 
-**Ready to explore populism research patterns?** Start with the test mode to see how the pipeline works, then scale up to full analysis of the field!
+**Ready to run?** Follow the [Quick Start guide](QUICKSTART.md) to go from setup to a full
+production run in under an hour.

@@ -1,53 +1,53 @@
 {
   "agent": "network_validator",
   "stage": "",
-  "timestamp": "2026-04-14T10:00:49.349121+00:00",
+  "timestamp": "2026-04-14T16:32:47.416983+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
   "checks": [
     {
-      "name": "file_exists_bibcoupling_network.graphml",
+      "name": "file_exists_bibcoupling",
       "passed": true,
-      "detail": "data/outputs/networks/bibcoupling_network.graphml"
+      "detail": "None of ['bibcoupling_network_vos.graphml', 'bibcoupling_network_raw.graphml', 'bibcoupling_network.graphml'] found in data/outputs/networks"
     },
     {
-      "name": "parseable_bibcoupling_network.graphml",
+      "name": "parseable_bibcoupling",
       "passed": true,
-      "detail": "300 nodes"
+      "detail": "204 nodes"
     },
     {
-      "name": "no_self_loops_bibcoupling_network.graphml",
-      "passed": true,
-      "detail": "0 self-loops"
-    },
-    {
-      "name": "file_exists_cocitation_network.graphml",
-      "passed": true,
-      "detail": "data/outputs/networks/cocitation_network.graphml"
-    },
-    {
-      "name": "parseable_cocitation_network.graphml",
-      "passed": true,
-      "detail": "1498 nodes"
-    },
-    {
-      "name": "no_self_loops_cocitation_network.graphml",
+      "name": "no_self_loops_bibcoupling",
       "passed": true,
       "detail": "0 self-loops"
     },
     {
-      "name": "file_exists_coauthorship_network.graphml",
+      "name": "file_exists_cocitation",
       "passed": true,
-      "detail": "data/outputs/networks/coauthorship_network.graphml"
+      "detail": "None of ['cocitation_network_vos.graphml', 'cocitation_network_raw.graphml', 'cocitation_network.graphml'] found in data/outputs/networks"
     },
     {
-      "name": "parseable_coauthorship_network.graphml",
+      "name": "parseable_cocitation",
+      "passed": true,
+      "detail": "1350 nodes"
+    },
+    {
+      "name": "no_self_loops_cocitation",
+      "passed": true,
+      "detail": "0 self-loops"
+    },
+    {
+      "name": "file_exists_coauthorship",
+      "passed": true,
+      "detail": "None of ['coauthorship_network.graphml'] found in data/outputs/networks"
+    },
+    {
+      "name": "parseable_coauthorship",
       "passed": true,
       "detail": "62 nodes"
     },
     {
-      "name": "no_self_loops_coauthorship_network.graphml",
+      "name": "no_self_loops_coauthorship",
       "passed": true,
       "detail": "0 self-loops"
     },

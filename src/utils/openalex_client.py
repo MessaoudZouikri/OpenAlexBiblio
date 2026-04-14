@@ -6,7 +6,7 @@ and deduplication for the bibliometric pipeline.
 import time
 import logging
 import re
-from typing import Dict, Generator, List, Optional, Any
+from typing import Dict, Generator, List, Optional, Any, Union
 
 import requests
 
@@ -73,7 +73,7 @@ class OpenAlexClient:
         search_field: str = "title_and_abstract.search",
         filters: Optional[Dict[str, str]] = None,
         sort: str = "cited_by_count:desc",
-        max_records: int = 500,
+        max_records: Union[int, float] = 500,
     ) -> Generator[Dict, None, None]:
         """
         Cursor-paginated generator of work records.

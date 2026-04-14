@@ -204,7 +204,7 @@ def generate_html_report(fig_dir: str, config: dict) -> None:
         html.append(f"<h2>{title}</h2>")
         html.append(f"<img src='{fig.name}' alt='{title}'>")
     html.append("</body></html>")
-    report_path = f"{config['paths']['data_outputs'] if 'data_outputs' in config.get('paths', {}) else fig_dir}/../reports/report.html"
+    report_path = f"{config['paths']['outputs']}/reports/report.html"
     Path(report_path).parent.mkdir(parents=True, exist_ok=True)
     with open(report_path, "w") as f:
         f.write("\n".join(html))

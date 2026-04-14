@@ -1,12 +1,10 @@
 {
   "agent": "data_validator",
   "stage": "D2",
-  "timestamp": "2026-04-12T16:40:41.472127",
+  "timestamp": "2026-04-14T16:32:39.241883+00:00",
   "status": "PASS",
   "errors": [],
-  "warnings": [
-    "concept_coverage_60pct: Concept coverage: 0.0%"
-  ],
+  "warnings": [],
   "checks": [
     {
       "name": "file_exists",
@@ -60,15 +58,15 @@
     },
     {
       "name": "concept_coverage_60pct",
-      "passed": "False",
-      "detail": "Concept coverage: 0.0%"
+      "passed": "True",
+      "detail": "Concept coverage: 100.0%"
     },
     {
       "name": "record_count_matches_manifest",
       "passed": true,
-      "detail": "DF=150, manifest=150"
+      "detail": "DF=200, manifest=200"
     }
   ],
-  "n_records": 150,
+  "n_records": 200,
   "abstract_coverage_rate": 1.0
 }

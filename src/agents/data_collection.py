@@ -63,6 +63,10 @@ def run_collection(config: dict, openalex_cfg: dict, test_mode: bool = False) ->
         api_filters["type"] = flt["type"]
     if flt.get("from_publication_date"):
         api_filters["from_publication_date"] = flt["from_publication_date"]
+    if flt.get("to_publication_date"):
+        api_filters["to_publication_date"] = flt["to_publication_date"]
+    if flt.get("open_access_only"):
+        api_filters["is_oa"] = "true"
 
     sort_cfg = openalex_cfg["queries"]["sort"]
     sort_str = f"{sort_cfg['field']}:{sort_cfg['order']}"

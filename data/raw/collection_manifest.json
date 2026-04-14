@@ -1,37 +1,18 @@
 {
-  "timestamp": "2026-04-14T09:36:20.938694+00:00",
-  "mode": "test",
-  "total_records": 300,
-  "output_file": "data/raw/openalex_raw_20260414_093620.parquet",
+  "timestamp": "2026-04-14T16:32:33.066583+00:00",
+  "mode": "test_synthetic",
+  "total_records": 200,
+  "output_file": "data/raw/openalex_raw_20260414_163233.parquet",
   "query_stats": [
     {
       "term": "populism",
-      "field": "title_and_abstract.search",
       "new_records": 200,
-      "elapsed_s": 2.05
-    },
-    {
-      "term": "populist",
-      "field": "title_and_abstract.search",
-      "new_records": 100,
-      "elapsed_s": 1.58
-    },
-    {
-      "term": "populists",
-      "field": "title_and_abstract.search",
-      "new_records": 0,
-      "elapsed_s": 1.3
+      "elapsed_s": 0.0
     }
   ],
   "api_parameters": {
-    "base_url": "https://api.openalex.org",
-    "per_page": 200,
-    "filters": {
-      "type": "article",
-      "from_publication_date": "1990-01-01"
-    },
-    "sort": "cited_by_count:desc",
-    "max_records_per_query": 200
+    "source": "synthetic_generator",
+    "seed": 42
   },
   "columns": [
     "id",
@@ -53,6 +34,6 @@
     "keywords_matched",
     "query_batch"
   ],
-  "abstract_coverage": 270,
-  "concept_coverage": 300
+  "abstract_coverage": 200,
+  "concept_coverage": 200
 }

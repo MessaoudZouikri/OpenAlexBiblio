@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e93e977-8d09-4210-ab0b-13e0e65bc5e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BIBLIOMETRIC_PIPELINE_TUTORIAL.md" beforeDir="false" afterPath="$PROJECT_DIR$/BIBLIOMETRIC_PIPELINE_TUTORIAL.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/openalex.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/openalex.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agents/data_collection.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/data_collection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/openalex_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/openalex_client.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +74,7 @@
       <updated>1776028874552</updated>
       <workItem from="1776028875559" duration="7865000" />
       <workItem from="1776058869403" duration="592000" />
-      <workItem from="1776158862536" duration="8923000" />
+      <workItem from="1776158862536" duration="12113000" />
     </task>
     <servers />
   </component>

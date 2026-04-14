@@ -121,7 +121,7 @@ def rule_based_subcategory(title: str, abstract: str, domain: str) -> str:
     return "interdisciplinary" if domain == "Other" else valid_subs[-1]
 
 
-def clean_dataframe(df: pd.DataFrame, logger: logging.Logger) -> tuple[pd.DataFrame, dict]:
+def clean_dataframe(df: pd.DataFrame, logger: logging.Logger, min_year: int = 1980) -> tuple[pd.DataFrame, dict]:
     """
     Apply all cleaning operations. Returns (cleaned_df, report_dict).
     """
@@ -140,10 +140,10 @@ def clean_dataframe(df: pd.DataFrame, logger: logging.Logger) -> tuple[pd.DataFr
     n_before = len(df)
     df = df.dropna(subset=["year"])
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"].between(1990, current_year + 1)]
+    df = df[df["year"].between(min_year, current_year + 1)]
     dropped = n_before - len(df)
     logger.info("Dropped %d records with invalid year", dropped)
-    report["operations"].append({"op": "filter_year", "dropped": dropped, "range": "1990-present"})
+    report["operations"].append({"op": "filter_year", "dropped": dropped, "range": f"{min_year}-present"})
 
     df["year"] = df["year"].astype(int)
 
@@ -245,7 +245,8 @@ def main():
     df_raw = load_parquet(raw_path)
     logger.info("Loaded %d records", len(df_raw))
 
-    df_clean, report = clean_dataframe(df_raw, logger)
+    min_year = config.get("pipeline", {}).get("min_year", 1980)
+    df_clean, report = clean_dataframe(df_raw, logger, min_year=min_year)
 
     clean_dir = config["paths"]["data_clean"]
     Path(clean_dir).mkdir(parents=True, exist_ok=True)

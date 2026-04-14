@@ -19,10 +19,25 @@ paths:
 
 # ---- Pipeline Execution -----------------------------------
 pipeline:
-  mode: "test"          # "test" | "full"
+  mode: "full"          # "test" | "full"
   test_max_records: 200  # Records per query in test mode
-  full_max_records: null  # null = unlimited, or set to a number for safety
+  full_max_records: 10000  # null = unlimited, or set to a number for safety (e.g. 10000 for a scoped run)
   random_seed: 42
+  min_year: 1980        # Earliest publication year to retain (must match from_publication_date in openalex.yaml)
+
+# ---- Network Analysis Thresholds --------------------------
+# min_shared_refs: minimum shared references to draw a bibliographic coupling edge.
+#   Auto-scaled by corpus size when set to null:
+#     n < 5 000  → 2    (keep sparse networks visible)
+#     n < 15 000 → 3
+#     n < 30 000 → 5
+#     n ≥ 30 000 → 10   (avoid 1.6B-pair explosion on full corpus)
+# Override by setting an explicit integer here.
+network:
+  min_shared_refs: null          # null = auto-scale
+  min_cocitations: null          # null = auto-scale (same breakpoints)
+  vos_threshold: 1.0             # Association-strength cutoff (keep 1.0 for most runs)
+  subfield_analysis: false       # Set true to build per-subcategory networks (slow on large corpora)
 
 # ---- Step Definitions (ordered) --------------------------
 steps:

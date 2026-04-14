@@ -42,6 +42,7 @@ STEP_DEFINITIONS = [
     ("validate_classification","src.agents.validation.validators",  ["--validator", "classification"]),
     ("network_analysis",       "src.agents.network_analysis",       []),
     ("validate_network",       "src.agents.validation.validators",  ["--validator", "network"]),
+    ("visualization",          "src.agents.visualization",          []),
 ]
 
 ALL_STEP_NAMES = [s[0] for s in STEP_DEFINITIONS]

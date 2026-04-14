@@ -319,25 +319,28 @@ def validate_network(config: dict) -> dict:
         net_dir = config["paths"]["outputs"] + "/networks"
         proc_dir = config["paths"]["data_processed"]
 
-        # Check expected network files
-        expected_files = [
-            "bibcoupling_network.graphml",
-            "cocitation_network.graphml",
-            "coauthorship_network.graphml",
-        ]
-        for fname in expected_files:
-            fpath = Path(net_dir) / fname
-            _check(report, f"file_exists_{fname}", fpath.exists(), str(fpath), is_error=False)
-            if fpath.exists():
+        # Check expected network files.
+        # The network agent saves raw + VOS-filtered variants (e.g. bibcoupling_network_raw.graphml
+        # and bibcoupling_network_vos.graphml). We accept any of the known variants.
+        network_file_candidates = {
+            "bibcoupling": ["bibcoupling_network_vos.graphml", "bibcoupling_network_raw.graphml", "bibcoupling_network.graphml"],
+            "cocitation":  ["cocitation_network_vos.graphml",  "cocitation_network_raw.graphml",  "cocitation_network.graphml"],
+            "coauthorship":["coauthorship_network.graphml"],
+        }
+        for net_name, candidates in network_file_candidates.items():
+            found = next((c for c in candidates if (Path(net_dir) / c).exists()), None)
+            _check(report, f"file_exists_{net_name}", found is not None,
+                   f"None of {candidates} found in {net_dir}", is_error=False)
+            if found:
+                fpath = Path(net_dir) / found
                 try:
                     G = nx.read_graphml(str(fpath))
-                    _check(report, f"parseable_{fname}", True, f"{G.number_of_nodes()} nodes")
-                    # No self-loops
+                    _check(report, f"parseable_{net_name}", True, f"{G.number_of_nodes()} nodes")
                     self_loops = nx.number_of_selfloops(G)
-                    _check(report, f"no_self_loops_{fname}",
+                    _check(report, f"no_self_loops_{net_name}",
                            self_loops == 0, f"{self_loops} self-loops", is_error=False)
                 except Exception as exc:
-                    _check(report, f"parseable_{fname}", False, str(exc))
+                    _check(report, f"parseable_{net_name}", False, str(exc))
 
         # Metrics JSON
         metrics_path = f"{proc_dir}/network_metrics.json"
@@ -347,20 +350,26 @@ def validate_network(config: dict) -> dict:
             _check(report, "metrics_has_bibcoupling",
                    "bibcoupling" in metrics, str(list(metrics.keys())), is_error=False)
 
-        # Cluster assignments
+        # Cluster assignments — agent saves cluster_id_louvain (Louvain) + cluster_id_spectral
         cluster_path = f"{proc_dir}/cluster_assignments.parquet"
         if Path(cluster_path).exists():
             df_clusters = load_parquet(cluster_path)
-            required = {"work_id", "cluster_id", "betweenness_centrality"}
+            # Accept either the legacy 'cluster_id' or the new 'cluster_id_louvain' column
+            has_cluster_col = "cluster_id_louvain" in df_clusters.columns or "cluster_id" in df_clusters.columns
+            required = {"work_id", "betweenness_centrality"}
             missing = required - set(df_clusters.columns)
+            if not has_cluster_col:
+                missing.add("cluster_id_louvain")
             _check(report, "cluster_assignments_schema", len(missing) == 0,
                    f"Missing: {missing}")
             bc_ok = df_clusters["betweenness_centrality"].between(0, 1).all()
             _check(report, "betweenness_centrality_in_range", bc_ok,
                    "All BC values in [0,1]")
-            unassigned = (df_clusters["cluster_id"] == -1).mean()
-            _check(report, "cluster_coverage_90pct", unassigned <= 0.10,
-                   f"Unassigned: {unassigned:.1%}", is_error=False)
+            cluster_col = "cluster_id_louvain" if "cluster_id_louvain" in df_clusters.columns else "cluster_id"
+            if cluster_col in df_clusters.columns:
+                unassigned = (df_clusters[cluster_col] == -1).mean()
+                _check(report, "cluster_coverage_90pct", unassigned <= 0.10,
+                       f"Unassigned: {unassigned:.1%}", is_error=False)
 
     except Exception as exc:
         report["errors"].append(f"Unexpected error: {exc}")
