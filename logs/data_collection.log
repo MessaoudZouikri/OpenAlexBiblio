@@ -1,3 +1,15 @@
 2026-04-12 16:33:22 [INFO] data_collection: === Data Collection Agent starting ===
 2026-04-12 16:33:22 [INFO] data_collection: Mode: TEST
 2026-04-12 16:33:22 [INFO] data_collection: Querying: field=title_and_abstract.search, term='populism', max=200
+2026-04-14 11:36:15 [INFO] data_collection: === Data Collection Agent starting ===
+2026-04-14 11:36:15 [INFO] data_collection: Mode: TEST
+2026-04-14 11:36:15 [INFO] data_collection: Querying: field=title_and_abstract.search, term='populism', max=200
+2026-04-14 11:36:17 [INFO] data_collection:   → 200 new records in 2.0s
+2026-04-14 11:36:17 [INFO] data_collection: Querying: field=title_and_abstract.search, term='populist', max=200
+2026-04-14 11:36:19 [INFO] data_collection:   → 100 new records in 1.6s
+2026-04-14 11:36:19 [INFO] data_collection: Querying: field=title_and_abstract.search, term='populists', max=200
+2026-04-14 11:36:20 [INFO] data_collection:   → 0 new records in 1.3s
+2026-04-14 11:36:20 [INFO] data_collection: Total unique records collected: 300
+2026-04-14 11:36:20 [INFO] data_collection: Saved raw data to: data/raw/openalex_raw_20260414_093620.parquet
+2026-04-14 11:36:20 [INFO] data_collection: Saved collection manifest.
+2026-04-14 11:36:20 [INFO] data_collection: === Data Collection Agent complete ===

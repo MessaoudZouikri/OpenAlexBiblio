@@ -12,7 +12,7 @@ import argparse
 import json
 import random
 import sys
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 
 import pandas as pd
@@ -271,7 +271,7 @@ def main():
     save_parquet(df, str(output_path))
 
     manifest = {
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "mode": "test_synthetic",
         "total_records": len(df),
         "output_file": str(output_path),

@@ -1,7 +1,7 @@
 {
   "agent": "network_validator",
   "stage": "",
-  "timestamp": "2026-04-12T23:13:29.937902",
+  "timestamp": "2026-04-14T10:00:49.349121+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -14,7 +14,7 @@
     {
       "name": "parseable_bibcoupling_network.graphml",
       "passed": true,
-      "detail": "150 nodes"
+      "detail": "300 nodes"
     },
     {
       "name": "no_self_loops_bibcoupling_network.graphml",
@@ -29,7 +29,7 @@
     {
       "name": "parseable_cocitation_network.graphml",
       "passed": true,
-      "detail": "80 nodes"
+      "detail": "1498 nodes"
     },
     {
       "name": "no_self_loops_cocitation_network.graphml",
@@ -44,7 +44,7 @@
     {
       "name": "parseable_coauthorship_network.graphml",
       "passed": true,
-      "detail": "20 nodes"
+      "detail": "62 nodes"
     },
     {
       "name": "no_self_loops_coauthorship_network.graphml",

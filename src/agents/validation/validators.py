@@ -13,7 +13,7 @@ Usage:
 import argparse
 import logging
 import sys
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 
 import pandas as pd
@@ -31,7 +31,7 @@ def _make_report(agent: str, stage: str = "") -> dict:
     return {
         "agent": agent,
         "stage": stage,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "status": "PASS",
         "errors": [],
         "warnings": [],
@@ -114,7 +114,7 @@ def validate_data(config: dict, stage: str = "D1") -> dict:
                f"{df['title'].isna().sum()} null titles")
 
         # Year checks
-        current_year = datetime.utcnow().year
+        current_year = datetime.now(UTC).year
         _check(report, "year_no_nulls",
                df["year"].notna().all(),
                f"{df['year'].isna().sum()} null years")
@@ -138,7 +138,7 @@ def validate_data(config: dict, stage: str = "D1") -> dict:
 
         if "concepts" in df.columns:
             concept_rate = df["concepts"].apply(
-                lambda x: isinstance(x, list) and len(x) > 0
+                lambda x: len(x) > 0 if hasattr(x, '__len__') and x is not None else False
             ).mean()
             _check(report, "concept_coverage_60pct",
                    concept_rate >= 0.6,

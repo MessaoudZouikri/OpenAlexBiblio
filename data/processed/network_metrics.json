@@ -1,73 +1,73 @@
 {
-  "timestamp": "2026-04-12T23:13:28.994992",
+  "timestamp": "2026-04-14T09:54:43.117704+00:00",
   "bibcoupling": {
     "network": "bibcoupling",
-    "n_nodes": 150,
-    "n_edges": 5669,
-    "density": 0.507293,
-    "n_components": 1,
-    "largest_component_size": 150,
-    "avg_clustering": 0.2035,
-    "avg_path_length_lcc": 1.4927,
-    "modularity": 0.0933
+    "n_nodes": 300,
+    "n_edges": 5472,
+    "density": 0.122007,
+    "n_components": 99,
+    "largest_component_size": 200,
+    "avg_clustering": 0.0353,
+    "avg_path_length_lcc": 2.1092,
+    "modularity": 0.1626
   },
   "cross_domain_matrix": {
     "Political Science": {
-      "Political Science": 3705,
-      "Economics": 4395,
-      "Sociology": 2055,
-      "Other": 1231
+      "Political Science": 9341,
+      "Economics": 992,
+      "Sociology": 4492,
+      "Other": 6213
     },
     "Economics": {
-      "Political Science": 4395,
-      "Economics": 1209,
-      "Sociology": 1195,
-      "Other": 741
+      "Political Science": 992,
+      "Economics": 148,
+      "Sociology": 297,
+      "Other": 438
     },
     "Sociology": {
-      "Political Science": 2055,
-      "Economics": 1195,
-      "Sociology": 256,
-      "Other": 372
+      "Political Science": 4492,
+      "Economics": 297,
+      "Sociology": 787,
+      "Other": 1697
     },
     "Other": {
-      "Political Science": 1231,
-      "Economics": 741,
-      "Sociology": 372,
-      "Other": 90
+      "Political Science": 6213,
+      "Economics": 438,
+      "Sociology": 1697,
+      "Other": 1173
     }
   },
   "cocitation": {
     "network": "cocitation",
-    "n_nodes": 80,
-    "n_edges": 2538,
-    "density": 0.803165,
-    "n_components": 1,
-    "largest_component_size": 80,
-    "avg_clustering": 0.2663,
-    "avg_path_length_lcc": 1.1968,
-    "modularity": 0.0571
+    "n_nodes": 1498,
+    "n_edges": 20668,
+    "density": 0.018433,
+    "n_components": 172,
+    "largest_component_size": 1292,
+    "avg_clustering": 0.0375,
+    "avg_path_length_lcc": null,
+    "modularity": 0.3868
   },
   "coauthorship": {
     "network": "coauthorship",
-    "n_nodes": 20,
-    "n_edges": 118,
-    "density": 0.621053,
-    "n_components": 1,
-    "largest_component_size": 20,
-    "avg_clustering": 0.2076,
-    "avg_path_length_lcc": 1.3789,
-    "modularity": 0.1459
+    "n_nodes": 62,
+    "n_edges": 45,
+    "density": 0.023797,
+    "n_components": 32,
+    "largest_component_size": 13,
+    "avg_clustering": 0.171,
+    "avg_path_length_lcc": 2.6923,
+    "modularity": 0.7893
   },
   "concept_cooccurrence": {
     "network": "concept_cooccurrence",
-    "n_nodes": 19,
-    "n_edges": 167,
-    "density": 0.976608,
+    "n_nodes": 100,
+    "n_edges": 2815,
+    "density": 0.568687,
     "n_components": 1,
-    "largest_component_size": 19,
-    "avg_clustering": 0.4654,
-    "avg_path_length_lcc": 1.0234
+    "largest_component_size": 100,
+    "avg_clustering": 0.0128,
+    "avg_path_length_lcc": 1.4313
   },
-  "interdisciplinary_bridges_count": 38
+  "interdisciplinary_bridges_count": 50
 }

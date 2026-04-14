@@ -1,406 +1,471 @@
 {
   "annual": [
     {
-      "year": 1995,
-      "count": 2,
-      "cumulative": 2,
+      "year": 1990,
+      "count": 1,
+      "cumulative": 1,
       "yoy_growth_pct": null
     },
     {
-      "year": 1996,
-      "count": 1,
-      "cumulative": 3,
-      "yoy_growth_pct": -50.0
+      "year": 1991,
+      "count": 3,
+      "cumulative": 4,
+      "yoy_growth_pct": 200.0
     },
     {
-      "year": 1997,
-      "count": 1,
-      "cumulative": 4,
+      "year": 1992,
+      "count": 3,
+      "cumulative": 7,
       "yoy_growth_pct": 0.0
     },
     {
-      "year": 1998,
-      "count": 2,
-      "cumulative": 6,
+      "year": 1993,
+      "count": 3,
+      "cumulative": 10,
+      "yoy_growth_pct": 0.0
+    },
+    {
+      "year": 1994,
+      "count": 3,
+      "cumulative": 13,
+      "yoy_growth_pct": 0.0
+    },
+    {
+      "year": 1995,
+      "count": 6,
+      "cumulative": 19,
       "yoy_growth_pct": 100.0
+    },
+    {
+      "year": 1996,
+      "count": 6,
+      "cumulative": 25,
+      "yoy_growth_pct": 0.0
+    },
+    {
+      "year": 1997,
+      "count": 3,
+      "cumulative": 28,
+      "yoy_growth_pct": -50.0
+    },
+    {
+      "year": 1998,
+      "count": 4,
+      "cumulative": 32,
+      "yoy_growth_pct": 33.33333333333333
     },
     {
       "year": 1999,
       "count": 3,
-      "cumulative": 9,
-      "yoy_growth_pct": 50.0
+      "cumulative": 35,
+      "yoy_growth_pct": -25.0
     },
     {
       "year": 2000,
-      "count": 3,
-      "cumulative": 12,
-      "yoy_growth_pct": 0.0
+      "count": 1,
+      "cumulative": 36,
+      "yoy_growth_pct": -66.66666666666667
     },
     {
       "year": 2001,
-      "count": 2,
-      "cumulative": 14,
-      "yoy_growth_pct": -33.333333333333336
+      "count": 3,
+      "cumulative": 39,
+      "yoy_growth_pct": 200.0
     },
     {
       "year": 2002,
-      "count": 1,
-      "cumulative": 15,
-      "yoy_growth_pct": -50.0
+      "count": 6,
+      "cumulative": 45,
+      "yoy_growth_pct": 100.0
     },
     {
       "year": 2003,
-      "count": 5,
-      "cumulative": 20,
-      "yoy_growth_pct": 400.0
+      "count": 10,
+      "cumulative": 55,
+      "yoy_growth_pct": 66.66666666666667
     },
     {
       "year": 2004,
-      "count": 4,
-      "cumulative": 24,
+      "count": 8,
+      "cumulative": 63,
       "yoy_growth_pct": -19.999999999999996
     },
     {
       "year": 2005,
-      "count": 3,
-      "cumulative": 27,
+      "count": 6,
+      "cumulative": 69,
       "yoy_growth_pct": -25.0
     },
     {
       "year": 2006,
-      "count": 4,
-      "cumulative": 31,
-      "yoy_growth_pct": 33.33333333333333
-    },
-    {
-      "year": 2007,
-      "count": 2,
-      "cumulative": 33,
-      "yoy_growth_pct": -50.0
-    },
-    {
-      "year": 2008,
-      "count": 3,
-      "cumulative": 36,
+      "count": 9,
+      "cumulative": 78,
       "yoy_growth_pct": 50.0
     },
     {
-      "year": 2009,
-      "count": 3,
-      "cumulative": 39,
-      "yoy_growth_pct": 0.0
-    },
-    {
-      "year": 2010,
-      "count": 12,
-      "cumulative": 51,
-      "yoy_growth_pct": 300.0
-    },
-    {
-      "year": 2011,
-      "count": 6,
-      "cumulative": 57,
-      "yoy_growth_pct": -50.0
-    },
-    {
-      "year": 2012,
-      "count": 7,
-      "cumulative": 64,
-      "yoy_growth_pct": 16.666666666666675
-    },
-    {
-      "year": 2013,
-      "count": 4,
-      "cumulative": 68,
-      "yoy_growth_pct": -42.85714285714286
-    },
-    {
-      "year": 2014,
-      "count": 2,
-      "cumulative": 70,
-      "yoy_growth_pct": -50.0
-    },
-    {
-      "year": 2015,
-      "count": 6,
-      "cumulative": 76,
-      "yoy_growth_pct": 200.0
-    },
-    {
-      "year": 2016,
+      "year": 2007,
       "count": 5,
-      "cumulative": 81,
-      "yoy_growth_pct": -16.666666666666664
+      "cumulative": 83,
+      "yoy_growth_pct": -44.44444444444444
     },
     {
-      "year": 2017,
+      "year": 2008,
       "count": 11,
-      "cumulative": 92,
+      "cumulative": 94,
       "yoy_growth_pct": 120.00000000000001
     },
     {
+      "year": 2009,
+      "count": 6,
+      "cumulative": 100,
+      "yoy_growth_pct": -45.45454545454546
+    },
+    {
+      "year": 2010,
+      "count": 9,
+      "cumulative": 109,
+      "yoy_growth_pct": 50.0
+    },
+    {
+      "year": 2011,
+      "count": 11,
+      "cumulative": 120,
+      "yoy_growth_pct": 22.222222222222232
+    },
+    {
+      "year": 2012,
+      "count": 6,
+      "cumulative": 126,
+      "yoy_growth_pct": -45.45454545454546
+    },
+    {
+      "year": 2013,
+      "count": 14,
+      "cumulative": 140,
+      "yoy_growth_pct": 133.33333333333334
+    },
+    {
+      "year": 2014,
+      "count": 13,
+      "cumulative": 153,
+      "yoy_growth_pct": -7.14285714285714
+    },
+    {
+      "year": 2015,
+      "count": 9,
+      "cumulative": 162,
+      "yoy_growth_pct": -30.76923076923077
+    },
+    {
+      "year": 2016,
+      "count": 16,
+      "cumulative": 178,
+      "yoy_growth_pct": 77.77777777777777
+    },
+    {
+      "year": 2017,
+      "count": 47,
+      "cumulative": 225,
+      "yoy_growth_pct": 193.75
+    },
+    {
       "year": 2018,
-      "count": 10,
-      "cumulative": 102,
-      "yoy_growth_pct": -9.090909090909093
+      "count": 23,
+      "cumulative": 248,
+      "yoy_growth_pct": -51.06382978723405
     },
     {
       "year": 2019,
-      "count": 7,
-      "cumulative": 109,
-      "yoy_growth_pct": -30.000000000000004
+      "count": 24,
+      "cumulative": 272,
+      "yoy_growth_pct": 4.347826086956519
     },
     {
       "year": 2020,
-      "count": 9,
-      "cumulative": 118,
-      "yoy_growth_pct": 28.57142857142858
+      "count": 19,
+      "cumulative": 291,
+      "yoy_growth_pct": -20.833333333333336
     },
     {
       "year": 2021,
-      "count": 9,
-      "cumulative": 127,
-      "yoy_growth_pct": 0.0
+      "count": 6,
+      "cumulative": 297,
+      "yoy_growth_pct": -68.42105263157895
     },
     {
       "year": 2022,
-      "count": 12,
-      "cumulative": 139,
-      "yoy_growth_pct": 33.33333333333333
+      "count": 2,
+      "cumulative": 299,
+      "yoy_growth_pct": -66.66666666666667
     },
     {
       "year": 2023,
-      "count": 11,
-      "cumulative": 150,
-      "yoy_growth_pct": -8.333333333333337
+      "count": 1,
+      "cumulative": 300,
+      "yoy_growth_pct": -50.0
     }
   ],
   "decadal": [
     {
       "decade": 1990,
-      "count": 9
+      "count": 35
     },
     {
       "decade": 2000,
-      "count": 30
+      "count": 65
     },
     {
       "decade": 2010,
-      "count": 70
+      "count": 172
     },
     {
       "decade": 2020,
-      "count": 41
+      "count": 28
     }
   ],
   "domain_annual": [
     {
-      "year": 1995,
-      "Economics": 0,
+      "year": 1990,
+      "Economics": 1,
+      "Other": 0,
+      "Political Science": 0,
+      "Sociology": 0
+    },
+    {
+      "year": 1991,
+      "Economics": 1,
       "Other": 0,
       "Political Science": 2,
       "Sociology": 0
     },
     {
-      "year": 1996,
+      "year": 1992,
+      "Economics": 2,
+      "Other": 0,
+      "Political Science": 1,
+      "Sociology": 0
+    },
+    {
+      "year": 1993,
+      "Economics": 0,
+      "Other": 1,
+      "Political Science": 2,
+      "Sociology": 0
+    },
+    {
+      "year": 1994,
       "Economics": 0,
       "Other": 0,
-      "Political Science": 0,
+      "Political Science": 2,
       "Sociology": 1
     },
     {
-      "year": 1997,
-      "Economics": 0,
+      "year": 1995,
+      "Economics": 1,
+      "Other": 1,
+      "Political Science": 4,
+      "Sociology": 0
+    },
+    {
+      "year": 1996,
+      "Economics": 1,
       "Other": 0,
+      "Political Science": 5,
+      "Sociology": 0
+    },
+    {
+      "year": 1997,
+      "Economics": 1,
+      "Other": 1,
       "Political Science": 1,
       "Sociology": 0
     },
     {
       "year": 1998,
-      "Economics": 1,
-      "Other": 0,
-      "Political Science": 1,
+      "Economics": 0,
+      "Other": 1,
+      "Political Science": 3,
       "Sociology": 0
     },
     {
       "year": 1999,
-      "Economics": 1,
+      "Economics": 0,
       "Other": 0,
-      "Political Science": 2,
+      "Political Science": 3,
       "Sociology": 0
     },
     {
       "year": 2000,
-      "Economics": 0,
+      "Economics": 1,
       "Other": 0,
-      "Political Science": 3,
+      "Political Science": 0,
       "Sociology": 0
     },
     {
       "year": 2001,
-      "Economics": 1,
+      "Economics": 0,
       "Other": 0,
-      "Political Science": 1,
+      "Political Science": 3,
       "Sociology": 0
     },
     {
       "year": 2002,
-      "Economics": 0,
+      "Economics": 1,
       "Other": 0,
-      "Political Science": 1,
+      "Political Science": 5,
       "Sociology": 0
     },
     {
       "year": 2003,
-      "Economics": 2,
+      "Economics": 6,
       "Other": 0,
-      "Political Science": 2,
+      "Political Science": 3,
       "Sociology": 1
     },
     {
       "year": 2004,
-      "Economics": 0,
-      "Other": 1,
-      "Political Science": 2,
-      "Sociology": 1
+      "Economics": 1,
+      "Other": 0,
+      "Political Science": 7,
+      "Sociology": 0
     },
     {
       "year": 2005,
-      "Economics": 1,
+      "Economics": 0,
       "Other": 0,
-      "Political Science": 1,
+      "Political Science": 5,
       "Sociology": 1
     },
     {
       "year": 2006,
-      "Economics": 1,
+      "Economics": 0,
       "Other": 0,
-      "Political Science": 3,
+      "Political Science": 9,
       "Sociology": 0
     },
     {
       "year": 2007,
       "Economics": 0,
       "Other": 0,
-      "Political Science": 2,
+      "Political Science": 5,
       "Sociology": 0
     },
     {
       "year": 2008,
       "Economics": 2,
-      "Other": 0,
-      "Political Science": 1,
-      "Sociology": 0
+      "Other": 1,
+      "Political Science": 7,
+      "Sociology": 1
     },
     {
       "year": 2009,
       "Economics": 1,
       "Other": 0,
-      "Political Science": 1,
-      "Sociology": 1
-    },
-    {
-      "year": 2010,
-      "Economics": 2,
-      "Other": 0,
-      "Political Science": 6,
-      "Sociology": 4
-    },
-    {
-      "year": 2011,
-      "Economics": 2,
-      "Other": 0,
-      "Political Science": 4,
-      "Sociology": 0
-    },
-    {
-      "year": 2012,
-      "Economics": 2,
-      "Other": 0,
       "Political Science": 5,
       "Sociology": 0
     },
     {
-      "year": 2013,
-      "Economics": 1,
-      "Other": 1,
-      "Political Science": 1,
-      "Sociology": 1
-    },
-    {
-      "year": 2014,
-      "Economics": 1,
-      "Other": 0,
-      "Political Science": 0,
-      "Sociology": 1
-    },
-    {
-      "year": 2015,
-      "Economics": 1,
-      "Other": 1,
-      "Political Science": 4,
-      "Sociology": 0
-    },
-    {
-      "year": 2016,
-      "Economics": 1,
-      "Other": 0,
-      "Political Science": 3,
-      "Sociology": 1
-    },
-    {
-      "year": 2017,
-      "Economics": 5,
-      "Other": 0,
-      "Political Science": 6,
-      "Sociology": 0
-    },
-    {
-      "year": 2018,
-      "Economics": 2,
-      "Other": 0,
-      "Political Science": 7,
-      "Sociology": 1
-    },
-    {
-      "year": 2019,
-      "Economics": 0,
-      "Other": 0,
-      "Political Science": 7,
-      "Sociology": 0
-    },
-    {
-      "year": 2020,
+      "year": 2010,
       "Economics": 3,
       "Other": 0,
       "Political Science": 5,
       "Sociology": 1
     },
     {
-      "year": 2021,
+      "year": 2011,
       "Economics": 2,
       "Other": 0,
-      "Political Science": 6,
+      "Political Science": 8,
       "Sociology": 1
     },
     {
-      "year": 2022,
-      "Economics": 4,
+      "year": 2012,
+      "Economics": 1,
       "Other": 0,
-      "Political Science": 6,
-      "Sociology": 2
+      "Political Science": 5,
+      "Sociology": 0
+    },
+    {
+      "year": 2013,
+      "Economics": 2,
+      "Other": 0,
+      "Political Science": 9,
+      "Sociology": 3
+    },
+    {
+      "year": 2014,
+      "Economics": 2,
+      "Other": 0,
+      "Political Science": 11,
+      "Sociology": 0
+    },
+    {
+      "year": 2015,
+      "Economics": 2,
+      "Other": 0,
+      "Political Science": 7,
+      "Sociology": 0
+    },
+    {
+      "year": 2016,
+      "Economics": 1,
+      "Other": 0,
+      "Political Science": 12,
+      "Sociology": 3
+    },
+    {
+      "year": 2017,
+      "Economics": 5,
+      "Other": 0,
+      "Political Science": 38,
+      "Sociology": 4
+    },
+    {
+      "year": 2018,
+      "Economics": 1,
+      "Other": 0,
+      "Political Science": 19,
+      "Sociology": 3
+    },
+    {
+      "year": 2019,
+      "Economics": 3,
+      "Other": 0,
+      "Political Science": 20,
+      "Sociology": 1
+    },
+    {
+      "year": 2020,
+      "Economics": 4,
+      "Other": 1,
+      "Political Science": 14,
+      "Sociology": 0
+    },
+    {
+      "year": 2021,
+      "Economics": 3,
+      "Other": 0,
+      "Political Science": 3,
+      "Sociology": 0
+    },
+    {
+      "year": 2022,
+      "Economics": 0,
+      "Other": 0,
+      "Political Science": 2,
+      "Sociology": 0
     },
     {
       "year": 2023,
-      "Economics": 4,
+      "Economics": 0,
       "Other": 0,
-      "Political Science": 5,
-      "Sociology": 2
+      "Political Science": 0,
+      "Sociology": 1
     }
   ],
-  "total_records": 150,
+  "total_records": 300,
   "year_range": [
-    1995,
+    1990,
     2023
   ]
 }

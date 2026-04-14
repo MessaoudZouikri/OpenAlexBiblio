@@ -1,7 +1,7 @@
 {
   "agent": "classification_validator",
   "stage": "",
-  "timestamp": "2026-04-12T23:13:28.738239",
+  "timestamp": "2026-04-14T10:00:39.618512+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -34,18 +34,19 @@
     {
       "name": "other_interdisciplinary_under_40pct",
       "passed": "True",
-      "detail": "Other/interdisciplinary rate: 6.0%"
+      "detail": "Other/interdisciplinary rate: 13.3%"
     }
   ],
-  "n_records": 150,
+  "n_records": 300,
   "domain_distribution": {
-    "Political Science": 75,
-    "Economics": 44,
-    "Sociology": 19,
-    "Other": 12
+    "Political Science": 162,
+    "Sociology": 60,
+    "Other": 46,
+    "Economics": 32
   },
   "source_distribution": {
-    "embedding": 101,
-    "rule": 49
+    "embedding": 248,
+    "rule": 48,
+    "llm": 4
   }
 }

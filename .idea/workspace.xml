@@ -5,87 +5,52 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e93e977-8d09-4210-ab0b-13e0e65bc5e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/bibliometric_analysis.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/classification.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/data_cleaning.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/data_collection.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/network_analysis.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/orchestrator.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/validation/data_validation.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/agents/validation/validation_agents.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/llm.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/openalex.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/clean/cleaning_report.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/clean/openalex_clean.parquet" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/figures/citation_distribution.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/figures/concept_landscape.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/figures/cross_domain_heatmap.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/figures/domain_distribution.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/figures/publication_trends.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/figures/top_authors.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/networks/bibcoupling_network.graphml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/networks/coauthorship_network.graphml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/networks/cocitation_network.graphml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/networks/keyword_cooccurrence_network.graphml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/outputs/reports/report.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/bibliometric_summary.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/citation_stats.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/classification_report.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/classified_works.parquet" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/cluster_assignments.parquet" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/concept_landscape.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/interdisciplinary_bridges.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/network_metrics.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/prototypes.npz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/prototypes_metadata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/publication_trends.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/subcategory_taxonomy.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/top_authors.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/top_institutions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/top_journals.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/raw/collection_manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/raw/openalex_raw_20260412_164037.parquet" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/bibliometric_analysis.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/classification.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/classification_validator.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/data_cleaning.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/data_collection.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/data_validator.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/network_analysis.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/network_validator.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/statistical_validator.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/validation_classification.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/validation_data_D1.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/validation_data_D2.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/validation_network.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/validation_statistical.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/visualization.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/check_setup.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/bibliometric_analysis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/classification.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/data_cleaning.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/data_collection.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/network_analysis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/orchestrator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/validation/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/validation/validators.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agents/visualization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/embedding_client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/io_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/llm_client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/logging_utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/openalex_client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/prototype_store.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/generate_test_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/clean/cleaning_report.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/clean/cleaning_report.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/clean/openalex_clean.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/clean/openalex_clean.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/figures/citation_distribution.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/figures/citation_distribution.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/figures/concept_landscape.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/figures/concept_landscape.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/figures/cross_domain_heatmap.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/figures/cross_domain_heatmap.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/figures/domain_distribution.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/figures/domain_distribution.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/figures/publication_trends.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/figures/publication_trends.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/figures/top_authors.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/figures/top_authors.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/networks/bibcoupling_network.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/networks/bibcoupling_network.graphml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/networks/coauthorship_network.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/networks/coauthorship_network.graphml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/networks/cocitation_network.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/networks/cocitation_network.graphml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/networks/keyword_cooccurrence_network.graphml" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/networks/keyword_cooccurrence_network.graphml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/outputs/reports/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/data/outputs/reports/report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/bibliometric_summary.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/bibliometric_summary.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/citation_stats.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/citation_stats.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/classification_report.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/classification_report.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/classified_works.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/classified_works.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/cluster_assignments.parquet" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/cluster_assignments.parquet" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/concept_landscape.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/concept_landscape.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/interdisciplinary_bridges.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/interdisciplinary_bridges.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/network_metrics.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/network_metrics.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/prototypes.npz" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/prototypes.npz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/prototypes_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/prototypes_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/publication_trends.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/publication_trends.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/top_authors.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/top_authors.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/top_institutions.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/top_institutions.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/processed/top_journals.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/processed/top_journals.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/raw/collection_manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/raw/collection_manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/bibliometric_analysis.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/bibliometric_analysis.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/classification.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/classification.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/classification_validator.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/classification_validator.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/data_cleaning.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/data_cleaning.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/data_collection.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/data_collection.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/data_validator.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/data_validator.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/network_analysis.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/network_analysis.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/network_validator.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/network_validator.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/statistical_validator.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/statistical_validator.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/validation_classification.json" beforeDir="false" afterPath="$PROJECT_DIR$/logs/validation_classification.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/validation_data_D1.json" beforeDir="false" afterPath="$PROJECT_DIR$/logs/validation_data_D1.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/validation_network.json" beforeDir="false" afterPath="$PROJECT_DIR$/logs/validation_network.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/validation_statistical.json" beforeDir="false" afterPath="$PROJECT_DIR$/logs/validation_statistical.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/visualization.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/visualization.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/bibliometric_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/bibliometric_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agents/validation/validators.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/agents/validation/validators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/generate_test_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/generate_test_data.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +96,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -151,7 +117,8 @@
       <option name="presentableId" value="Default" />
       <updated>1776028874552</updated>
       <workItem from="1776028875559" duration="7865000" />
-      <workItem from="1776058869403" duration="302000" />
+      <workItem from="1776058869403" duration="592000" />
+      <workItem from="1776158862536" duration="3526000" />
     </task>
     <servers />
   </component>

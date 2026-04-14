@@ -25,17 +25,17 @@
   ],
   "source": "seeds+corpus_feedback",
   "corpus_update": {
-    "Political Science::electoral_politics": 8,
-    "Political Science::radical_right": 15,
-    "Other::interdisciplinary": 9,
-    "Economics::trade_globalization": 13,
-    "Political Science::latin_american_politics": 17,
-    "Political Science::democratic_theory": 5,
-    "Political Science::political_theory": 9,
-    "Political Science::european_politics": 9,
-    "Sociology::media_communication": 15,
-    "Economics::political_economy": 13,
-    "Economics::financial_crisis": 15,
-    "Political Science::comparative_politics": 5
+    "Political Science::political_theory": 74,
+    "Sociology::media_communication": 37,
+    "Sociology::culture_values": 12,
+    "Other::interdisciplinary": 40,
+    "Political Science::electoral_politics": 7,
+    "Economics::financial_crisis": 19,
+    "Political Science::european_politics": 22,
+    "Economics::redistribution": 5,
+    "Political Science::radical_right": 30,
+    "Political Science::democratic_theory": 9,
+    "Political Science::latin_american_politics": 8,
+    "Sociology::social_movements": 5
   }
 }

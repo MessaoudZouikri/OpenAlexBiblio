@@ -12,7 +12,7 @@ import argparse
 import logging
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import datetime, UTC
 from itertools import combinations
 from pathlib import Path
 
