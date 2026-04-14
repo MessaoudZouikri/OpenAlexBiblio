@@ -244,3 +244,46 @@
 2026-04-14 18:46:17 [INFO] network_analysis: Computing VOS-inspired layout...
 2026-04-14 18:46:17 [INFO] network_analysis: === Network Analysis Agent complete ===
 2026-04-14 18:46:17 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0
+2026-04-14 21:30:26 [INFO] network_analysis: === Network Analysis Agent starting ===
+2026-04-14 21:30:26 [INFO] network_analysis: VOSviewer-inspired analysis: threshold=1.0, subfield=False
+2026-04-14 21:30:26 [INFO] network_analysis: Loaded 9999 classified works
+2026-04-14 21:30:26 [INFO] network_analysis: Thresholds — min_shared_refs=3, min_cocitations=3  (corpus n=9999)
+2026-04-14 21:30:26 [INFO] network_analysis: Building bibliographic coupling network...
+2026-04-14 21:30:39 [INFO] network_analysis:   Bib coupling: 9999 nodes, 509992 edges
+2026-04-14 21:30:40 [INFO] network_analysis:   After VOS filtering: 5610 nodes, 468011 edges
+2026-04-14 21:52:44 [INFO] network_analysis:   Modularity: 0.9397, Communities: 148
+2026-04-14 21:52:44 [INFO] network_analysis: Building co-citation network...
+2026-04-14 21:54:00 [INFO] network_analysis:   Co-citation: 40959 nodes, 181158 edges
+2026-04-14 21:54:01 [INFO] network_analysis:   After VOS filtering: 12298 nodes, 170876 edges
+2026-04-14 21:54:18 [INFO] network_analysis: Building co-authorship network...
+2026-04-14 21:54:18 [INFO] network_analysis:   Co-authorship: 2305 nodes, 2511 edges
+2026-04-14 21:54:19 [INFO] network_analysis: Building concept co-occurrence network...
+2026-04-14 21:54:19 [INFO] network_analysis:   Concept: 100 nodes, 4864 edges
+2026-04-14 21:54:19 [INFO] network_analysis: Detecting interdisciplinary bridges...
+2026-04-14 22:15:14 [INFO] network_analysis:   Found 50 bridge nodes
+2026-04-14 22:15:14 [INFO] network_analysis: Computing VOS-inspired layout...
+2026-04-14 22:33:01 [INFO] network_analysis: === Network Analysis Agent complete ===
+2026-04-14 22:33:01 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0
+2026-04-14 23:05:03 [INFO] network_analysis: === Network Analysis Agent starting ===
+2026-04-14 23:05:03 [INFO] network_analysis: VOSviewer-inspired analysis: threshold=1.0, subfield=False
+2026-04-14 23:05:03 [INFO] network_analysis: Loaded 9999 classified works
+2026-04-14 23:05:03 [INFO] network_analysis: Thresholds — min_shared_refs=3, min_cocitations=3  (corpus n=9999)
+2026-04-14 23:05:03 [INFO] network_analysis: Building bibliographic coupling network...
+2026-04-14 23:05:16 [INFO] network_analysis:   Bib coupling: 9999 nodes, 509992 edges
+2026-04-14 23:05:17 [INFO] network_analysis:   After VOS filtering: 5610 nodes, 468011 edges
+2026-04-14 23:05:29 [INFO] network_analysis: Graph connectivity: 46 component(s), LCC = 5516 nodes (98.3%)
+2026-04-14 23:05:29 [INFO] network_analysis: Extracted LCC (5516 nodes). 94 nodes in 45 micro-components will be re-attached after clustering.
+2026-04-14 23:05:42 [INFO] network_analysis: Clustering complete | strategy=spectral_lcc_extraction | communities=20
+2026-04-14 23:26:23 [INFO] network_analysis:   Modularity: 0.9397, Communities: 148
+2026-04-14 23:26:23 [INFO] network_analysis: Building co-citation network...
+2026-04-14 23:27:38 [INFO] network_analysis:   Co-citation: 40959 nodes, 181158 edges
+2026-04-14 23:27:38 [INFO] network_analysis:   After VOS filtering: 12298 nodes, 170876 edges
+2026-04-14 23:27:55 [INFO] network_analysis: Building co-authorship network...
+2026-04-14 23:27:55 [INFO] network_analysis:   Co-authorship: 2305 nodes, 2511 edges
+2026-04-14 23:27:56 [INFO] network_analysis: Building concept co-occurrence network...
+2026-04-14 23:27:56 [INFO] network_analysis:   Concept: 100 nodes, 4864 edges
+2026-04-14 23:27:56 [INFO] network_analysis: Detecting interdisciplinary bridges...
+2026-04-14 23:47:32 [INFO] network_analysis:   Found 50 bridge nodes
+2026-04-14 23:47:32 [INFO] network_analysis: Computing VOS-inspired layout...
+2026-04-14 23:48:19 [INFO] network_analysis: === Network Analysis Agent complete ===
+2026-04-14 23:48:19 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0

@@ -1,13 +1,10 @@
 {
   "agent": "statistical_validator",
   "stage": "",
-  "timestamp": "2026-04-14T16:32:40.010845+00:00",
+  "timestamp": "2026-04-14T21:56:13.615048+00:00",
   "status": "PASS",
   "errors": [],
-  "warnings": [
-    "lotka_alpha_plausible: α=0.640 (expected ~2.0)",
-    "lotka_r2_acceptable: R²=0.136"
-  ],
+  "warnings": [],
   "checks": [
     {
       "name": "file_exists_bibliometric_summary.json",
@@ -27,22 +24,22 @@
     {
       "name": "n_records_positive",
       "passed": true,
-      "detail": "200"
+      "detail": "9999"
     },
     {
       "name": "no_extreme_yoy_spike",
       "passed": true,
-      "detail": "Max YoY growth: 333.3%"
+      "detail": "Max YoY growth: 98.1%"
     },
     {
       "name": "lotka_alpha_plausible",
-      "passed": false,
-      "detail": "α=0.640 (expected ~2.0)"
+      "passed": true,
+      "detail": "α=2.631 (expected ~2.0)"
     },
     {
       "name": "lotka_r2_acceptable",
-      "passed": false,
-      "detail": "R²=0.136"
+      "passed": true,
+      "detail": "R²=0.966"
     }
   ]
 }

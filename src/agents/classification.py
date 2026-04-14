@@ -121,8 +121,8 @@ def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
             if fragment in name:
                 domain_scores[domain] += score
 
-    if domain_scores:
-        total      = sum(domain_scores.values())
+    total = sum(domain_scores.values()) if domain_scores else 0.0
+    if total > 0:
         best       = max(domain_scores, key=domain_scores.__getitem__)
         confidence = domain_scores[best] / total
     else:

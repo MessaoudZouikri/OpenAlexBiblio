@@ -9,6 +9,7 @@ Standalone:
 """
 import argparse
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -204,8 +205,15 @@ def generate_html_report(fig_dir: str, config: dict) -> None:
         html.append(f"<h2>{title}</h2>")
         html.append(f"<img src='{fig.name}' alt='{title}'>")
     html.append("</body></html>")
-    report_path = f"{config['paths']['outputs']}/reports/report.html"
-    Path(report_path).parent.mkdir(parents=True, exist_ok=True)
+    report_path = Path(f"{config['paths']['outputs']}/reports/report.html")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_dir = report_path.parent
+    for fig in sorted(figures):
+        title = fig.stem.replace("_", " ").title()
+        img_src = Path(os.path.relpath(fig, report_dir)).as_posix()
+        html.append(f"<h2>{title}</h2>")
+        html.append(f"<img src='{img_src}' alt='{title}'>")
+    html.append("</body></html>")
     with open(report_path, "w") as f:
         f.write("\n".join(html))
 

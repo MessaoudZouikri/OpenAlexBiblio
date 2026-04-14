@@ -1,7 +1,7 @@
 {
   "agent": "data_validator",
   "stage": "D2",
-  "timestamp": "2026-04-14T16:32:39.241883+00:00",
+  "timestamp": "2026-04-14T17:06:26.849931+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -44,7 +44,7 @@
     {
       "name": "year_valid_range",
       "passed": "True",
-      "detail": "Year range: 1995–2023"
+      "detail": "Year range: 1980–2026"
     },
     {
       "name": "citations_non_negative",
@@ -54,7 +54,7 @@
     {
       "name": "abstract_coverage_50pct",
       "passed": "True",
-      "detail": "Abstract coverage: 100.0%"
+      "detail": "Abstract coverage: 86.5%"
     },
     {
       "name": "concept_coverage_60pct",
@@ -64,9 +64,9 @@
     {
       "name": "record_count_matches_manifest",
       "passed": true,
-      "detail": "DF=200, manifest=200"
+      "detail": "DF=9999, manifest=9999"
     }
   ],
-  "n_records": 200,
-  "abstract_coverage_rate": 1.0
+  "n_records": 9999,
+  "abstract_coverage_rate": 0.8653
 }

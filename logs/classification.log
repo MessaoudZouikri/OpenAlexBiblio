@@ -129,3 +129,49 @@
 2026-04-14 18:37:37 [INFO] classification:   Deterministic rate: 100.0%  |  LLM rate: 0.0%
 2026-04-14 18:37:37 [INFO] classification: === Classification Agent complete ===
 2026-04-14 18:37:37 [INFO] classification: Deterministic: 100.0% | LLM: 0.0% | Outliers: 0
+2026-04-14 19:06:32 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-14 19:06:32 [INFO] classification: Loaded 9999 records
+2026-04-14 19:06:34 [INFO] classification: Embedding backend: specter2:selected
+2026-04-14 19:06:36 [INFO] classification: 3-stage classification of 9999 records
+2026-04-14 19:06:36 [INFO] classification: Stage 1: rule-based...
+2026-04-14 19:08:22 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-14 19:08:22 [INFO] classification: Loaded 9999 records
+2026-04-14 19:08:24 [INFO] classification: Embedding backend: specter2:selected
+2026-04-14 19:08:26 [INFO] classification: 3-stage classification of 9999 records
+2026-04-14 19:08:26 [INFO] classification: Stage 1: rule-based...
+2026-04-14 19:08:59 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-14 19:08:59 [INFO] classification: Loaded 9999 records
+2026-04-14 19:09:01 [INFO] classification: Embedding backend: specter2:selected
+2026-04-14 19:09:03 [INFO] classification: 3-stage classification of 9999 records
+2026-04-14 19:09:03 [INFO] classification: Stage 1: rule-based...
+2026-04-14 19:09:04 [INFO] classification:   Stage 1 accepted: 2107 / 9999
+2026-04-14 19:09:04 [INFO] classification: Stage 2: embedding similarity for 7892 records...
+2026-04-14 19:09:34 [INFO] classification:   Stage 2: accepted=7777, to LLM=115, outliers=0
+2026-04-14 19:09:34 [INFO] classification: Stage 3: LLM for 115 ambiguous records...
+2026-04-14 19:31:03 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-14 19:31:03 [INFO] classification: Loaded 9999 records
+2026-04-14 19:31:05 [INFO] classification: Embedding backend: specter2:selected
+2026-04-14 19:31:12 [INFO] classification: 3-stage classification of 9999 records
+2026-04-14 19:31:12 [INFO] classification: Stage 1: rule-based...
+2026-04-14 19:31:12 [INFO] classification:   Stage 1 accepted: 2107 / 9999
+2026-04-14 19:31:12 [INFO] classification: Stage 2: embedding similarity for 7892 records...
+2026-04-14 19:32:14 [INFO] classification:   Stage 2: accepted=7777, to LLM=115, outliers=0
+2026-04-14 19:32:14 [INFO] classification: Stage 3: LLM for 115 ambiguous records...
+2026-04-14 19:48:21 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-14 19:48:21 [INFO] classification:   stage1                       2107  ( 21.1%)
+2026-04-14 19:48:21 [INFO] classification:   stage2_high                  7777  ( 77.8%)
+2026-04-14 19:48:21 [INFO] classification:   stage3                        115  (  1.2%)
+2026-04-14 19:48:21 [INFO] classification:   Deterministic rate: 98.8%  |  LLM rate: 1.2%
+2026-04-14 19:48:21 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-14 19:48:21 [INFO] classification:   High-confidence records: 9453 / 9999
+2026-04-14 19:49:41 [INFO] classification: === Classification Agent complete ===
+2026-04-14 19:49:41 [INFO] classification: Deterministic: 98.9% | LLM: 1.1% | Outliers: 0
+2026-04-14 20:07:58 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-14 20:07:58 [INFO] classification:   stage1                       2107  ( 21.1%)
+2026-04-14 20:07:58 [INFO] classification:   stage2_high                  7777  ( 77.8%)
+2026-04-14 20:07:58 [INFO] classification:   stage3                        115  (  1.2%)
+2026-04-14 20:07:58 [INFO] classification:   Deterministic rate: 98.8%  |  LLM rate: 1.2%
+2026-04-14 20:07:58 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-14 20:07:58 [INFO] classification:   High-confidence records: 9453 / 9999
+2026-04-14 20:08:41 [INFO] classification: === Classification Agent complete ===
+2026-04-14 20:08:41 [INFO] classification: Deterministic: 98.9% | LLM: 1.1% | Outliers: 0

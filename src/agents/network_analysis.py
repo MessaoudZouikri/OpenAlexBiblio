@@ -180,6 +180,8 @@ def build_coauthorship_network(df: pd.DataFrame, min_papers: int = 2) -> nx.Grap
             if isinstance(a, dict)
             if (a.get("id") or a.get("name", "")) in eligible
         ]
+        # Deduplicate repeated author appearances in a single paper.
+        authors_in_row = list(dict.fromkeys(authors_in_row))
         for a, b in combinations(authors_in_row, 2):
             if G.has_edge(a, b):
                 G[a][b]["weight"] += 1
@@ -370,23 +372,59 @@ def build_subfield_bibcoupling_network(df: pd.DataFrame, subcategory: str,
 
 # ── Enhanced Clustering with Spectral Clustering ──────────────────────────
 
-def spectral_clustering(G: nx.Graph, n_clusters: int = None) -> dict:
+def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: float = 0.95) -> dict:
     """
-    Apply spectral clustering for potentially better community detection.
-    Falls back to Louvain if sklearn not available or fails.
+    Apply spectral clustering robust to connectivity issues.
+    Falls back to Louvain if graph is severely disconnected or sklearn unavailable.
     """
+    logger = logging.getLogger("network_analysis")
+    
     if not SKLEARN_AVAILABLE or G.number_of_nodes() < 10:
         return detect_communities(G)[0]
 
+    # Connectivity diagnostics
+    components = sorted(nx.connected_components(G), key=len, reverse=True)
+    n_components = len(components)
+    lcc_nodes = components[0] if components else set()
+    lcc_frac = len(lcc_nodes) / G.number_of_nodes() if G.number_of_nodes() else 0
+    is_connected = (n_components == 1)
+
+    logger.info(
+        f"Graph connectivity: {n_components} component(s), "
+        f"LCC = {len(lcc_nodes)} nodes ({lcc_frac:.1%})"
+    )
+
+    # Severely disconnected → Leiden fallback
+    if lcc_frac < lcc_threshold:
+        logger.warning(
+            f"LCC fraction {lcc_frac:.1%} below threshold {lcc_threshold:.0%}. "
+            f"Spectral clustering not appropriate. Delegating to Louvain."
+        )
+        return detect_communities(G)[0]
+
+    # Spectral on LCC (or full graph if connected)
+    if is_connected:
+        G_lcc = G
+        strategy = "spectral_full"
+    else:
+        G_lcc = G.subgraph(lcc_nodes).copy()
+        strategy = "spectral_lcc_extraction"
+        outlier_nodes = [n for c in components[1:] for n in c]
+        logger.info(
+            f"Extracted LCC ({len(lcc_nodes)} nodes). "
+            f"{len(outlier_nodes)} nodes in {n_components - 1} micro-components "
+            f"will be re-attached after clustering."
+        )
+
     try:
-        # Convert graph to adjacency matrix
-        nodes = list(G.nodes())
-        n = len(nodes)
+        # Auto-estimate n_clusters if not provided
+        n = G_lcc.number_of_nodes()
         if n_clusters is None:
             n_clusters = min(max(2, int(math.sqrt(n / 2))), 20)
 
-        # Create adjacency matrix
-        adj_matrix = nx.to_numpy_array(G, weight="weight", nodelist=nodes)
+        # Convert to adjacency matrix
+        nodes_lcc = list(G_lcc.nodes())
+        adj_matrix = nx.to_numpy_array(G_lcc, weight="weight", nodelist=nodes_lcc)
 
         # Apply spectral clustering
         clustering = SpectralClustering(
@@ -396,12 +434,35 @@ def spectral_clustering(G: nx.Graph, n_clusters: int = None) -> dict:
         )
         labels = clustering.fit_predict(adj_matrix)
 
-        # Convert to partition dict
-        partition = {nodes[i]: labels[i] for i in range(n)}
+        # Build partition for LCC
+        partition = {nodes_lcc[i]: int(labels[i]) for i in range(len(nodes_lcc))}
+
+        # Re-attach micro-components if needed
+        if not is_connected:
+            community_sizes = {}
+            for comm in partition.values():
+                community_sizes[comm] = community_sizes.get(comm, 0) + 1
+
+            for comp_nodes in components[1:]:
+                best_comm = min(
+                    community_sizes,
+                    key=lambda c: abs(community_sizes[c] - len(comp_nodes))
+                )
+                for node in comp_nodes:
+                    partition[node] = best_comm
+
+        assert len(partition) == G.number_of_nodes(), (
+            f"Partition incomplete: {len(partition)} / {G.number_of_nodes()} nodes"
+        )
+
+        logger.info(
+            f"Clustering complete | strategy={strategy} | "
+            f"communities={len(set(partition.values()))}"
+        )
         return partition
 
     except Exception as e:
-        logging.getLogger("network_analysis").warning(f"Spectral clustering failed: {e}")
+        logger.warning(f"Spectral clustering failed: {e}. Falling back to Louvain.")
         return detect_communities(G)[0]
 
 
@@ -488,10 +549,12 @@ def main():
 
     config = load_yaml(args.config)
     net_cfg = config.get("network", {})
+    clustering_cfg = config.get("clustering", {})
 
     # Resolve thresholds: CLI flag > config > default
     vos_threshold     = args.vos_threshold if args.vos_threshold is not None else net_cfg.get("vos_threshold", 1.0)
     subfield_analysis = args.subfield_analysis or net_cfg.get("subfield_analysis", False)
+    lcc_threshold     = clustering_cfg.get("lcc_threshold", 0.95)
 
     logger = setup_logger("network_analysis", config["paths"]["logs"])
     logger.info("=== Network Analysis Agent starting ===")
@@ -540,7 +603,7 @@ def main():
 
         # Enhanced clustering
         partition_louvain, modularity_louvain = detect_communities(G_bib_analysis)
-        partition_spectral = spectral_clustering(G_bib_analysis)
+        partition_spectral = spectral_clustering(G_bib_analysis, lcc_threshold=lcc_threshold)
 
         # Use the better clustering result
         partition = partition_louvain  # Default to Louvain

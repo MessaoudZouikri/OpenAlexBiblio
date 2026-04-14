@@ -39,6 +39,14 @@ network:
   vos_threshold: 1.0             # Association-strength cutoff (keep 1.0 for most runs)
   subfield_analysis: false       # Set true to build per-subcategory networks (slow on large corpora)
 
+# ---- Clustering Configuration ---------------------------
+clustering:
+  method: auto                   # "auto" | "spectral" | "louvain"
+  n_clusters: null               # null = auto-estimated from sqrt(n/2)
+  lcc_threshold: 0.95            # Below this fraction, fall back to Louvain
+  random_state: 42
+  save_metadata: true            # Persist clustering diagnostics
+
 # ---- Step Definitions (ordered) --------------------------
 steps:
   - name: data_collection

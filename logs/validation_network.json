@@ -1,10 +1,12 @@
 {
   "agent": "network_validator",
   "stage": "",
-  "timestamp": "2026-04-14T16:32:47.416983+00:00",
+  "timestamp": "2026-04-14T21:56:45.511486+00:00",
   "status": "PASS",
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "no_self_loops_coauthorship: 9 self-loops"
+  ],
   "checks": [
     {
       "name": "file_exists_bibcoupling",
@@ -14,7 +16,7 @@
     {
       "name": "parseable_bibcoupling",
       "passed": true,
-      "detail": "204 nodes"
+      "detail": "5610 nodes"
     },
     {
       "name": "no_self_loops_bibcoupling",
@@ -29,7 +31,7 @@
     {
       "name": "parseable_cocitation",
       "passed": true,
-      "detail": "1350 nodes"
+      "detail": "12298 nodes"
     },
     {
       "name": "no_self_loops_cocitation",
@@ -44,12 +46,12 @@
     {
       "name": "parseable_coauthorship",
       "passed": true,
-      "detail": "62 nodes"
+      "detail": "2305 nodes"
     },
     {
       "name": "no_self_loops_coauthorship",
-      "passed": true,
-      "detail": "0 self-loops"
+      "passed": false,
+      "detail": "9 self-loops"
     },
     {
       "name": "network_metrics_exists",

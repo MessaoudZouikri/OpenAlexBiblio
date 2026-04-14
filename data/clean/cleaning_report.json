@@ -1,9 +1,9 @@
 {
-  "input_records": 200,
+  "input_records": 10000,
   "operations": [
     {
       "op": "drop_null_title_or_id",
-      "dropped": 0
+      "dropped": 1
     },
     {
       "op": "filter_year",
@@ -15,20 +15,20 @@
       "removed": 0
     }
   ],
-  "output_records": 200,
-  "abstract_coverage": 200,
-  "abstract_coverage_rate": 1.0,
-  "concept_coverage": 200,
+  "output_records": 9999,
+  "abstract_coverage": 8652,
+  "abstract_coverage_rate": 0.8653,
+  "concept_coverage": 9999,
   "concept_coverage_rate": 1.0,
   "domain_distribution": {
-    "Political Science": 113,
-    "Economics": 57,
-    "Sociology": 26,
-    "Other": 4
+    "Political Science": 7253,
+    "Economics": 1540,
+    "Sociology": 945,
+    "Other": 261
   },
   "year_range": [
-    1995,
-    2023
+    1980,
+    2026
   ],
-  "timestamp": "2026-04-14T16:32:38.854400+00:00"
+  "timestamp": "2026-04-14T17:06:26.532718+00:00"
 }

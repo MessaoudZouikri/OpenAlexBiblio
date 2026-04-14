@@ -68,3 +68,45 @@
 2026-04-13 01:31:37 [INFO] orchestrator: ============================================================
 2026-04-13 01:31:37 [INFO] orchestrator: Pipeline SUCCESS — Run ID: 20260412_233137
 2026-04-13 01:31:37 [INFO] orchestrator: ============================================================
+2026-04-14 19:04:58 [INFO] orchestrator: ============================================================
+2026-04-14 19:04:58 [INFO] orchestrator: BIBLIOMETRIC PIPELINE — Run ID: 20260414_170458
+2026-04-14 19:04:58 [INFO] orchestrator: Mode: full | From: start | DryRun: False
+2026-04-14 19:04:58 [INFO] orchestrator: ============================================================
+2026-04-14 19:04:58 [INFO] orchestrator: ▶ Step [data_collection]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.data_collection --config config/config.yaml
+2026-04-14 19:06:25 [INFO] orchestrator:   ✓ Step [data_collection] completed in 87.4s
+2026-04-14 19:06:25 [INFO] orchestrator: ▶ Step [validate_raw]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.validation.validators --config config/config.yaml --validator data --stage D1
+2026-04-14 19:06:26 [INFO] orchestrator:   ✓ Step [validate_raw] completed in 0.3s
+2026-04-14 19:06:26 [INFO] orchestrator: ▶ Step [data_cleaning]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.data_cleaning --config config/config.yaml
+2026-04-14 19:06:26 [INFO] orchestrator:   ✓ Step [data_cleaning] completed in 0.7s
+2026-04-14 19:06:26 [INFO] orchestrator: ▶ Step [validate_clean]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.validation.validators --config config/config.yaml --validator data --stage D2
+2026-04-14 19:06:26 [INFO] orchestrator:   ✓ Step [validate_clean] completed in 0.3s
+2026-04-14 19:06:26 [INFO] orchestrator: ▶ Step [bibliometric_analysis]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.bibliometric_analysis --config config/config.yaml
+2026-04-14 19:06:32 [INFO] orchestrator:   ✓ Step [bibliometric_analysis] completed in 5.2s
+2026-04-14 19:06:32 [INFO] orchestrator: ▶ Step [validate_statistical]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.validation.validators --config config/config.yaml --validator statistical
+2026-04-14 19:06:32 [INFO] orchestrator:   ✓ Step [validate_statistical] completed in 0.2s
+2026-04-14 19:06:32 [INFO] orchestrator: ▶ Step [classification]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.classification --config config/config.yaml
+2026-04-14 19:06:37 [ERROR] orchestrator:   ✗ Step [classification] FAILED (rc=1) in 5.0s
+2026-04-14 19:06:37 [ERROR] orchestrator: Pipeline HALTED at step: classification
+2026-04-14 23:56:59 [INFO] orchestrator: ============================================================
+2026-04-14 23:56:59 [INFO] orchestrator: BIBLIOMETRIC PIPELINE — Run ID: 20260414_215659
+2026-04-14 23:56:59 [INFO] orchestrator: Mode: full | From: start | DryRun: True
+2026-04-14 23:56:59 [INFO] orchestrator: ============================================================
+2026-04-14 23:56:59 [INFO] orchestrator:   [CACHED] data_collection — already complete
+2026-04-14 23:56:59 [INFO] orchestrator:   [CACHED] validate_raw — already complete
+2026-04-14 23:56:59 [INFO] orchestrator:   [CACHED] data_cleaning — already complete
+2026-04-14 23:56:59 [INFO] orchestrator:   [CACHED] validate_clean — already complete
+2026-04-14 23:56:59 [INFO] orchestrator:   [CACHED] bibliometric_analysis — already complete
+2026-04-14 23:56:59 [INFO] orchestrator:   [CACHED] validate_statistical — already complete
+2026-04-14 23:56:59 [INFO] orchestrator: ▶ Step [classification]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.classification --config config/config.yaml
+2026-04-14 23:56:59 [INFO] orchestrator:   [DRY RUN] skipping execution
+2026-04-14 23:56:59 [INFO] orchestrator: ▶ Step [validate_classification]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.validation.validators --config config/config.yaml --validator classification
+2026-04-14 23:56:59 [INFO] orchestrator:   [DRY RUN] skipping execution
+2026-04-14 23:56:59 [INFO] orchestrator: ▶ Step [network_analysis]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.network_analysis --config config/config.yaml
+2026-04-14 23:56:59 [INFO] orchestrator:   [DRY RUN] skipping execution
+2026-04-14 23:56:59 [INFO] orchestrator: ▶ Step [validate_network]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.validation.validators --config config/config.yaml --validator network
+2026-04-14 23:56:59 [INFO] orchestrator:   [DRY RUN] skipping execution
+2026-04-14 23:56:59 [INFO] orchestrator: ▶ Step [visualization]: /Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/.venv/bin/python -m src.agents.visualization --config config/config.yaml
+2026-04-14 23:56:59 [INFO] orchestrator:   [DRY RUN] skipping execution
+2026-04-14 23:56:59 [INFO] orchestrator: ============================================================
+2026-04-14 23:56:59 [INFO] orchestrator: Pipeline SUCCESS — Run ID: 20260414_215659
+2026-04-14 23:56:59 [INFO] orchestrator: ============================================================
