@@ -21,7 +21,7 @@ paths:
 pipeline:
   mode: "test"          # "test" | "full"
   test_max_records: 200  # Records per query in test mode
-  full_max_records: 50000
+  full_max_records: null  # null = unlimited, or set to a number for safety
   random_seed: 42
 
 # ---- Step Definitions (ordered) --------------------------

@@ -13,16 +13,25 @@ api:
 
 queries:
   keywords:
-    - term: "populism"
-      field: "title_and_abstract.search"
-    - term: "populist"
-      field: "title_and_abstract.search"
-    - term: "populists"
+    # Option 1: Single query with boolean OR (recommended for efficiency)
+    - term: "populism OR populist OR populists"
       field: "title_and_abstract.search"
 
+    # Option 2: Multiple separate queries (current approach - less efficient)
+    # - term: "populism"
+    #   field: "title_and_abstract.search"
+    # - term: "populist"
+    #   field: "title_and_abstract.search"
+    # - term: "populists"
+    #   field: "title_and_abstract.search"
+
   filters:
-    type: "article"           # article | book-chapter | null (all)
-    from_publication_date: "1990-01-01"
+    # Boolean operators supported:
+    # - OR: "article OR book-chapter OR dissertation" → includes multiple types
+    # - AND: "article AND book-chapter" → requires both (rarely useful)
+    # Available types: article, book-chapter, dissertation, preprint, book, dataset, etc.
+    type: "article OR book-chapter OR dissertation OR preprint"    # Multiple types
+    from_publication_date: "1980-01-01"
     to_publication_date: null  # null = no upper bound
     open_access_only: false
 

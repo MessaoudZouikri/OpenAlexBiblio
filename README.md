@@ -5,6 +5,31 @@ A modular, reproducible, multi-agent bibliometric pipeline for the study of
 
 ---
 
+## Repository Contents
+
+This Git repository contains everything needed to install and run the bibliometric pipeline:
+
+### ✅ Included Files
+- **Source code** (`src/`): All Python agents and utility functions
+- **Configuration templates** (`config/`): YAML files for customization
+- **Documentation** (`README.md`, `BIBLIOMETRIC_PIPELINE_TUTORIAL.md`, `agents/*.md`)
+- **Agent specifications** (`agents/`): Detailed markdown docs for each component
+- **Tests** (`tests/`): Synthetic data generation for testing
+- **Setup files** (`requirements.txt`, `pyproject.toml`): Dependencies and packaging
+- **Scripts** (`scripts/`): Setup verification utilities
+
+### ❌ Excluded Files (via .gitignore)
+- **Data files** (`data/`): Large generated datasets (Parquet, JSON)
+- **Logs** (`logs/`): Runtime log files
+- **Checkpoints** (`checkpoints/`): Pipeline state files
+- **Outputs** (`*.graphml`, `*.png`, `*.html`): Generated visualizations
+- **Cache** (`__pycache__/`, `.venv/`): Python bytecode and virtual environments
+
+### 📦 Installation
+Users can clone this repository and immediately run the pipeline with their own data collection and analysis.
+
+---
+
 ## Architecture
 
 ```
@@ -85,6 +110,19 @@ Edit `config/openalex.yaml`:
 api:
   polite_email: "your.email@institution.edu"
 ```
+
+**Advanced Query Configuration**:
+The pipeline supports boolean search operators for comprehensive literature searches:
+```yaml
+queries:
+  keywords:
+    - term: "populism OR populist OR populists OR far-right"  # Multiple search terms
+      field: "title_and_abstract.search"
+  filters:
+    type: "article OR book-chapter OR dissertation OR preprint"  # Multiple types
+```
+
+**Supported Publication Types**: article, book-chapter, dissertation, preprint, book, dataset, and more.
 
 ---
 
@@ -208,8 +246,10 @@ Change `config/config.yaml`:
 ```yaml
 pipeline:
   mode: "full"            # was "test"
-  full_max_records: 50000
+  full_max_records: null  # null = unlimited downloads, or set to a number for safety
 ```
+
+**Important**: OpenAlex has no inherent result limits. Setting `full_max_records: null` will download ALL matching articles. For very broad searches, this could result in millions of records. Consider setting a reasonable limit if you have storage or processing constraints.
 
 For datasets > 10k records, network construction may require:
 ```yaml

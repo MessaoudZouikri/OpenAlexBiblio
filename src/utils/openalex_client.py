@@ -112,10 +112,24 @@ class OpenAlexClient:
         field: str,
         extra: Optional[Dict[str, str]] = None,
     ) -> str:
+        """
+        Build OpenAlex filter string with support for boolean operators.
+
+        Examples:
+        - "populism OR populist" in search field
+        - "article OR book-chapter" in type field
+        """
         parts = [f"{field}:{term}"]
         if extra:
             for k, v in extra.items():
                 if v:
+                    # Handle boolean operators in filter values
+                    if " OR " in str(v):
+                        # Convert "article OR book-chapter" to "article|book-chapter"
+                        v = v.replace(" OR ", "|")
+                    elif " AND " in str(v):
+                        # Convert "article AND book-chapter" to "article,book-chapter"
+                        v = v.replace(" AND ", ",")
                     parts.append(f"{k}:{v}")
         return ",".join(parts)
 

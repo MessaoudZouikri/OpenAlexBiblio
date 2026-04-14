@@ -43,6 +43,10 @@ def run_collection(config: dict, openalex_cfg: dict, test_mode: bool = False) ->
         else config["pipeline"]["full_max_records"]
     )
 
+    # Handle unlimited downloads (null = no limit)
+    if max_records is None:
+        max_records = float('inf')  # Unlimited
+
     client = OpenAlexClient(
         email=openalex_cfg["api"]["polite_email"],
         per_page=openalex_cfg["api"]["per_page"],
@@ -83,7 +87,9 @@ def run_collection(config: dict, openalex_cfg: dict, test_mode: bool = False) ->
             logger.warning("Skipping empty query term (was: '%s')", raw_term)
             continue
 
-        logger.info("Querying: field=%s, term='%s', max=%d", field, term, max_records)
+        logger.info("Querying: field=%s, term='%s', max=%s",
+                   field, term,
+                   "unlimited" if max_records == float('inf') else max_records)
 
         batch_start = time.time()
         batch_count = 0

@@ -105,6 +105,12 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 - **Inputs**: Configuration files specifying search terms and filters
 - **Outputs**: Raw dataset in Parquet format + collection statistics
 
+**Boolean Search Support**:
+- **Search terms**: Support OR/AND operators like `"populism OR populist OR populists OR far-right"`
+- **Type filters**: Support OR operations like `"article OR book-chapter OR dissertation OR preprint"`
+- **Flexibility**: Unlimited number of terms and types supported
+- **Efficiency**: Single boolean query is more efficient than multiple separate queries
+
 **`OpenAlexClient.paginate_works()`** (from `openalex_client.py`)
 - **What it does**: Handles API pagination to retrieve all matching papers
 - **Why important**: OpenAlex returns results in pages; this ensures we get everything
@@ -332,6 +338,8 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 - `top_authors.json` (filter for European institutions)
 - `cocitation_network_vos.graphml` (visualize research communities)
 
+**Configuration tip**: For comprehensive data collection, set `full_max_records: null` in `config.yaml` to download all matching articles (no artificial limits).
+
 ### Example 2: Policy Analyst Tracking Research Impact
 
 **Scenario**: You work for a government agency monitoring populism research.
@@ -432,5 +440,4 @@ Whether you're a student exploring the field, a researcher positioning your work
 
 The modular design ensures that each component can be understood and modified independently, while the comprehensive validation and logging systems maintain research integrity and reproducibility.
 
-**Ready to explore populism research patterns?** Start with the test mode to see how the pipeline works, then scale up to full analysis of the field!</content>
-<parameter name="filePath">/Users/messaoudzouikri/Documents/AI_Projects/BibliometricPopulism/bibliometric_pipeline/BIBLIOMETRIC_PIPELINE_TUTORIAL.md
+**Ready to explore populism research patterns?** Start with the test mode to see how the pipeline works, then scale up to full analysis of the field!
