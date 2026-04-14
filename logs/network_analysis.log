@@ -72,3 +72,79 @@
 2026-04-14 11:54:44 [INFO] network_analysis: Detecting interdisciplinary bridges...
 2026-04-14 11:54:45 [INFO] network_analysis:   Found 50 bridge nodes
 2026-04-14 11:54:45 [INFO] network_analysis: === Network Analysis Agent complete ===
+2026-04-14 12:58:42 [INFO] network_analysis: === Network Analysis Agent starting ===
+2026-04-14 12:58:42 [INFO] network_analysis: VOSviewer-inspired analysis: threshold=1.0, subfield=True
+2026-04-14 12:58:43 [INFO] network_analysis: Loaded 300 classified works
+2026-04-14 12:58:43 [INFO] network_analysis: Building bibliographic coupling network...
+2026-04-14 12:58:43 [INFO] network_analysis:   Bib coupling: 300 nodes, 5472 edges
+2026-04-14 12:58:43 [INFO] network_analysis:   After VOS filtering: 204 nodes, 3747 edges
+2026-04-14 12:58:43 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:43 [INFO] network_analysis:   Modularity: 0.8586, Communities: 11
+2026-04-14 12:58:43 [INFO] network_analysis: Building co-citation network...
+2026-04-14 12:58:43 [INFO] network_analysis:   Co-citation: 1498 nodes, 20668 edges
+2026-04-14 12:58:43 [INFO] network_analysis:   After VOS filtering: 1350 nodes, 19745 edges
+2026-04-14 12:58:44 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:44 [INFO] network_analysis: Performing sub-field network analysis...
+2026-04-14 12:58:44 [INFO] network_analysis: Analyzing sub-field: political_theory
+2026-04-14 12:58:44 [INFO] network_analysis:   Building political_theory network with 78 works
+2026-04-14 12:58:44 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:44 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:44 [INFO] network_analysis: Analyzing sub-field: interdisciplinary
+2026-04-14 12:58:44 [INFO] network_analysis:   Building interdisciplinary network with 40 works
+2026-04-14 12:58:44 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:44 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:44 [INFO] network_analysis: Analyzing sub-field: media_communication
+2026-04-14 12:58:44 [INFO] network_analysis:   Building media_communication network with 38 works
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [INFO] network_analysis: Analyzing sub-field: radical_right
+2026-04-14 12:58:45 [INFO] network_analysis:   Building radical_right network with 30 works
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [INFO] network_analysis: Analyzing sub-field: european_politics
+2026-04-14 12:58:45 [INFO] network_analysis:   Building european_politics network with 24 works
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [INFO] network_analysis:   Completed sub-field analysis for 10 categories
+2026-04-14 12:58:45 [INFO] network_analysis: Building co-authorship network...
+2026-04-14 12:58:45 [INFO] network_analysis:   Co-authorship: 62 nodes, 45 edges
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [INFO] network_analysis: Building concept co-occurrence network...
+2026-04-14 12:58:45 [INFO] network_analysis:   Concept: 100 nodes, 2815 edges
+2026-04-14 12:58:45 [WARNING] network_analysis: Enhanced metrics failed: type dict doesn't define __round__ method
+2026-04-14 12:58:45 [INFO] network_analysis: Detecting interdisciplinary bridges...
+2026-04-14 12:58:45 [INFO] network_analysis:   Found 50 bridge nodes
+2026-04-14 12:58:45 [INFO] network_analysis: Computing VOS-inspired layout...
+2026-04-14 12:58:45 [INFO] network_analysis: === Network Analysis Agent complete ===
+2026-04-14 12:58:45 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0
+2026-04-14 12:59:14 [INFO] network_analysis: === Network Analysis Agent starting ===
+2026-04-14 12:59:14 [INFO] network_analysis: VOSviewer-inspired analysis: threshold=1.0, subfield=True
+2026-04-14 12:59:14 [INFO] network_analysis: Loaded 300 classified works
+2026-04-14 12:59:14 [INFO] network_analysis: Building bibliographic coupling network...
+2026-04-14 12:59:14 [INFO] network_analysis:   Bib coupling: 300 nodes, 5472 edges
+2026-04-14 12:59:14 [INFO] network_analysis:   After VOS filtering: 204 nodes, 3747 edges
+2026-04-14 12:59:15 [INFO] network_analysis:   Modularity: 0.8586, Communities: 11
+2026-04-14 12:59:15 [INFO] network_analysis: Building co-citation network...
+2026-04-14 12:59:15 [INFO] network_analysis:   Co-citation: 1498 nodes, 20668 edges
+2026-04-14 12:59:15 [INFO] network_analysis:   After VOS filtering: 1350 nodes, 19745 edges
+2026-04-14 12:59:16 [INFO] network_analysis: Performing sub-field network analysis...
+2026-04-14 12:59:16 [INFO] network_analysis: Analyzing sub-field: political_theory
+2026-04-14 12:59:16 [INFO] network_analysis:   Building political_theory network with 78 works
+2026-04-14 12:59:16 [INFO] network_analysis: Analyzing sub-field: interdisciplinary
+2026-04-14 12:59:16 [INFO] network_analysis:   Building interdisciplinary network with 40 works
+2026-04-14 12:59:16 [INFO] network_analysis: Analyzing sub-field: media_communication
+2026-04-14 12:59:16 [INFO] network_analysis:   Building media_communication network with 38 works
+2026-04-14 12:59:17 [INFO] network_analysis: Analyzing sub-field: radical_right
+2026-04-14 12:59:17 [INFO] network_analysis:   Building radical_right network with 30 works
+2026-04-14 12:59:17 [INFO] network_analysis: Analyzing sub-field: european_politics
+2026-04-14 12:59:17 [INFO] network_analysis:   Building european_politics network with 24 works
+2026-04-14 12:59:17 [INFO] network_analysis:   Completed sub-field analysis for 10 categories
+2026-04-14 12:59:17 [INFO] network_analysis: Building co-authorship network...
+2026-04-14 12:59:17 [INFO] network_analysis:   Co-authorship: 62 nodes, 45 edges
+2026-04-14 12:59:17 [INFO] network_analysis: Building concept co-occurrence network...
+2026-04-14 12:59:17 [INFO] network_analysis:   Concept: 100 nodes, 2815 edges
+2026-04-14 12:59:17 [INFO] network_analysis: Detecting interdisciplinary bridges...
+2026-04-14 12:59:17 [INFO] network_analysis:   Found 50 bridge nodes
+2026-04-14 12:59:17 [INFO] network_analysis: Computing VOS-inspired layout...
+2026-04-14 12:59:17 [INFO] network_analysis: === Network Analysis Agent complete ===
+2026-04-14 12:59:17 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0

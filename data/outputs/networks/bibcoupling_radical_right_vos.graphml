@@ -1,0 +1,453 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d2" for="edge" attr.name="original_weight" attr.type="long" />
+  <key id="d1" for="edge" attr.name="weight" attr.type="double" />
+  <key id="d0" for="node" attr.name="domain" attr.type="string" />
+  <graph edgedefault="undirected">
+    <node id="https://openalex.org/W2151024509">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2161880986">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2152373879">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W1987963854">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2786983643">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2121920773">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2622662596">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2146652587">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2134856833">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2165396007">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2051935979">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W3128246896">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W1452854368">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2096835755">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2167257015">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2008156616">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2076977277">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2029340269">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2896902574">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2165274443">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W3137748114">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2119892444">
+      <data key="d0">Political Science</data>
+    </node>
+    <node id="https://openalex.org/W2144785574">
+      <data key="d0">Political Science</data>
+    </node>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2152373879">
+      <data key="d1">1.4034634272421813</data>
+      <data key="d2">15</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W1987963854">
+      <data key="d1">1.0172621437173825</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2121920773">
+      <data key="d1">3.594836146971202</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2622662596">
+      <data key="d1">2.2767295597484276</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2146652587">
+      <data key="d1">1.413142485361093</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2165396007">
+      <data key="d1">2.5843957164711884</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2096835755">
+      <data key="d1">1.6558033161806747</data>
+      <data key="d2">12</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2167257015">
+      <data key="d1">1.0866209262435678</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2165274443">
+      <data key="d1">1.4812457376676518</data>
+      <data key="d2">9</data>
+    </edge>
+    <edge source="https://openalex.org/W2151024509" target="https://openalex.org/W2144785574">
+      <data key="d1">1.084156933213537</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2152373879">
+      <data key="d1">2.1361433087460484</data>
+      <data key="d2">14</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2121920773">
+      <data key="d1">2.3449392712550607</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2051935979">
+      <data key="d1">1.3104072398190045</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W1452854368">
+      <data key="d1">1.4994082840236684</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2076977277">
+      <data key="d1">1.326007326007326</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2029340269">
+      <data key="d1">1.3419833178869325</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2165274443">
+      <data key="d1">1.073586654309546</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W3137748114">
+      <data key="d1">1.5363395225464191</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2119892444">
+      <data key="d1">1.2609579100145138</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2161880986" target="https://openalex.org/W2144785574">
+      <data key="d1">1.0608058608058608</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2121920773">
+      <data key="d1">1.5659697188175918</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2622662596">
+      <data key="d1">1.2397260273972603</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2146652587">
+      <data key="d1">1.367973547472839</data>
+      <data key="d2">8</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2134856833">
+      <data key="d1">4.250489236790607</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2165396007">
+      <data key="d1">1.0721954831543872</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2096835755">
+      <data key="d1">1.0017988100179882</data>
+      <data key="d2">10</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2167257015">
+      <data key="d1">1.0143212951432128</data>
+      <data key="d2">9</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2029340269">
+      <data key="d1">1.314408318204324</data>
+      <data key="d2">11</data>
+    </edge>
+    <edge source="https://openalex.org/W2152373879" target="https://openalex.org/W2165274443">
+      <data key="d1">1.5533916487869286</data>
+      <data key="d2">13</data>
+    </edge>
+    <edge source="https://openalex.org/W1987963854" target="https://openalex.org/W2121920773">
+      <data key="d1">1.6215005599104144</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W1987963854" target="https://openalex.org/W2165396007">
+      <data key="d1">2.081656124209316</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W1987963854" target="https://openalex.org/W2096835755">
+      <data key="d1">1.2447883086180958</data>
+      <data key="d2">8</data>
+    </edge>
+    <edge source="https://openalex.org/W1987963854" target="https://openalex.org/W2008156616">
+      <data key="d1">5.977770720863766</data>
+      <data key="d2">26</data>
+    </edge>
+    <edge source="https://openalex.org/W1987963854" target="https://openalex.org/W2165274443">
+      <data key="d1">1.113560625480646</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W1987963854" target="https://openalex.org/W2144785574">
+      <data key="d1">3.9121918270854446</data>
+      <data key="d2">16</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2622662596">
+      <data key="d1">1.9781420765027322</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2051935979">
+      <data key="d1">1.04725168756027</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W3128246896">
+      <data key="d1">11.868852459016393</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W1452854368">
+      <data key="d1">2.0542244640605296</data>
+      <data key="d2">9</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2167257015">
+      <data key="d1">1.0789865871833084</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2008156616">
+      <data key="d1">1.062882309762662</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2076977277">
+      <data key="d1">1.130366900858704</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2896902574">
+      <data key="d1">7.912568306010929</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W3137748114">
+      <data key="d1">4.092707744488411</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2786983643" target="https://openalex.org/W2119892444">
+      <data key="d1">2.239406124342716</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2121920773" target="https://openalex.org/W2167257015">
+      <data key="d1">1.7320574162679425</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2121920773" target="https://openalex.org/W2165274443">
+      <data key="d1">1.8363982244768549</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2121920773" target="https://openalex.org/W2144785574">
+      <data key="d1">3.629072681704261</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2622662596" target="https://openalex.org/W2146652587">
+      <data key="d1">3.1206896551724137</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2622662596" target="https://openalex.org/W2096835755">
+      <data key="d1">3.6565656565656566</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W2622662596" target="https://openalex.org/W2029340269">
+      <data key="d1">2.180722891566265</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2622662596" target="https://openalex.org/W2165274443">
+      <data key="d1">2.180722891566265</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2146652587" target="https://openalex.org/W2051935979">
+      <data key="d1">1.8356997971602433</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2146652587" target="https://openalex.org/W2096835755">
+      <data key="d1">1.5130616509926855</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W2146652587" target="https://openalex.org/W2167257015">
+      <data key="d1">2.269592476489028</data>
+      <data key="d2">8</data>
+    </edge>
+    <edge source="https://openalex.org/W2146652587" target="https://openalex.org/W2029340269">
+      <data key="d1">1.503946821769838</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2146652587" target="https://openalex.org/W2165274443">
+      <data key="d1">1.8047361861238056</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W2134856833" target="https://openalex.org/W1452854368">
+      <data key="d1">3.9780219780219777</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2134856833" target="https://openalex.org/W2029340269">
+      <data key="d1">4.984509466437177</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2165396007" target="https://openalex.org/W2096835755">
+      <data key="d1">1.185913185913186</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2165396007" target="https://openalex.org/W2167257015">
+      <data key="d1">2.2235872235872236</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2165396007" target="https://openalex.org/W2008156616">
+      <data key="d1">1.1682129891085116</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2165396007" target="https://openalex.org/W2076977277">
+      <data key="d1">1.3976833976833978</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2165396007" target="https://openalex.org/W2144785574">
+      <data key="d1">2.484770484770485</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2051935979" target="https://openalex.org/W1452854368">
+      <data key="d1">3.0712669683257916</data>
+      <data key="d2">15</data>
+    </edge>
+    <edge source="https://openalex.org/W2051935979" target="https://openalex.org/W2096835755">
+      <data key="d1">1.5056446821152705</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2051935979" target="https://openalex.org/W2167257015">
+      <data key="d1">1.6938502673796794</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2051935979" target="https://openalex.org/W2076977277">
+      <data key="d1">1.7745098039215688</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2051935979" target="https://openalex.org/W2119892444">
+      <data key="d1">1.2053274139844619</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W3128246896" target="https://openalex.org/W3137748114">
+      <data key="d1">24.96551724137931</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W1452854368" target="https://openalex.org/W2167257015">
+      <data key="d1">1.2657342657342658</data>
+      <data key="d2">8</data>
+    </edge>
+    <edge source="https://openalex.org/W1452854368" target="https://openalex.org/W2076977277">
+      <data key="d1">1.6575091575091574</data>
+      <data key="d2">10</data>
+    </edge>
+    <edge source="https://openalex.org/W1452854368" target="https://openalex.org/W2029340269">
+      <data key="d1">1.006487488415199</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W1452854368" target="https://openalex.org/W3137748114">
+      <data key="d1">2.40053050397878</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W1452854368" target="https://openalex.org/W2119892444">
+      <data key="d1">2.3642960812772134</data>
+      <data key="d2">9</data>
+    </edge>
+    <edge source="https://openalex.org/W2096835755" target="https://openalex.org/W2029340269">
+      <data key="d1">1.2335402214920286</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2096835755" target="https://openalex.org/W2896902574">
+      <data key="d1">4.875420875420875</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2096835755" target="https://openalex.org/W2119892444">
+      <data key="d1">1.3798360968172287</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2167257015" target="https://openalex.org/W2076977277">
+      <data key="d1">1.3712121212121213</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2167257015" target="https://openalex.org/W2029340269">
+      <data key="d1">1.3877327491785323</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2167257015" target="https://openalex.org/W3137748114">
+      <data key="d1">1.134796238244514</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2167257015" target="https://openalex.org/W2119892444">
+      <data key="d1">1.2418524871355061</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2008156616" target="https://openalex.org/W2144785574">
+      <data key="d1">2.4013266998341627</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2076977277" target="https://openalex.org/W2029340269">
+      <data key="d1">1.661503155479059</data>
+      <data key="d2">8</data>
+    </edge>
+    <edge source="https://openalex.org/W2076977277" target="https://openalex.org/W2165274443">
+      <data key="d1">1.2461273666092942</data>
+      <data key="d2">6</data>
+    </edge>
+    <edge source="https://openalex.org/W2076977277" target="https://openalex.org/W3137748114">
+      <data key="d1">1.7832512315270934</data>
+      <data key="d2">3</data>
+    </edge>
+    <edge source="https://openalex.org/W2076977277" target="https://openalex.org/W2119892444">
+      <data key="d1">1.6262353998203056</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W2029340269" target="https://openalex.org/W2165274443">
+      <data key="d1">1.4713311075627813</data>
+      <data key="d2">7</data>
+    </edge>
+    <edge source="https://openalex.org/W2029340269" target="https://openalex.org/W3137748114">
+      <data key="d1">1.2031574574158703</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2029340269" target="https://openalex.org/W2119892444">
+      <data key="d1">1.3166628779268015</data>
+      <data key="d2">4</data>
+    </edge>
+    <edge source="https://openalex.org/W2896902574" target="https://openalex.org/W3137748114">
+      <data key="d1">16.643678160919542</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2165274443" target="https://openalex.org/W3137748114">
+      <data key="d1">1.2031574574158703</data>
+      <data key="d2">2</data>
+    </edge>
+    <edge source="https://openalex.org/W2165274443" target="https://openalex.org/W2144785574">
+      <data key="d1">1.3845859628992159</data>
+      <data key="d2">5</data>
+    </edge>
+    <edge source="https://openalex.org/W3137748114" target="https://openalex.org/W2119892444">
+      <data key="d1">1.8841899804814572</data>
+      <data key="d2">2</data>
+    </edge>
+  </graph>
+</graphml>
