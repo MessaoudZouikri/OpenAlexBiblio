@@ -322,3 +322,47 @@ rm -f checkpoints/pipeline_state.json
 python src/agents/orchestrator.py --config config/config.yaml
 python tests/test_pipeline_consistency.py
 ```
+
+---
+
+## Citation
+
+If you use this pipeline in your research, please cite it:
+
+**BibTeX:**
+```bibtex
+@software{zouikri2026bibliometric,
+  author = {Zouikri, Messaoud},
+  title = {Bibliometric Pipeline: {P}opulism Studies},
+  year = {2026},
+  month = {04},
+  version = {1.1.0},
+  url = {https://github.com/MessaoudZouikri/econoPoPop},
+  contact = {econoPoPop@proton.me}
+}
+```
+
+**APA:**  
+Zouikri, M. (2026). Bibliometric pipeline: Populism studies (Version 1.1.0) [Software]. Retrieved from https://github.com/MessaoudZouikri/econoPoPop
+
+**GitHub Citation Feature:**  
+Use the "Cite this repository" button on GitHub for additional citation formats.
+
+See [**CITING.md**](CITING.md) for more citation options, specific component citations, and acknowledgment language.
+
+---
+
+## Contact & Feedback
+
+**Maintainer:** Messaoud Zouikri  
+**Email:** econoPoPop@proton.me  
+**Repository:** https://github.com/MessaoudZouikri/econoPoPop
+
+**Feedback, bug reports, or collaboration inquiries?** Reach out at **econoPoPop@proton.me**
+
+---
+
+## License
+
+This project is licensed under the **GPL-3.0 License** — see [LICENSE](LICENSE) for details.
+
