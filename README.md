@@ -3,8 +3,8 @@
 A modular, reproducible, multi-agent bibliometric pipeline for the study of
 **populism**, **populist**, and **populists** using the [OpenAlex](https://openalex.org) database.
 
-**Documentation**:
-[Quick Start](QUICKSTART.md) — [Tutorial](BIBLIOMETRIC_PIPELINE_TUTORIAL.md) — [Agent Specs](agents/)
+**Quick Navigation**:
+[Quick Start](QUICKSTART.md) — [Tutorial](BIBLIOMETRIC_PIPELINE_TUTORIAL.md) — [Agent Specs](agents/) — [📚 Full Docs](docs/INDEX.md)
 
 ---
 
@@ -30,6 +30,22 @@ This Git repository contains everything needed to install and run the bibliometr
 
 ### 📦 Installation
 Users can clone this repository and immediately run the pipeline with their own data collection and analysis.
+
+---
+
+## 📚 Documentation Hub
+
+We maintain comprehensive documentation for different audiences. Visit the **[Documentation Hub](docs/INDEX.md)** to find:
+
+- **👨‍💻 For Developers**: Code quality analysis, architecture review, implementation roadmap
+- **🔬 For Researchers**: Domain taxonomy enrichment guides, contribution templates
+- **👥 For Users**: Quick reference guides, visualization tutorials, common questions
+- **📧 For Citation**: How to cite this package with maintainer information
+
+**Quick-Start Docs** (in root):
+- 📖 [README.md](README.md) — You are here
+- 🚀 [QUICKSTART.md](QUICKSTART.md) — Installation & first run
+- 📝 [BIBLIOMETRIC_PIPELINE_TUTORIAL.md](BIBLIOMETRIC_PIPELINE_TUTORIAL.md) — Hands-on tutorial
 
 ---
 

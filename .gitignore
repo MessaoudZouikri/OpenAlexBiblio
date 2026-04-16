@@ -140,6 +140,9 @@ checkpoints/
 *.png
 *.html
 
+# BUT: Keep documentation files tracked
+!docs/
+
 # Temporary files
 *.tmp
 *.temp

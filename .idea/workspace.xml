@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e93e977-8d09-4210-ab0b-13e0e65bc5e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CITATION.cff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CITING.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CODE_QUALITY_ANALYSIS.md" beforeDir="false" afterPath="$PROJECT_DIR$/CODE_QUALITY_ANALYSIS.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCS_README.md" beforeDir="false" afterPath="$PROJECT_DIR$/DOCS_README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" beforeDir="false" afterPath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_REFERENCE.md" beforeDir="false" afterPath="$PROJECT_DIR$/QUICK_REFERENCE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CITATION.cff" beforeDir="false" afterPath="$PROJECT_DIR$/CITATION.cff" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +76,8 @@
       <workItem from="1776028875559" duration="7865000" />
       <workItem from="1776058869403" duration="592000" />
       <workItem from="1776158862536" duration="12113000" />
-      <workItem from="1776285452590" duration="9286000" />
+      <workItem from="1776285452590" duration="9622000" />
+      <workItem from="1776368949131" duration="81000" />
     </task>
     <servers />
   </component>
