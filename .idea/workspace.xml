@@ -6,27 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5e93e977-8d09-4210-ab0b-13e0e65bc5e6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CITING.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CODE_QUALITY_ANALYSIS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CODE_QUALITY_IMPROVEMENTS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DELIVERABLES.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCS_README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCUMENTATION_AT_A_GLANCE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCUMENTATION_FINAL_CHECKLIST.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCUMENTATION_OPTIMIZATION_SUMMARY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCUMENTATION_REORGANIZATION.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCUMENTATION_STRUCTURE_REFERENCE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FILE_GUIDE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IMPLEMENTATION_SUMMARY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_REFERENCE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_REFERENCE_CARD.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TAXONOMY_UPDATE_TEMPLATE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/VISUALIZATION_GUIDE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/development/CODE_QUALITY_ANALYSIS.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/development/IMPLEMENTATION_SUMMARY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/metadata/CITATION.cff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/metadata/CITING.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/research/TAXONOMY_UPDATE_TEMPLATE.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +21,7 @@
     <option name="chatModeId" value="Agent" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="177" />
+    <option name="cachedIndexableFilesCount" value="155" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -106,7 +85,8 @@
       <workItem from="1776368949131" duration="12678000" />
       <workItem from="1776454902919" duration="7983000" />
       <workItem from="1776462970287" duration="5652000" />
-      <workItem from="1776528878529" duration="16564000" />
+      <workItem from="1776528878529" duration="18423000" />
+      <workItem from="1776591520339" duration="2883000" />
     </task>
     <servers />
   </component>

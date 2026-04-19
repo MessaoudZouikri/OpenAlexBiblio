@@ -337,7 +337,7 @@ class TestMetadataCompleteness:
         assert quality_pct > 0.7, f"Too many abstracts too short: {quality_pct:.1%}"
 
         # Should contain actual content words, not just placeholders
-        has_content = abstracts.str.contains(r'\b(the|a|an|and|or|but|in|on|at|to|for|of|with|by)\b', case=False)
+        has_content = abstracts.str.contains(r'\b(?:the|a|an|and|or|but|in|on|at|to|for|of|with|by)\b', case=False)
         content_pct = has_content.mean()
 
         assert content_pct > 0.8, f"Too many abstracts lack content: {content_pct:.1%}"
