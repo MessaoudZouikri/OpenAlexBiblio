@@ -78,3 +78,13 @@
 2026-04-14 19:06:26 [INFO] data_cleaning: Cleaning complete: 9999 records (from 10000)
 2026-04-14 19:06:26 [INFO] data_cleaning: Saved clean data to: data/clean/openalex_clean.parquet
 2026-04-14 19:06:26 [INFO] data_cleaning: === Data Cleaning Agent complete ===
+2026-04-17 00:29:32 [INFO] data_cleaning: === Data Cleaning Agent starting ===
+2026-04-17 00:29:32 [INFO] data_cleaning: Loading raw data from: data/raw/openalex_raw_20260416_222628.parquet
+2026-04-17 00:29:32 [INFO] data_cleaning: Loaded 10000 records
+2026-04-17 00:29:32 [INFO] data_cleaning: Dropped 1 records with null/short title or null ID
+2026-04-17 00:29:32 [INFO] data_cleaning: Dropped 0 records with invalid year
+2026-04-17 00:29:32 [INFO] data_cleaning: Removed 0 duplicates (by OpenAlex ID)
+2026-04-17 00:29:32 [INFO] data_cleaning: Applying rule-based domain classification...
+2026-04-17 00:29:32 [INFO] data_cleaning: Cleaning complete: 9999 records (from 10000)
+2026-04-17 00:29:32 [INFO] data_cleaning: Saved clean data to: data/clean/openalex_clean.parquet
+2026-04-17 00:29:32 [INFO] data_cleaning: === Data Cleaning Agent complete ===

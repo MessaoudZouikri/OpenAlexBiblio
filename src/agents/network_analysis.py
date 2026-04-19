@@ -18,7 +18,7 @@ from collections import defaultdict, Counter
 from datetime import datetime, UTC
 from itertools import combinations
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 import math
 
 import networkx as nx
@@ -33,6 +33,7 @@ from src.utils.logging_utils import setup_logger
 # Try to import community detection (python-louvain)
 try:
     import community as community_louvain
+
     LOUVAIN_AVAILABLE = True
 except ImportError:
     LOUVAIN_AVAILABLE = False
@@ -41,6 +42,7 @@ except ImportError:
 try:
     from sklearn.cluster import SpectralClustering
     from sklearn.metrics import silhouette_score
+
     SKLEARN_AVAILABLE = True
 except ImportError:
     SKLEARN_AVAILABLE = False
@@ -81,19 +83,41 @@ def detect_communities(G: nx.Graph) -> Tuple[dict, float]:
 # ── Graph Metrics ─────────────────────────────────────────────────────────
 
 def graph_summary(G: nx.Graph, name: str) -> dict:
-    largest_cc = max(nx.connected_components(G), key=len) if G.nodes else set()
-    G_lcc = G.subgraph(largest_cc)
+    """
+    Basic topology metrics for a network. Robust to empty / edge-less /
+    disconnected graphs.
+    """
+    n_nodes = G.number_of_nodes()
+    n_edges = G.number_of_edges()
+
+    if n_nodes == 0:
+        return {
+            "network": name, "n_nodes": 0, "n_edges": 0,
+            "density": 0.0, "n_components": 0,
+            "largest_component_size": 0, "avg_clustering": 0.0,
+            "avg_path_length_lcc": None,
+        }
+
+    try:
+        components = list(nx.connected_components(G))
+        largest_cc = max(components, key=len) if components else set()
+    except Exception:
+        components = []
+        largest_cc = set()
+
+    G_lcc = G.subgraph(largest_cc) if largest_cc else nx.Graph()
+
     return {
         "network": name,
-        "n_nodes": G.number_of_nodes(),
-        "n_edges": G.number_of_edges(),
+        "n_nodes": n_nodes,
+        "n_edges": n_edges,
         "density": round(nx.density(G), 6),
-        "n_components": nx.number_connected_components(G),
+        "n_components": len(components),
         "largest_component_size": len(largest_cc),
-        "avg_clustering": round(nx.average_clustering(G, weight="weight"), 4),
+        "avg_clustering": round(nx.average_clustering(G, weight="weight"), 4) if n_edges else 0.0,
         "avg_path_length_lcc": (
             round(nx.average_shortest_path_length(G_lcc), 4)
-            if len(G_lcc) > 1 and len(G_lcc) < 1000
+            if 1 < len(G_lcc) < 1000
             else None
         ),
     }
@@ -208,7 +232,8 @@ def build_concept_cooccurrence_network(df: pd.DataFrame, top_n: int = 100) -> nx
         G.add_node(name, frequency=count)
 
     for _, row in df.iterrows():
-        names = [c.get("name", "") for c in safe_list(row.get("concepts")) if isinstance(c, dict) and c.get("name") in top_concepts]
+        names = [c.get("name", "") for c in safe_list(row.get("concepts")) if
+                 isinstance(c, dict) and c.get("name") in top_concepts]
         for a, b in combinations(sorted(set(names)), 2):
             if G.has_edge(a, b):
                 G[a][b]["weight"] += 1
@@ -221,9 +246,9 @@ def build_concept_cooccurrence_network(df: pd.DataFrame, top_n: int = 100) -> nx
 # ── Bridge Detection ──────────────────────────────────────────────────────
 
 def find_interdisciplinary_bridges(
-    G: nx.Graph,
-    domain_map: Dict[str, str],
-    percentile: float = 75.0,
+        G: nx.Graph,
+        domain_map: Dict[str, str],
+        percentile: float = 75.0,
 ) -> List[dict]:
     """
     Identify nodes with high betweenness centrality connected to multiple domains.
@@ -260,20 +285,141 @@ def find_interdisciplinary_bridges(
 
 # ── Cross-Domain Co-Citation Matrix ──────────────────────────────────────
 
+def _coerce_edge_weight(data: Any) -> float:
+    """Return a float edge weight, falling back to 1.0 on missing or corrupt data."""
+    raw = data.get("weight", 1) if isinstance(data, dict) else 1
+    try:
+        return float(raw) if raw is not None else 1.0
+    except (TypeError, ValueError):
+        return 1.0
+
+
 def cross_domain_matrix(G_bibcoupling: nx.Graph, domain_map: Dict[str, str]) -> dict:
-    """Compute domain × domain edge weight matrix."""
+    """Compute domain × domain edge weight matrix (raw counts only)."""
     domains = ["Political Science", "Economics", "Sociology", "Other"]
     matrix = {d: {d2: 0 for d2 in domains} for d in domains}
 
     for a, b, data in G_bibcoupling.edges(data=True):
         da = domain_map.get(a, "Other")
         db = domain_map.get(b, "Other")
-        w = data.get("weight", 1)
+        w = _coerce_edge_weight(data)
         matrix[da][db] = matrix[da].get(db, 0) + w
         if da != db:
             matrix[db][da] = matrix[db].get(da, 0) + w
 
     return matrix
+
+
+def enhanced_cross_domain_analysis(G_bibcoupling: nx.Graph, domain_map: Dict[str, str]) -> dict:
+    """
+    Compute multiple interpretable coupling metrics between domains.
+
+    Implements 4 key metrics:
+    1. Raw coupling matrix (baseline)
+    2. Association Strength (AS) - normalized by expected random coupling
+    3. Coupling Strength Index (CSI) - ratio to minimum domain size
+    4. Jaccard Similarity - proportion of shared intellectual foundation
+    5. Inter-Domain Coupling Ratio - proportion that crosses domains
+
+    Returns dict with all metrics and interpretation guide.
+    """
+    present = set(domain_map.values())
+    if any(d not in present for d in domain_map.values() if d is None or d == "Other"):
+        present.add("Other")
+    domains = sorted(present)
+
+    # Initialize matrices
+    raw_matrix = {d: {d2: 0 for d2 in domains} for d in domains}
+    domain_refs = {d: set() for d in domains}  # Track unique papers per domain
+    domain_coupled = {d: set() for d in domains}  # Track coupled papers per domain
+
+    # First pass: accumulate raw counts and track references
+    for a, b, data in G_bibcoupling.edges(data=True):
+        da = domain_map.get(a, "Other")
+        db = domain_map.get(b, "Other")
+        w = _coerce_edge_weight(data)
+        raw_matrix[da][db] = raw_matrix[da].get(db, 0) + w
+        domain_refs[da].add(a)
+        domain_refs[db].add(b)
+        domain_coupled[da].add(b)
+        domain_coupled[db].add(a)
+
+    # Calculate degree sums for each domain
+    domain_degrees = {d: sum(raw_matrix[d].values()) for d in domains}
+    total_weight = sum(domain_degrees.values())
+
+    # Compute normalized metrics
+    as_matrix = {}  # Association Strength
+    csi_matrix = {}  # Coupling Strength Index
+    jaccard_matrix = {}  # Jaccard Similarity
+
+    for d1 in domains:
+        as_matrix[d1] = {}
+        csi_matrix[d1] = {}
+        jaccard_matrix[d1] = {}
+
+        degree_d1 = domain_degrees[d1]
+
+        for d2 in domains:
+            observed = raw_matrix[d1][d2]
+            degree_d2 = domain_degrees[d2]
+
+            # 1. Association Strength (AS)
+            # AS = observed / expected
+            # AS > 1.0 means stronger than random
+            if total_weight > 0:
+                expected = (degree_d1 * degree_d2) / total_weight
+                as_value = observed / expected if expected > 0 else 0.0
+            else:
+                as_value = 0.0
+            as_matrix[d1][d2] = round(as_value, 3)
+
+            # 2. Coupling Strength Index (CSI)
+            # CSI = observed / min(degree_d1, degree_d2)
+            min_degree = min(degree_d1, degree_d2) if min(degree_d1, degree_d2) > 0 else 1
+            csi_value = observed / min_degree
+            csi_matrix[d1][d2] = round(csi_value, 3)
+
+            # 3. Jaccard Similarity
+            # Jaccard = |intersection| / |union|
+            if d1 == d2:
+                jaccard_matrix[d1][d2] = 1.0
+            else:
+                union_refs = len(domain_refs[d1] | domain_refs[d2])
+                intersection_refs = len(domain_refs[d1] & domain_refs[d2])
+                jaccard_value = intersection_refs / union_refs if union_refs > 0 else 0.0
+                jaccard_matrix[d1][d2] = round(jaccard_value, 3)
+
+    # Calculate Inter-Domain Coupling Ratio
+    inter_domain_edges = sum(
+        raw_matrix[d1][d2]
+        for d1 in domains
+        for d2 in domains
+        if d1 != d2
+    )
+    idcr_value = inter_domain_edges / total_weight if total_weight > 0 else 0.0
+
+    return {
+        "raw_coupling_matrix": raw_matrix,
+        "association_strength": as_matrix,
+        "coupling_strength_index": csi_matrix,
+        "jaccard_similarity": jaccard_matrix,
+        "inter_domain_ratio": round(idcr_value, 3),
+        "interpretation": {
+            "raw_coupling_matrix": "Absolute count of shared references between domains",
+            "association_strength": "AS > 1.0 = stronger coupling than random; AS ≈ 1.0 = random; AS < 1.0 = weaker",
+            "coupling_strength_index": "Ratio of shared refs to smallest domain (0-1 normalized approximation)",
+            "jaccard_similarity": "Proportion of shared intellectual foundation (0=nothing, 1=identical)",
+            "inter_domain_ratio": "Proportion of total coupling that crosses domain boundaries (0-1)"
+        },
+        "metadata": {
+            "total_domains": len(domains),
+            "domains": sorted(domains),
+            "total_coupling_strength": total_weight,
+            "n_inter_domain_edges": inter_domain_edges,
+            "n_intra_domain_edges": total_weight - inter_domain_edges
+        }
+    }
 
 
 # ── Save network safely ───────────────────────────────────────────────────
@@ -341,7 +487,7 @@ def apply_vos_thresholding(G: nx.Graph, min_assoc_strength: float = 1.0) -> nx.G
 # ── Sub-field Network Analysis ────────────────────────────────────────────
 
 def build_subfield_cocitation_network(df: pd.DataFrame, subcategory: str,
-                                    min_cocitations: int = 2) -> nx.Graph:
+                                      min_cocitations: int = 2) -> nx.Graph:
     """
     Build co-citation network for works within a specific sub-category.
     This allows analysis of citation patterns within sub-fields.
@@ -358,7 +504,7 @@ def build_subfield_cocitation_network(df: pd.DataFrame, subcategory: str,
 
 
 def build_subfield_bibcoupling_network(df: pd.DataFrame, subcategory: str,
-                                     min_shared: int = 2) -> nx.Graph:
+                                       min_shared: int = 2) -> nx.Graph:
     """
     Build bibliographic coupling network for works within a specific sub-category.
     """
@@ -378,7 +524,7 @@ def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: floa
     Falls back to Louvain if graph is severely disconnected or sklearn unavailable.
     """
     logger = logging.getLogger("network_analysis")
-    
+
     if not SKLEARN_AVAILABLE or G.number_of_nodes() < 10:
         return detect_communities(G)[0]
 
@@ -480,7 +626,7 @@ def vos_layout(G: nx.Graph, dim: int = 2, max_iter: int = 50) -> dict:
         # Use force-directed layout as approximation of VOS mapping
         # In VOSviewer, items are positioned based on association strengths
         pos = nx.spring_layout(G, dim=dim, weight="weight", iterations=max_iter,
-                             seed=42, scale=100)
+                               seed=42, scale=100)
         return pos
     except Exception:
         return nx.random_layout(G, dim=dim)
@@ -542,9 +688,9 @@ def main():
     parser = argparse.ArgumentParser(description="Network Analysis Agent")
     parser.add_argument("--config", default="config/config.yaml")
     parser.add_argument("--vos_threshold", type=float, default=None,
-                       help="Minimum association strength threshold (VOSviewer style). Overrides config.")
+                        help="Minimum association strength threshold (VOSviewer style). Overrides config.")
     parser.add_argument("--subfield_analysis", action="store_true",
-                       help="Perform sub-field network analysis. Overrides config.")
+                        help="Perform sub-field network analysis. Overrides config.")
     args = parser.parse_args()
 
     config = load_yaml(args.config)
@@ -552,9 +698,9 @@ def main():
     clustering_cfg = config.get("clustering", {})
 
     # Resolve thresholds: CLI flag > config > default
-    vos_threshold     = args.vos_threshold if args.vos_threshold is not None else net_cfg.get("vos_threshold", 1.0)
+    vos_threshold = args.vos_threshold if args.vos_threshold is not None else net_cfg.get("vos_threshold", 1.0)
     subfield_analysis = args.subfield_analysis or net_cfg.get("subfield_analysis", False)
-    lcc_threshold     = clustering_cfg.get("lcc_threshold", 0.95)
+    lcc_threshold = clustering_cfg.get("lcc_threshold", 0.95)
 
     logger = setup_logger("network_analysis", config["paths"]["logs"])
     logger.info("=== Network Analysis Agent starting ===")
@@ -571,9 +717,9 @@ def main():
 
     # Auto-scale min_shared thresholds from config or corpus size
     cfg_min_shared = net_cfg.get("min_shared_refs")
-    cfg_min_cocit  = net_cfg.get("min_cocitations")
-    min_shared    = cfg_min_shared if cfg_min_shared is not None else _auto_min_shared(n)
-    min_cocit     = cfg_min_cocit  if cfg_min_cocit  is not None else _auto_min_shared(n)
+    cfg_min_cocit = net_cfg.get("min_cocitations")
+    min_shared = cfg_min_shared if cfg_min_shared is not None else _auto_min_shared(n)
+    min_cocit = cfg_min_cocit if cfg_min_cocit is not None else _auto_min_shared(n)
     logger.info("Thresholds — min_shared_refs=%d, min_cocitations=%d  (corpus n=%d)",
                 min_shared, min_cocit, n)
 
@@ -592,7 +738,7 @@ def main():
         G_bib_filtered = apply_vos_thresholding(G_bib_norm, vos_threshold)
 
         logger.info("  After VOS filtering: %d nodes, %d edges",
-                   G_bib_filtered.number_of_nodes(), G_bib_filtered.number_of_edges())
+                    G_bib_filtered.number_of_nodes(), G_bib_filtered.number_of_edges())
 
         # Save both versions
         save_network(G_bib, f"{net_dir}/bibcoupling_network_raw.graphml")
@@ -614,13 +760,37 @@ def main():
         metrics["bibcoupling"]["vos_threshold"] = vos_threshold
         metrics["cross_domain_matrix"] = cross_domain_matrix(G_bib_analysis, domain_map)
 
+        # Add enhanced cross-domain metrics (interpretable alternatives to raw counts)
+        metrics["enhanced_cross_domain_metrics"] = enhanced_cross_domain_analysis(G_bib_analysis, domain_map)
+        logger.info("Computed enhanced coupling metrics: AS, CSI, Jaccard, IDCR")
+
         # Cluster assignments with enhanced metrics
         cluster_rows = []
-        bc = nx.betweenness_centrality(G_bib_analysis, weight="weight", normalized=True)
-        pr = nx.pagerank(G_bib_analysis, weight="weight")
-        ec = nx.eigenvector_centrality(G_bib_analysis, weight="weight", max_iter=1000)
+
+        # Calculate centrality measures with error handling
+        try:
+            bc = nx.betweenness_centrality(G_bib_analysis, weight="weight", normalized=True)
+        except Exception as e:
+            logger.warning("Betweenness centrality failed: %s, using zeros", e)
+            bc = {n: 0.0 for n in G_bib_analysis.nodes()}
+
+        try:
+            pr = nx.pagerank(G_bib_analysis, weight="weight")
+        except Exception as e:
+            logger.warning("PageRank failed: %s, using zeros", e)
+            pr = {n: 0.0 for n in G_bib_analysis.nodes()}
+
+        try:
+            ec = nx.eigenvector_centrality(G_bib_analysis, weight="weight", max_iter=1000)
+        except Exception as e:
+            logger.warning("Eigenvector centrality failed: %s, using zeros", e)
+            ec = {n: 0.0 for n in G_bib_analysis.nodes()}
 
         for node in G_bib_analysis.nodes():
+            # Safe degree access with node existence check
+            degree_val = G_bib_analysis.degree(node) if node in G_bib_analysis else 0
+            weighted_degree_val = G_bib_analysis.degree(node, weight="weight") if node in G_bib_analysis else 0
+
             cluster_rows.append({
                 "work_id": node,
                 "domain": domain_map.get(node, "Other"),
@@ -630,8 +800,9 @@ def main():
                 "betweenness_centrality": round(bc.get(node, 0.0), 6),
                 "pagerank": round(pr.get(node, 0.0), 8),
                 "eigenvector_centrality": round(ec.get(node, 0.0), 6),
-                "degree": G_bib_analysis.degree(node),
-                "weighted_degree": G_bib_analysis.degree(node, weight="weight"),
+                "degree": degree_val,
+                "weighted_degree": round(weighted_degree_val, 2) if isinstance(weighted_degree_val,
+                                                                               (int, float)) else 0,
             })
 
         df_clusters = pd.DataFrame(cluster_rows)
@@ -651,7 +822,7 @@ def main():
         G_cc_filtered = apply_vos_thresholding(G_cc_norm, vos_threshold)
 
         logger.info("  After VOS filtering: %d nodes, %d edges",
-                   G_cc_filtered.number_of_nodes(), G_cc_filtered.number_of_edges())
+                    G_cc_filtered.number_of_nodes(), G_cc_filtered.number_of_edges())
 
         # Save both versions
         save_network(G_cc, f"{net_dir}/cocitation_network_raw.graphml")

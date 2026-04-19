@@ -1,26 +1,26 @@
 {
-  "timestamp": "2026-04-14T18:08:41.527565+00:00",
+  "timestamp": "2026-04-16T22:57:40.235357+00:00",
   "n_records": 9999,
   "backend": "specter2:proximity",
   "domain_distribution": {
-    "Political Science": 5589,
-    "Sociology": 1898,
-    "Other": 1308,
-    "Economics": 1204
+    "Political Science": 5587,
+    "Sociology": 1900,
+    "Other": 1306,
+    "Economics": 1206
   },
   "subcategory_distribution": {
-    "political_theory": 2139,
-    "interdisciplinary": 1170,
+    "political_theory": 2137,
+    "interdisciplinary": 1168,
     "european_politics": 1121,
-    "media_communication": 1073,
-    "radical_right": 854,
-    "financial_crisis": 614,
-    "culture_values": 553,
+    "media_communication": 1074,
+    "radical_right": 855,
+    "financial_crisis": 615,
+    "culture_values": 554,
     "democratic_theory": 505,
     "latin_american_politics": 444,
-    "electoral_politics": 334,
+    "electoral_politics": 333,
     "redistribution": 266,
-    "trade_globalization": 231,
+    "trade_globalization": 232,
     "comparative_politics": 192,
     "identity_politics": 191,
     "political_economy": 93,
@@ -31,40 +31,40 @@
     "psychology": 16
   },
   "source_distribution": {
-    "embedding": 7777,
+    "embedding": 7776,
     "rule": 2107,
-    "llm": 115
+    "llm": 116
   },
   "confidence_mean": 0.8954,
   "confidence_median": 0.8938,
   "outlier_count": 0,
   "routing_stats": {
     "stage2_high": {
-      "count": 7777,
-      "rate": 0.7778
+      "count": 7776,
+      "rate": 0.7777
     },
     "stage1": {
       "count": 2107,
       "rate": 0.2107
     },
     "stage3": {
-      "count": 115,
-      "rate": 0.0115
+      "count": 116,
+      "rate": 0.0116
     }
   },
   "feedback_loop_updates": {
-    "Political Science::political_theory": 2040,
-    "Sociology::media_communication": 1061,
-    "Sociology::culture_values": 528,
-    "Other::interdisciplinary": 1148,
-    "Political Science::electoral_politics": 258,
-    "Economics::financial_crisis": 599,
+    "Political Science::political_theory": 2038,
+    "Sociology::media_communication": 1062,
+    "Sociology::culture_values": 529,
+    "Other::interdisciplinary": 1146,
+    "Political Science::electoral_politics": 257,
+    "Economics::financial_crisis": 600,
     "Political Science::european_politics": 1001,
     "Economics::redistribution": 255,
-    "Political Science::radical_right": 839,
+    "Political Science::radical_right": 840,
     "Political Science::democratic_theory": 461,
-    "Economics::trade_globalization": 225,
-    "Political Science::latin_american_politics": 428,
+    "Economics::trade_globalization": 226,
+    "Political Science::latin_american_politics": 427,
     "Other::geography": 54,
     "Political Science::comparative_politics": 170,
     "Economics::political_economy": 71,
@@ -74,6 +74,6 @@
     "Other::international_relations": 33,
     "Other::history": 17
   },
-  "deterministic_rate": 0.9885,
-  "llm_call_rate": 0.0115
+  "deterministic_rate": 0.9884,
+  "llm_call_rate": 0.0116
 }

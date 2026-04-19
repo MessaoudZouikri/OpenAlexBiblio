@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from src.utils.io_utils import load_parquet, load_json, save_json, load_yaml, latest_file
 from src.utils.logging_utils import setup_logger
+from src.utils.llm_client import VALID_DOMAINS, VALID_SUBCATEGORIES
 
 
 # ── Shared helpers ────────────────────────────────────────────────────────
@@ -225,16 +226,6 @@ def validate_statistical(config: dict) -> dict:
 # ═══════════════════════════════════════════════════════════════════════════
 # CLASSIFICATION VALIDATOR
 # ═══════════════════════════════════════════════════════════════════════════
-
-VALID_DOMAINS = {"Political Science", "Economics", "Sociology", "Other"}
-VALID_SUBCATEGORIES = {
-    "Political Science": {"comparative_politics", "political_theory", "electoral_politics",
-                          "democratic_theory", "radical_right", "latin_american_politics", "european_politics"},
-    "Economics": {"political_economy", "redistribution", "trade_globalization", "financial_crisis"},
-    "Sociology": {"social_movements", "identity_politics", "media_communication", "culture_values"},
-    "Other": {"international_relations", "history", "psychology", "geography", "interdisciplinary"},
-}
-
 
 def validate_classification(config: dict) -> dict:
     logger = setup_logger("classification_validator", config["paths"]["logs"])

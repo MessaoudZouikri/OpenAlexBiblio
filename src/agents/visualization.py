@@ -165,25 +165,136 @@ def fig_concept_landscape(concepts: dict, fig_dir: str) -> None:
 
 
 def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
-    matrix = metrics.get("cross_domain_matrix")
-    if not matrix:
-        return
-    domains = ["Political Science", "Economics", "Sociology", "Other"]
-    data = np.array([[matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains])
-    if data.sum() == 0:
+    """
+    Generate 4-panel heatmap visualization for cross-domain coupling metrics.
+
+    Panels:
+    1. Association Strength (AS) - normalized by expected random coupling
+    2. Coupling Strength Index (CSI) - ratio to minimum domain size
+    3. Jaccard Similarity - shared intellectual foundation (0-1)
+    4. Raw Coupling Counts - baseline absolute counts
+
+    Uses enhanced metrics if available, falls back to raw matrix only.
+    """
+    # Try to get enhanced metrics first, fall back to raw matrix
+    has_enhanced = "enhanced_cross_domain_metrics" in metrics or "association_strength" in metrics
+
+    if has_enhanced:
+        # New enhanced metrics format
+        enhanced = metrics.get("enhanced_cross_domain_metrics", metrics)
+        domains = enhanced.get("metadata", {}).get("domains",
+                ["Political Science", "Economics", "Sociology", "Other"])
+
+        raw_matrix = enhanced.get("raw_coupling_matrix", {})
+        as_matrix = enhanced.get("association_strength", {})
+        csi_matrix = enhanced.get("coupling_strength_index", {})
+        jaccard_matrix = enhanced.get("jaccard_similarity", {})
+    else:
+        # Fall back to simple raw matrix
+        matrix = metrics.get("cross_domain_matrix")
+        if not matrix:
+            return
+        domains = ["Political Science", "Economics", "Sociology", "Other"]
+        raw_matrix = matrix
+        as_matrix = None
+        csi_matrix = None
+        jaccard_matrix = None
+
+    # Convert matrices to numpy arrays
+    raw_data = np.array([[raw_matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains])
+    if raw_data.sum() == 0:
         return
 
+    # Create 4-panel heatmap if enhanced metrics available
+    if has_enhanced and as_matrix:
+        fig, axes = plt.subplots(2, 2, figsize=(14, 12))
+
+        # Panel 1: Association Strength (log scale)
+        as_data = np.array([[as_matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains])
+        ax = axes[0, 0]
+        im1 = ax.imshow(as_data, cmap="RdBu_r", aspect="auto", vmin=0.5, vmax=2.0)
+        ax.axhline(y=-0.5, color='black', linewidth=0.5)
+        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.set_xticks(range(len(domains)))
+        ax.set_yticks(range(len(domains)))
+        ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
+        ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
+        ax.set_title("Association Strength (AS)\nAS > 1.0 = Stronger than random", fontsize=11, weight='bold')
+        for i in range(len(domains)):
+            for j in range(len(domains)):
+                ax.text(j, i, f"{as_data[i, j]:.2f}", ha="center", va="center",
+                       color="white" if abs(as_data[i, j] - 1.0) > 0.4 else "black", fontsize=8)
+        plt.colorbar(im1, ax=ax, label="AS Value")
+
+        # Panel 2: Coupling Strength Index
+        csi_data = np.array([[csi_matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains])
+        ax = axes[0, 1]
+        im2 = ax.imshow(csi_data, cmap="YlOrRd", aspect="auto")
+        ax.axhline(y=-0.5, color='black', linewidth=0.5)
+        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.set_xticks(range(len(domains)))
+        ax.set_yticks(range(len(domains)))
+        ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
+        ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
+        ax.set_title("Coupling Strength Index (CSI)\nShared refs / min domain size", fontsize=11, weight='bold')
+        for i in range(len(domains)):
+            for j in range(len(domains)):
+                ax.text(j, i, f"{csi_data[i, j]:.2f}", ha="center", va="center",
+                       color="white" if csi_data[i, j] > csi_data.max() * 0.6 else "black", fontsize=8)
+        plt.colorbar(im2, ax=ax, label="CSI Value")
+
+        # Panel 3: Jaccard Similarity
+        jaccard_data = np.array([[jaccard_matrix.get(d1, {}).get(d2, 1.0 if d1 == d2 else 0)
+                                 for d2 in domains] for d1 in domains])
+        ax = axes[1, 0]
+        im3 = ax.imshow(jaccard_data, cmap="Blues", aspect="auto", vmin=0, vmax=1)
+        ax.axhline(y=-0.5, color='black', linewidth=0.5)
+        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.set_xticks(range(len(domains)))
+        ax.set_yticks(range(len(domains)))
+        ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
+        ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
+        ax.set_title("Jaccard Similarity\nShared intellectual foundation (0-1)", fontsize=11, weight='bold')
+        for i in range(len(domains)):
+            for j in range(len(domains)):
+                ax.text(j, i, f"{jaccard_data[i, j]:.2f}", ha="center", va="center",
+                       color="white" if jaccard_data[i, j] > 0.5 else "black", fontsize=8)
+        plt.colorbar(im3, ax=ax, label="Jaccard Value")
+
+        # Panel 4: Raw Coupling Counts
+        ax = axes[1, 1]
+        im4 = ax.imshow(raw_data, cmap="Greys", aspect="auto")
+        ax.axhline(y=-0.5, color='black', linewidth=0.5)
+        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.set_xticks(range(len(domains)))
+        ax.set_yticks(range(len(domains)))
+        ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
+        ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
+        ax.set_title("Raw Coupling Counts\nAbsolute shared references", fontsize=11, weight='bold')
+        for i in range(len(domains)):
+            for j in range(len(domains)):
+                ax.text(j, i, str(int(raw_data[i, j])), ha="center", va="center",
+                       color="white" if raw_data[i, j] > raw_data.max() * 0.6 else "black", fontsize=8)
+        plt.colorbar(im4, ax=ax, label="Count")
+
+        fig.suptitle("Cross-Domain Bibliographic Coupling Analysis\n(Multiple Interpretable Metrics)",
+                    fontsize=13, weight='bold', y=0.995)
+        plt.tight_layout()
+        plt.savefig(f"{fig_dir}/cross_domain_heatmap_enhanced.png", dpi=150, bbox_inches="tight")
+        plt.close()
+
+    # Also save simple version for backward compatibility
     fig, ax = plt.subplots(figsize=(7, 6))
-    im = ax.imshow(data, cmap="Blues", aspect="auto")
+    im = ax.imshow(raw_data, cmap="Blues", aspect="auto")
     ax.set_xticks(range(len(domains)))
     ax.set_yticks(range(len(domains)))
     ax.set_xticklabels([d[:8] for d in domains], rotation=45, ha="right")
     ax.set_yticklabels([d[:8] for d in domains])
-    ax.set_title("Cross-Domain Bibliographic Coupling Matrix")
+    ax.set_title("Cross-Domain Bibliographic Coupling Matrix (Raw Counts)")
     for i in range(len(domains)):
         for j in range(len(domains)):
-            ax.text(j, i, str(int(data[i, j])), ha="center", va="center",
-                    color="white" if data[i, j] > data.max() * 0.6 else "black", fontsize=9)
+            ax.text(j, i, str(int(raw_data[i, j])), ha="center", va="center",
+                   color="white" if raw_data[i, j] > raw_data.max() * 0.6 else "black", fontsize=9)
     plt.colorbar(im, ax=ax, label="Shared References")
     plt.tight_layout()
     plt.savefig(f"{fig_dir}/cross_domain_heatmap.png", dpi=150, bbox_inches="tight")
@@ -200,11 +311,6 @@ def generate_html_report(fig_dir: str, config: dict) -> None:
             "<h1>Bibliometric Pipeline — Populism Literature</h1>",
             f"<p><em>Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}</em></p>",
             "<p>Mode: " + config["pipeline"]["mode"] + "</p>"]
-    for fig in sorted(figures):
-        title = fig.stem.replace("_", " ").title()
-        html.append(f"<h2>{title}</h2>")
-        html.append(f"<img src='{fig.name}' alt='{title}'>")
-    html.append("</body></html>")
     report_path = Path(f"{config['paths']['outputs']}/reports/report.html")
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_dir = report_path.parent

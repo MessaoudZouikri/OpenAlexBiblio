@@ -1,101 +1,227 @@
 {
-  "timestamp": "2026-04-14T21:05:03.734530+00:00",
+  "timestamp": "2026-04-16T22:58:11.095952+00:00",
   "bibcoupling": {
     "network": "bibcoupling",
-    "n_nodes": 5610,
-    "n_edges": 468011,
-    "density": 0.029747,
+    "n_nodes": 5612,
+    "n_edges": 468093,
+    "density": 0.029731,
     "n_components": 46,
-    "largest_component_size": 5516,
+    "largest_component_size": 5518,
     "avg_clustering": 0.0011,
     "avg_path_length_lcc": null,
-    "avg_degree": 166.85,
+    "avg_degree": 166.82,
     "median_degree": 36,
-    "degree_variance": 60398.18,
-    "avg_edge_weight": 355.3,
+    "degree_variance": 60381.42,
+    "avg_edge_weight": 354.51,
     "median_edge_weight": 3.4,
-    "weight_variance": 134372958.94,
-    "degree_centralization": 0.2287,
-    "modularity": 0.9397,
+    "weight_variance": 133667986.82,
+    "degree_centralization": 0.2281,
+    "modularity": 0.9392,
     "vos_threshold": 1.0
   },
   "cross_domain_matrix": {
     "Political Science": {
-      "Political Science": 47600746.44127795,
-      "Economics": 20109611.194674466,
-      "Sociology": 24169954.903390758,
-      "Other": 16767925.36722594
+      "Political Science": 47404745.00989412,
+      "Economics": 19943594.637651764,
+      "Sociology": 24175997.97962351,
+      "Other": 16765738.005354317
     },
     "Economics": {
-      "Political Science": 20109611.194674466,
-      "Economics": 10336253.490054127,
-      "Sociology": 6102643.784793389,
-      "Other": 8482326.42077968
+      "Political Science": 19943594.637651764,
+      "Economics": 10343785.397243729,
+      "Sociology": 6107085.7943395525,
+      "Other": 8483536.671991568
     },
     "Sociology": {
-      "Political Science": 24169954.903390758,
-      "Economics": 6102643.784793389,
-      "Sociology": 21455033.91358537,
-      "Other": 7599724.370412396
+      "Political Science": 24175997.97962351,
+      "Economics": 6107085.7943395525,
+      "Sociology": 21460146.26833827,
+      "Other": 7600384.726424383
     },
     "Other": {
-      "Political Science": 16767925.36722594,
-      "Economics": 8482326.42077968,
-      "Sociology": 7599724.370412396,
-      "Other": 3658130.057826697
+      "Political Science": 16765738.005354317,
+      "Economics": 8483536.671991568,
+      "Sociology": 7600384.726424383,
+      "Other": 3657636.262224136
+    }
+  },
+  "enhanced_cross_domain_metrics": {
+    "raw_coupling_matrix": {
+      "Economics": {
+        "Economics": 10343785.397243729,
+        "Other": 6667507.492537335,
+        "Political Science": 10644212.824273147,
+        "Sociology": 2887778.152482183
+      },
+      "Other": {
+        "Economics": 1816029.1794542258,
+        "Other": 3657636.262224136,
+        "Political Science": 8465749.924159732,
+        "Sociology": 3705417.791914514
+      },
+      "Political Science": {
+        "Economics": 9299381.81337867,
+        "Other": 8299988.081194551,
+        "Political Science": 47404745.00989412,
+        "Sociology": 11640974.289920302
+      },
+      "Sociology": {
+        "Economics": 3219307.6418573684,
+        "Other": 3894966.9345099255,
+        "Political Science": 12535023.689703155,
+        "Sociology": 21460146.26833827
+      }
+    },
+    "association_strength": {
+      "Economics": {
+        "Economics": 1.84,
+        "Other": 2.053,
+        "Political Science": 0.755,
+        "Sociology": 0.382
+      },
+      "Other": {
+        "Economics": 0.559,
+        "Other": 1.95,
+        "Political Science": 1.039,
+        "Sociology": 0.848
+      },
+      "Political Science": {
+        "Economics": 0.659,
+        "Other": 1.018,
+        "Political Science": 1.339,
+        "Sociology": 0.613
+      },
+      "Sociology": {
+        "Economics": 0.425,
+        "Other": 0.891,
+        "Political Science": 0.66,
+        "Sociology": 2.107
+      }
+    },
+    "coupling_strength_index": {
+      "Economics": {
+        "Economics": 0.339,
+        "Other": 0.378,
+        "Political Science": 0.348,
+        "Sociology": 0.095
+      },
+      "Other": {
+        "Economics": 0.103,
+        "Other": 0.207,
+        "Political Science": 0.48,
+        "Sociology": 0.21
+      },
+      "Political Science": {
+        "Economics": 0.304,
+        "Other": 0.47,
+        "Political Science": 0.618,
+        "Sociology": 0.283
+      },
+      "Sociology": {
+        "Economics": 0.105,
+        "Other": 0.221,
+        "Political Science": 0.305,
+        "Sociology": 0.522
+      }
+    },
+    "jaccard_similarity": {
+      "Economics": {
+        "Economics": 1.0,
+        "Other": 0.0,
+        "Political Science": 0.0,
+        "Sociology": 0.0
+      },
+      "Other": {
+        "Economics": 0.0,
+        "Other": 1.0,
+        "Political Science": 0.0,
+        "Sociology": 0.0
+      },
+      "Political Science": {
+        "Economics": 0.0,
+        "Other": 0.0,
+        "Political Science": 1.0,
+        "Sociology": 0.0
+      },
+      "Sociology": {
+        "Economics": 0.0,
+        "Other": 0.0,
+        "Political Science": 0.0,
+        "Sociology": 1.0
+      }
+    },
+    "inter_domain_ratio": 0.501,
+    "interpretation": {
+      "raw_coupling_matrix": "Absolute count of shared references between domains",
+      "association_strength": "AS > 1.0 = stronger coupling than random; AS ≈ 1.0 = random; AS < 1.0 = weaker",
+      "coupling_strength_index": "Ratio of shared refs to smallest domain (0-1 normalized approximation)",
+      "jaccard_similarity": "Proportion of shared intellectual foundation (0=nothing, 1=identical)",
+      "inter_domain_ratio": "Proportion of total coupling that crosses domain boundaries (0-1)"
+    },
+    "metadata": {
+      "total_domains": 4,
+      "domains": [
+        "Economics",
+        "Other",
+        "Political Science",
+        "Sociology"
+      ],
+      "total_coupling_strength": 165942650.75308537,
+      "n_inter_domain_edges": 83076337.8153851,
+      "n_intra_domain_edges": 82866312.93770027
     }
   },
   "cocitation": {
     "network": "cocitation",
-    "n_nodes": 12298,
-    "n_edges": 170876,
-    "density": 0.00226,
-    "n_components": 326,
-    "largest_component_size": 11542,
-    "avg_clustering": 0.0034,
+    "n_nodes": 12307,
+    "n_edges": 171016,
+    "density": 0.002258,
+    "n_components": 327,
+    "largest_component_size": 11549,
+    "avg_clustering": 0.0033,
     "avg_path_length_lcc": null,
     "avg_degree": 27.79,
     "median_degree": 4,
-    "degree_variance": 8924.81,
-    "avg_edge_weight": 2033.9,
-    "median_edge_weight": 6.4,
-    "weight_variance": 599565761.0,
-    "degree_centralization": 0.329,
-    "modularity": 0.9877,
+    "degree_variance": 8922.43,
+    "avg_edge_weight": 2038.42,
+    "median_edge_weight": 6.41,
+    "weight_variance": 602546754.4,
+    "degree_centralization": 0.3291,
+    "modularity": 0.9878,
     "vos_threshold": 1.0
   },
   "coauthorship": {
     "network": "coauthorship",
-    "n_nodes": 2305,
-    "n_edges": 2511,
+    "n_nodes": 2301,
+    "n_edges": 2502,
     "density": 0.000946,
-    "n_components": 1015,
+    "n_components": 1012,
     "largest_component_size": 772,
-    "avg_clustering": 0.0282,
-    "avg_path_length_lcc": 6.6956,
-    "avg_degree": 2.18,
+    "avg_clustering": 0.0432,
+    "avg_path_length_lcc": 6.7146,
+    "avg_degree": 2.17,
     "median_degree": 1,
     "degree_variance": 12.92,
-    "avg_edge_weight": 1.7,
+    "avg_edge_weight": 1.69,
     "median_edge_weight": 1.0,
-    "weight_variance": 1.49,
+    "weight_variance": 1.32,
     "degree_centralization": 0.0148,
-    "modularity": 0.9122
+    "modularity": 0.9097
   },
   "concept_cooccurrence": {
     "network": "concept_cooccurrence",
     "n_nodes": 100,
-    "n_edges": 1733,
-    "density": 0.350101,
+    "n_edges": 1735,
+    "density": 0.350505,
     "n_components": 1,
     "largest_component_size": 100,
     "avg_clustering": 0.032,
-    "avg_path_length_lcc": 1.6507,
-    "avg_degree": 34.66,
+    "avg_path_length_lcc": 1.6505,
+    "avg_degree": 34.7,
     "median_degree": 34,
-    "degree_variance": 65.52,
+    "degree_variance": 65.47,
     "avg_edge_weight": 1.69,
-    "median_edge_weight": 1.25,
+    "median_edge_weight": 1.24,
     "weight_variance": 2.39,
     "degree_centralization": 0.6768,
     "clustering_std": 0.0067,

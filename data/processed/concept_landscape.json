@@ -2,27 +2,27 @@
   "top_50_concepts": [
     {
       "concept": "Political science",
-      "count": 9471
+      "count": 9470
     },
     {
       "concept": "Law",
-      "count": 9074
+      "count": 9072
     },
     {
       "concept": "Politics",
-      "count": 8518
+      "count": 8516
     },
     {
       "concept": "Sociology",
-      "count": 7337
+      "count": 7339
     },
     {
       "concept": "Political economy",
-      "count": 5331
+      "count": 5330
     },
     {
       "concept": "Populism",
-      "count": 4568
+      "count": 4567
     },
     {
       "concept": "Philosophy",
@@ -34,15 +34,15 @@
     },
     {
       "concept": "Democracy",
-      "count": 2602
+      "count": 2603
     },
     {
       "concept": "Computer science",
-      "count": 2014
+      "count": 2013
     },
     {
       "concept": "Linguistics",
-      "count": 1850
+      "count": 1849
     },
     {
       "concept": "History",
@@ -50,15 +50,15 @@
     },
     {
       "concept": "Psychology",
-      "count": 1471
+      "count": 1469
     },
     {
       "concept": "Archaeology",
-      "count": 1420
+      "count": 1419
     },
     {
       "concept": "Epistemology",
-      "count": 1335
+      "count": 1336
     },
     {
       "concept": "Ideology",
@@ -66,7 +66,7 @@
     },
     {
       "concept": "Physics",
-      "count": 1150
+      "count": 1151
     },
     {
       "concept": "Media studies",
@@ -74,7 +74,7 @@
     },
     {
       "concept": "Art",
-      "count": 989
+      "count": 990
     },
     {
       "concept": "Public administration",
@@ -82,7 +82,7 @@
     },
     {
       "concept": "Social psychology",
-      "count": 933
+      "count": 932
     },
     {
       "concept": "Gender studies",
@@ -90,15 +90,15 @@
     },
     {
       "concept": "Development economics",
-      "count": 875
+      "count": 876
     },
     {
       "concept": "Quantum mechanics",
-      "count": 833
+      "count": 834
     },
     {
       "concept": "Biology",
-      "count": 810
+      "count": 808
     },
     {
       "concept": "Geography",
@@ -106,11 +106,11 @@
     },
     {
       "concept": "Context (archaeology)",
-      "count": 791
+      "count": 790
     },
     {
       "concept": "Social science",
-      "count": 750
+      "count": 751
     },
     {
       "concept": "Authoritarianism",
@@ -126,14 +126,14 @@
     },
     {
       "concept": "Algorithm",
-      "count": 728
-    },
-    {
-      "concept": "State (computer science)",
-      "count": 713
+      "count": 727
     },
     {
       "concept": "Aesthetics",
+      "count": 713
+    },
+    {
+      "concept": "State (computer science)",
       "count": 712
     },
     {
@@ -146,19 +146,19 @@
     },
     {
       "concept": "Law and economics",
-      "count": 604
-    },
-    {
-      "concept": "Government (linguistics)",
-      "count": 582
+      "count": 603
     },
     {
       "concept": "Chemistry",
+      "count": 581
+    },
+    {
+      "concept": "Government (linguistics)",
       "count": 580
     },
     {
       "concept": "Public relations",
-      "count": 572
+      "count": 571
     },
     {
       "concept": "Finance",
@@ -174,11 +174,11 @@
     },
     {
       "concept": "Literature",
-      "count": 527
+      "count": 528
     },
     {
       "concept": "Engineering",
-      "count": 485
+      "count": 484
     },
     {
       "concept": "Rhetoric",
@@ -198,135 +198,135 @@
     },
     {
       "concept": "Economic system",
-      "count": 449
+      "count": 448
     }
   ],
   "cooccurrence_matrix_top20": {
     "Political science": {
       "Political science": 0,
-      "Law": 9074,
-      "Politics": 8518,
-      "Sociology": 7181,
-      "Political economy": 5329,
-      "Populism": 4568,
-      "Philosophy": 3395,
+      "Law": 9072,
+      "Politics": 8516,
+      "Sociology": 7182,
+      "Political economy": 5328,
+      "Populism": 4567,
+      "Philosophy": 3394,
       "Economics": 3253,
-      "Democracy": 2602,
-      "Computer science": 1878,
-      "Linguistics": 1810,
-      "History": 1492,
-      "Psychology": 1354,
-      "Archaeology": 1368,
+      "Democracy": 2603,
+      "Computer science": 1877,
+      "Linguistics": 1809,
+      "History": 1491,
+      "Psychology": 1352,
+      "Archaeology": 1367,
       "Epistemology": 1278,
       "Ideology": 1269,
-      "Physics": 1109,
+      "Physics": 1110,
       "Media studies": 1117,
-      "Art": 856,
+      "Art": 857,
       "Public administration": 984
     },
     "Law": {
-      "Political science": 9074,
+      "Political science": 9072,
       "Law": 0,
-      "Politics": 8516,
-      "Sociology": 7053,
-      "Political economy": 5276,
-      "Populism": 4566,
-      "Philosophy": 3321,
+      "Politics": 8514,
+      "Sociology": 7054,
+      "Political economy": 5275,
+      "Populism": 4565,
+      "Philosophy": 3320,
       "Economics": 3145,
-      "Democracy": 2600,
-      "Computer science": 1816,
-      "Linguistics": 1788,
-      "History": 1411,
-      "Psychology": 1302,
-      "Archaeology": 1317,
+      "Democracy": 2601,
+      "Computer science": 1814,
+      "Linguistics": 1787,
+      "History": 1410,
+      "Psychology": 1300,
+      "Archaeology": 1316,
       "Epistemology": 1264,
       "Ideology": 1269,
-      "Physics": 1083,
+      "Physics": 1084,
       "Media studies": 1100,
-      "Art": 812,
+      "Art": 813,
       "Public administration": 959
     },
     "Politics": {
-      "Political science": 8518,
-      "Law": 8516,
+      "Political science": 8516,
+      "Law": 8514,
       "Politics": 0,
-      "Sociology": 6713,
-      "Political economy": 5216,
-      "Populism": 4568,
-      "Philosophy": 3140,
+      "Sociology": 6714,
+      "Political economy": 5215,
+      "Populism": 4567,
+      "Philosophy": 3139,
       "Economics": 2945,
-      "Democracy": 2602,
-      "Computer science": 1692,
-      "Linguistics": 1690,
-      "History": 1303,
-      "Psychology": 1180,
-      "Archaeology": 1229,
+      "Democracy": 2603,
+      "Computer science": 1690,
+      "Linguistics": 1689,
+      "History": 1302,
+      "Psychology": 1178,
+      "Archaeology": 1228,
       "Epistemology": 1199,
       "Ideology": 1269,
-      "Physics": 1037,
+      "Physics": 1038,
       "Media studies": 1028,
-      "Art": 729,
+      "Art": 730,
       "Public administration": 925
     },
     "Sociology": {
-      "Political science": 7181,
-      "Law": 7053,
-      "Politics": 6713,
+      "Political science": 7182,
+      "Law": 7054,
+      "Politics": 6714,
       "Sociology": 0,
       "Political economy": 4555,
       "Populism": 3786,
       "Philosophy": 2957,
-      "Economics": 2051,
-      "Democracy": 2213,
-      "Computer science": 1520,
-      "Linguistics": 1535,
-      "History": 1198,
+      "Economics": 2052,
+      "Democracy": 2214,
+      "Computer science": 1518,
+      "Linguistics": 1534,
+      "History": 1199,
       "Psychology": 1056,
-      "Archaeology": 1138,
-      "Epistemology": 1186,
+      "Archaeology": 1137,
+      "Epistemology": 1187,
       "Ideology": 1166,
-      "Physics": 945,
+      "Physics": 946,
       "Media studies": 1144,
-      "Art": 708,
+      "Art": 709,
       "Public administration": 778
     },
     "Political economy": {
-      "Political science": 5329,
-      "Law": 5276,
-      "Politics": 5216,
+      "Political science": 5328,
+      "Law": 5275,
+      "Politics": 5215,
       "Sociology": 4555,
       "Political economy": 0,
-      "Populism": 3107,
-      "Philosophy": 1813,
+      "Populism": 3106,
+      "Philosophy": 1812,
       "Economics": 2403,
-      "Democracy": 1996,
-      "Computer science": 1010,
-      "Linguistics": 1093,
-      "History": 655,
+      "Democracy": 1997,
+      "Computer science": 1008,
+      "Linguistics": 1092,
+      "History": 654,
       "Psychology": 528,
-      "Archaeology": 787,
+      "Archaeology": 786,
       "Epistemology": 577,
       "Ideology": 864,
       "Physics": 731,
-      "Media studies": 340,
+      "Media studies": 339,
       "Art": 248,
       "Public administration": 735
     },
     "Populism": {
-      "Political science": 4568,
-      "Law": 4566,
-      "Politics": 4568,
+      "Political science": 4567,
+      "Law": 4565,
+      "Politics": 4567,
       "Sociology": 3786,
-      "Political economy": 3107,
+      "Political economy": 3106,
       "Populism": 0,
-      "Philosophy": 1727,
-      "Economics": 1432,
-      "Democracy": 1468,
-      "Computer science": 858,
-      "Linguistics": 901,
-      "History": 634,
-      "Psychology": 624,
-      "Archaeology": 614,
+      "Philosophy": 1728,
+      "Economics": 1431,
+      "Democracy": 1470,
+      "Computer science": 857,
+      "Linguistics": 902,
+      "History": 633,
+      "Psychology": 623,
+      "Archaeology": 613,
       "Epistemology": 709,
       "Ideology": 743,
       "Physics": 545,
@@ -335,22 +335,22 @@
       "Public administration": 428
     },
     "Philosophy": {
-      "Political science": 3395,
-      "Law": 3321,
-      "Politics": 3140,
+      "Political science": 3394,
+      "Law": 3320,
+      "Politics": 3139,
       "Sociology": 2957,
-      "Political economy": 1813,
-      "Populism": 1727,
+      "Political economy": 1812,
+      "Populism": 1728,
       "Philosophy": 0,
       "Economics": 966,
       "Democracy": 910,
-      "Computer science": 714,
-      "Linguistics": 1850,
-      "History": 593,
+      "Computer science": 713,
+      "Linguistics": 1849,
+      "History": 594,
       "Psychology": 521,
       "Archaeology": 524,
-      "Epistemology": 1335,
-      "Ideology": 566,
+      "Epistemology": 1336,
+      "Ideology": 565,
       "Physics": 460,
       "Media studies": 476,
       "Art": 391,
@@ -360,33 +360,33 @@
       "Political science": 3253,
       "Law": 3145,
       "Politics": 2945,
-      "Sociology": 2051,
+      "Sociology": 2052,
       "Political economy": 2403,
-      "Populism": 1432,
+      "Populism": 1431,
       "Philosophy": 966,
       "Economics": 0,
-      "Democracy": 952,
+      "Democracy": 953,
       "Computer science": 709,
       "Linguistics": 566,
       "History": 298,
-      "Psychology": 403,
+      "Psychology": 402,
       "Archaeology": 502,
       "Epistemology": 389,
-      "Ideology": 334,
+      "Ideology": 335,
       "Physics": 391,
       "Media studies": 61,
       "Art": 130,
       "Public administration": 384
     },
     "Democracy": {
-      "Political science": 2602,
-      "Law": 2600,
-      "Politics": 2602,
-      "Sociology": 2213,
-      "Political economy": 1996,
-      "Populism": 1468,
+      "Political science": 2603,
+      "Law": 2601,
+      "Politics": 2603,
+      "Sociology": 2214,
+      "Political economy": 1997,
+      "Populism": 1470,
       "Philosophy": 910,
-      "Economics": 952,
+      "Economics": 953,
       "Democracy": 0,
       "Computer science": 475,
       "Linguistics": 482,
@@ -401,84 +401,84 @@
       "Public administration": 423
     },
     "Computer science": {
-      "Political science": 1878,
-      "Law": 1816,
-      "Politics": 1692,
-      "Sociology": 1520,
-      "Political economy": 1010,
-      "Populism": 858,
-      "Philosophy": 714,
+      "Political science": 1877,
+      "Law": 1814,
+      "Politics": 1690,
+      "Sociology": 1518,
+      "Political economy": 1008,
+      "Populism": 857,
+      "Philosophy": 713,
       "Economics": 709,
       "Democracy": 475,
       "Computer science": 0,
-      "Linguistics": 374,
-      "History": 310,
+      "Linguistics": 373,
+      "History": 309,
       "Psychology": 344,
-      "Archaeology": 323,
+      "Archaeology": 322,
       "Epistemology": 304,
-      "Ideology": 218,
+      "Ideology": 217,
       "Physics": 279,
-      "Media studies": 280,
+      "Media studies": 279,
       "Art": 173,
       "Public administration": 210
     },
     "Linguistics": {
-      "Political science": 1810,
-      "Law": 1788,
-      "Politics": 1690,
-      "Sociology": 1535,
-      "Political economy": 1093,
-      "Populism": 901,
-      "Philosophy": 1850,
+      "Political science": 1809,
+      "Law": 1787,
+      "Politics": 1689,
+      "Sociology": 1534,
+      "Political economy": 1092,
+      "Populism": 902,
+      "Philosophy": 1849,
       "Economics": 566,
       "Democracy": 482,
-      "Computer science": 374,
+      "Computer science": 373,
       "Linguistics": 0,
       "History": 307,
       "Psychology": 263,
       "Archaeology": 309,
       "Epistemology": 277,
-      "Ideology": 311,
+      "Ideology": 310,
       "Physics": 268,
       "Media studies": 310,
       "Art": 206,
       "Public administration": 312
     },
     "History": {
-      "Political science": 1492,
-      "Law": 1411,
-      "Politics": 1303,
-      "Sociology": 1198,
-      "Political economy": 655,
-      "Populism": 634,
-      "Philosophy": 593,
+      "Political science": 1491,
+      "Law": 1410,
+      "Politics": 1302,
+      "Sociology": 1199,
+      "Political economy": 654,
+      "Populism": 633,
+      "Philosophy": 594,
       "Economics": 298,
       "Democracy": 308,
-      "Computer science": 310,
+      "Computer science": 309,
       "Linguistics": 307,
       "History": 0,
-      "Psychology": 178,
-      "Archaeology": 910,
-      "Epistemology": 183,
+      "Psychology": 177,
+      "Archaeology": 909,
+      "Epistemology": 184,
       "Ideology": 213,
-      "Physics": 200,
+      "Physics": 201,
       "Media studies": 336,
-      "Art": 394,
+      "Art": 395,
       "Public administration": 85
     },
     "Psychology": {
-      "Political science": 1354,
-      "Law": 1302,
-      "Politics": 1180,
+      "Political science": 1352,
+      "Law": 1300,
+      "Politics": 1178,
       "Sociology": 1056,
       "Political economy": 528,
-      "Populism": 624,
+      "Populism": 623,
       "Philosophy": 521,
-      "Economics": 403,
+      "Economics": 402,
       "Democracy": 243,
       "Computer science": 344,
       "Linguistics": 263,
-      "History": 178,
+      "History": 177,
       "Psychology": 0,
       "Archaeology": 176,
       "Epistemology": 244,
@@ -489,24 +489,24 @@
       "Public administration": 71
     },
     "Archaeology": {
-      "Political science": 1368,
-      "Law": 1317,
-      "Politics": 1229,
-      "Sociology": 1138,
-      "Political economy": 787,
-      "Populism": 614,
+      "Political science": 1367,
+      "Law": 1316,
+      "Politics": 1228,
+      "Sociology": 1137,
+      "Political economy": 786,
+      "Populism": 613,
       "Philosophy": 524,
       "Economics": 502,
       "Democracy": 292,
-      "Computer science": 323,
+      "Computer science": 322,
       "Linguistics": 309,
-      "History": 910,
+      "History": 909,
       "Psychology": 176,
       "Archaeology": 0,
       "Epistemology": 167,
       "Ideology": 230,
       "Physics": 191,
-      "Media studies": 252,
+      "Media studies": 251,
       "Art": 165,
       "Public administration": 122
     },
@@ -514,15 +514,15 @@
       "Political science": 1278,
       "Law": 1264,
       "Politics": 1199,
-      "Sociology": 1186,
+      "Sociology": 1187,
       "Political economy": 577,
       "Populism": 709,
-      "Philosophy": 1335,
+      "Philosophy": 1336,
       "Economics": 389,
       "Democracy": 371,
       "Computer science": 304,
       "Linguistics": 277,
-      "History": 183,
+      "History": 184,
       "Psychology": 244,
       "Archaeology": 167,
       "Epistemology": 0,
@@ -539,11 +539,11 @@
       "Sociology": 1166,
       "Political economy": 864,
       "Populism": 743,
-      "Philosophy": 566,
-      "Economics": 334,
+      "Philosophy": 565,
+      "Economics": 335,
       "Democracy": 377,
-      "Computer science": 218,
-      "Linguistics": 311,
+      "Computer science": 217,
+      "Linguistics": 310,
       "History": 213,
       "Psychology": 194,
       "Archaeology": 230,
@@ -555,10 +555,10 @@
       "Public administration": 112
     },
     "Physics": {
-      "Political science": 1109,
-      "Law": 1083,
-      "Politics": 1037,
-      "Sociology": 945,
+      "Political science": 1110,
+      "Law": 1084,
+      "Politics": 1038,
+      "Sociology": 946,
       "Political economy": 731,
       "Populism": 545,
       "Philosophy": 460,
@@ -566,14 +566,14 @@
       "Democracy": 347,
       "Computer science": 279,
       "Linguistics": 268,
-      "History": 200,
+      "History": 201,
       "Psychology": 163,
       "Archaeology": 191,
       "Epistemology": 162,
       "Ideology": 154,
       "Physics": 0,
-      "Media studies": 137,
-      "Art": 102,
+      "Media studies": 138,
+      "Art": 103,
       "Public administration": 140
     },
     "Media studies": {
@@ -581,28 +581,28 @@
       "Law": 1100,
       "Politics": 1028,
       "Sociology": 1144,
-      "Political economy": 340,
+      "Political economy": 339,
       "Populism": 616,
       "Philosophy": 476,
       "Economics": 61,
       "Democracy": 197,
-      "Computer science": 280,
+      "Computer science": 279,
       "Linguistics": 310,
       "History": 336,
       "Psychology": 181,
-      "Archaeology": 252,
+      "Archaeology": 251,
       "Epistemology": 132,
       "Ideology": 185,
-      "Physics": 137,
+      "Physics": 138,
       "Media studies": 0,
-      "Art": 294,
+      "Art": 295,
       "Public administration": 34
     },
     "Art": {
-      "Political science": 856,
-      "Law": 812,
-      "Politics": 729,
-      "Sociology": 708,
+      "Political science": 857,
+      "Law": 813,
+      "Politics": 730,
+      "Sociology": 709,
       "Political economy": 248,
       "Populism": 346,
       "Philosophy": 391,
@@ -610,13 +610,13 @@
       "Democracy": 148,
       "Computer science": 173,
       "Linguistics": 206,
-      "History": 394,
+      "History": 395,
       "Psychology": 128,
       "Archaeology": 165,
       "Epistemology": 128,
       "Ideology": 95,
-      "Physics": 102,
-      "Media studies": 294,
+      "Physics": 103,
+      "Media studies": 295,
       "Art": 0,
       "Public administration": 42
     },

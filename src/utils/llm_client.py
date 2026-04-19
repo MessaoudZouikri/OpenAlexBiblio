@@ -219,3 +219,7 @@ def validate_classification_response(response: Dict) -> Tuple[bool, str]:
         return False, f"Invalid confidence: {confidence}"
     
     return True, ""
+
+# Backward compatibility alias
+LLMClient = OllamaClient
+

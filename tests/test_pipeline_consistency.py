@@ -421,6 +421,41 @@ def test_id_integrity(raw_dir: str, clean_path: str, classified_path: str):
               warn_only=True)
 
 
+# ... existing code ...
+
+def test_raw(raw_dir: str, manifest_path: str):
+    # Test implementation
+    pass
+
+def test_clean(clean_path: str, df_raw: pd.DataFrame, report_path: str):
+    # Test implementation
+    pass
+
+def test_bibliometric(proc_dir: str, df_clean: pd.DataFrame):
+    # Test implementation
+    pass
+
+def test_classification(proc_dir: str, df_clean: pd.DataFrame):
+    # Test implementation
+    pass
+
+def test_network(proc_dir: str, net_dir: str, df_classified):
+    # Test implementation
+    pass
+
+def test_visualization(fig_dir: str, outputs_dir: str):
+    # Test implementation
+    pass
+
+def test_id_integrity(raw_dir: str, clean_path: str, classified_path: str):
+    # Test implementation
+    pass
+
+# ... existing code ...
+
+
+
+
 # ══════════════════════════════════════════════════════════════════════════
 # Main
 # ══════════════════════════════════════════════════════════════════════════

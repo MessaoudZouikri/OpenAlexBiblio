@@ -1,7 +1,7 @@
 {
   "agent": "classification_validator",
   "stage": "",
-  "timestamp": "2026-04-14T21:56:29.001306+00:00",
+  "timestamp": "2026-04-17T08:56:19.217811+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -44,14 +44,14 @@
   ],
   "n_records": 9999,
   "domain_distribution": {
-    "Political Science": 5589,
-    "Sociology": 1898,
-    "Other": 1308,
-    "Economics": 1204
+    "Political Science": 5587,
+    "Sociology": 1900,
+    "Other": 1306,
+    "Economics": 1206
   },
   "source_distribution": {
-    "embedding": 7777,
+    "embedding": 7776,
     "rule": 2107,
-    "llm": 115
+    "llm": 116
   }
 }

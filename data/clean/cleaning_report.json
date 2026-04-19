@@ -16,19 +16,19 @@
     }
   ],
   "output_records": 9999,
-  "abstract_coverage": 8652,
-  "abstract_coverage_rate": 0.8653,
+  "abstract_coverage": 8653,
+  "abstract_coverage_rate": 0.8654,
   "concept_coverage": 9999,
   "concept_coverage_rate": 1.0,
   "domain_distribution": {
-    "Political Science": 7253,
-    "Economics": 1540,
-    "Sociology": 945,
+    "Political Science": 7251,
+    "Economics": 1541,
+    "Sociology": 946,
     "Other": 261
   },
   "year_range": [
     1980,
     2026
   ],
-  "timestamp": "2026-04-14T17:06:26.532718+00:00"
+  "timestamp": "2026-04-16T22:29:32.688742+00:00"
 }

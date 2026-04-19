@@ -87,12 +87,64 @@ def timestamped_path(directory: str, prefix: str, ext: str) -> Path:
 # ── Parquet Helpers ────────────────────────────────────────────────────────
 
 def save_parquet(df: pd.DataFrame, path: str) -> None:
+    """Save DataFrame to parquet file with automatic directory creation."""
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(path, index=False, engine="pyarrow")
 
 
-def load_parquet(path: str) -> pd.DataFrame:
-    return pd.read_parquet(path, engine="pyarrow")
+def load_parquet(path: str, required_columns: Optional[List[str]] = None) -> pd.DataFrame:
+    """
+    Load parquet file with optional schema validation.
+
+    Args:
+        path: Path to parquet file
+        required_columns: List of column names that must be present
+
+    Returns:
+        DataFrame
+
+    Raises:
+        ValueError: If required columns are missing
+        FileNotFoundError: If file doesn't exist
+    """
+    if not Path(path).exists():
+        raise FileNotFoundError(f"Parquet file not found: {path}")
+
+    df = pd.read_parquet(path, engine="pyarrow")
+
+    # Validate schema if required columns specified
+    if required_columns:
+        missing_cols = set(required_columns) - set(df.columns)
+        if missing_cols:
+            raise ValueError(
+                f"Missing required columns in {path}: {missing_cols}. "
+                f"Found: {list(df.columns)}"
+            )
+
+    return df
+
+
+def validate_dataframe_schema(df: pd.DataFrame, required_columns: List[str]) -> bool:
+    """
+    Validate that a DataFrame has all required columns.
+
+    Args:
+        df: DataFrame to validate
+        required_columns: List of column names required
+
+    Returns:
+        True if all columns present, False otherwise
+
+    Raises:
+        ValueError: If columns are missing
+    """
+    missing_cols = set(required_columns) - set(df.columns)
+    if missing_cols:
+        raise ValueError(
+            f"Missing required columns: {missing_cols}. "
+            f"Found: {list(df.columns)}"
+        )
+    return True
 
 
 # ── JSON Helpers ───────────────────────────────────────────────────────────

@@ -97,3 +97,12 @@
 2026-04-15 00:05:44 [INFO] visualization: Generated: cross_domain_heatmap.png
 2026-04-15 00:05:44 [INFO] visualization: Generated: HTML report
 2026-04-15 00:05:44 [INFO] visualization: === Visualization Agent complete ===
+2026-04-17 01:43:26 [INFO] visualization: === Visualization Agent starting ===
+2026-04-17 01:43:26 [INFO] visualization: Generated: publication_trends.png
+2026-04-17 01:43:26 [INFO] visualization: Generated: citation_distribution.png
+2026-04-17 01:43:26 [INFO] visualization: Generated: top_authors.png
+2026-04-17 01:43:27 [INFO] visualization: Generated: domain_distribution.png
+2026-04-17 01:43:27 [INFO] visualization: Generated: concept_landscape.png
+2026-04-17 01:43:27 [INFO] visualization: Generated: cross_domain_heatmap.png
+2026-04-17 01:43:27 [INFO] visualization: Generated: HTML report
+2026-04-17 01:43:27 [INFO] visualization: === Visualization Agent complete ===

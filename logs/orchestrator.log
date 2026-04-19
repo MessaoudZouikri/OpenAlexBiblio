@@ -110,3 +110,21 @@
 2026-04-14 23:56:59 [INFO] orchestrator: ============================================================
 2026-04-14 23:56:59 [INFO] orchestrator: Pipeline SUCCESS — Run ID: 20260414_215659
 2026-04-14 23:56:59 [INFO] orchestrator: ============================================================
+2026-04-17 00:24:35 [INFO] orchestrator: ============================================================
+2026-04-17 00:24:35 [INFO] orchestrator: BIBLIOMETRIC PIPELINE — Run ID: 20260416_222435
+2026-04-17 00:24:35 [INFO] orchestrator: Mode: full | From: start | DryRun: False
+2026-04-17 00:24:35 [INFO] orchestrator: ============================================================
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] data_collection — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] validate_raw — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] data_cleaning — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] validate_clean — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] bibliometric_analysis — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] validate_statistical — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] classification — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] validate_classification — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] network_analysis — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] validate_network — already complete
+2026-04-17 00:24:35 [INFO] orchestrator:   [CACHED] visualization — already complete
+2026-04-17 00:24:35 [INFO] orchestrator: ============================================================
+2026-04-17 00:24:35 [INFO] orchestrator: Pipeline SUCCESS — Run ID: 20260416_222435
+2026-04-17 00:24:35 [INFO] orchestrator: ============================================================
