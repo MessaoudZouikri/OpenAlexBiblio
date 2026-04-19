@@ -256,7 +256,7 @@ class TestDuplicateDetection:
         duplicates = detect_exact_duplicates(duplicate_data)
 
         assert len(duplicates) > 0, "Should detect the added duplicate"
-        assert duplicates.iloc[-1]["is_duplicate"] is True
+        assert duplicates.iloc[-1]["is_duplicate"]
 
     def test_near_duplicate_detection(self):
         """Test detection of near-duplicate works."""

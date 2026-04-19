@@ -21,6 +21,14 @@ import sys
 from pathlib import Path
 
 
+def _python_executable() -> str:
+    """Return the venv Python if it exists, otherwise the current interpreter."""
+    venv_python = Path(__file__).parent / ".venv" / "bin" / "python"
+    if venv_python.exists():
+        return str(venv_python)
+    return sys.executable
+
+
 def run_command(cmd, description):
     """Run a command and return success status."""
     print(f"\n{'='*60}")
@@ -77,7 +85,7 @@ def main():
         test_markers = None  # Run all
 
     # Build pytest command
-    cmd = [sys.executable, "-m", "pytest"]
+    cmd = [_python_executable(), "-m", "pytest"]
 
     if test_markers:
         markers = " or ".join(test_markers)
