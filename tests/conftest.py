@@ -10,6 +10,7 @@ Usage:
 """
 
 import shutil
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -18,9 +19,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-# Add src to path for imports
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+# Ensure project root is on sys.path so `from src.agents...` imports resolve
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 # ── Test Data Fixtures ──────────────────────────────────────────────────────
