@@ -7,15 +7,19 @@
 provider: "ollama"
 endpoint: "http://localhost:11434"
 
-# Recommended for Apple M4 128 GB — runs fully in unified memory
-model: "qwen2.5:72b"
+# Primary model — choose based on your available VRAM / unified memory:
+#   qwen2.5:72b  → ~48 GB  (best quality — recommended for M4 Max/Ultra or server GPU)
+#   qwen2.5:32b  → ~22 GB  (good quality — M4 Pro or mid-range GPU)
+#   qwen2.5:14b  → ~10 GB  (solid subcategory discrimination)
+#   qwen2.5:7b   → ~5 GB   (coarse domain only — minimum viable)
+#   llama3.2:3b  → ~2.5 GB (lightweight fallback — coarse only)
+model: "qwen2.5:7b"             # DEFAULT: change to a larger model if you have the VRAM
 
-# Fallback chain if primary model unavailable
+# Fallback chain — tried in order if the primary model is unavailable
 fallback_models:
   - "phi4:latest"               # Microsoft Phi-4:14b — strong JSON + scientific reasoning
-  - "qwen2.5:32b"        # Good quality, fits in 22 GB Q4
-  - "qwen2.5:14b"        # Solid subcategory discrimination
-  - "qwen2.5:7b"         # Acceptable for coarse domain only
+  - "qwen2.5:14b"               # Solid subcategory discrimination
+  - "llama3.2:3b"               # Lightweight last resort
 
 generation:
   temperature: 0.05      # Near-deterministic — low stochasticity for classification

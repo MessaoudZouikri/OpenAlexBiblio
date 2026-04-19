@@ -17,6 +17,14 @@ Before running:
 | Internet access to OpenAlex | `curl -s https://api.openalex.org/works?per-page=1` |
 | Ollama running (optional, for LLM classification) | `ollama list` |
 
+**Verify your environment in one command:**
+
+```bash
+python scripts/check_setup.py --verbose
+```
+
+This checks Python version, all dependencies, SPECTER2 embedding model availability, Ollama connectivity, and config file validity. Fix any reported issues before proceeding.
+
 ---
 
 ## Step 1 — Switch `config/config.yaml` to full mode

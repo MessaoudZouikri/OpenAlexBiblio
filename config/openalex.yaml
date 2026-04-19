@@ -4,7 +4,9 @@
 
 api:
   base_url: "https://api.openalex.org"
-  polite_email: "mzouikri@parisnanterre.fr"   # Replace with your email for polite pool
+  polite_email: null   # REQUIRED: set to your email to use the polite pool (10 req/s vs 5)
+                       # Example: "your.name@institution.edu"
+                       # The email is only sent in the HTTP User-Agent header — never stored.
   per_page: 200          # Max per page (API limit)
   rate_limit_delay: 0.15 # Seconds between requests (> 1/10s for polite pool)
   max_retries: 3

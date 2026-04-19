@@ -12,10 +12,10 @@ Want to understand the codebase, improve code quality, or contribute to developm
 
 | Document | Purpose | Read Time |
 |----------|---------|-----------|
-| [`development/CODE_QUALITY_ANALYSIS.md`](./development/CODE_QUALITY_ANALYSIS.md) | Complete code review, architecture analysis, specific issues with fixes | 15-20 min |
-| [`development/IMPLEMENTATION_SUMMARY.md`](./development/IMPLEMENTATION_SUMMARY.md) | 4-phase implementation roadmap with timeline and effort estimates | 10 min |
+| [`../CONTRIBUTING.md`](../CONTRIBUTING.md) | How to contribute: bug reports, PRs, code style, testing | 5 min |
+| [`../TESTING_STRATEGY.md`](../TESTING_STRATEGY.md) | Full test suite strategy, coverage targets, fixture design | 15 min |
 
-**Start with**: CODE_QUALITY_ANALYSIS.md for the full picture.
+**Start with**: [CONTRIBUTING.md](../CONTRIBUTING.md) to get your environment set up.
 
 ---
 
@@ -57,8 +57,8 @@ Want to understand the metrics, run the pipeline, or analyze results?
 
 | Document | Purpose |
 |----------|---------|
-| [`metadata/CITATION.cff`](./metadata/CITATION.cff) | Citation metadata in standard CFF format |
-| [`metadata/CITING.md`](./metadata/CITING.md) | How to cite this package in your work |
+| [`../CITATION.cff`](../CITATION.cff) | Citation metadata in standard CFF format (GitHub auto-detects this) |
+| [`../CITING.md`](../CITING.md) | How to cite this package in your work |
 
 ---
 
@@ -71,13 +71,15 @@ docs/
 │   ├── QUICK_REFERENCE.md             For users asking common questions
 │   └── VISUALIZATION_GUIDE.md         How to create and interpret visualizations
 ├── development/
-│   ├── CODE_QUALITY_ANALYSIS.md       Complete code review & architecture analysis
-│   └── IMPLEMENTATION_SUMMARY.md      Implementation roadmap & phases
-├── research/
-│   └── TAXONOMY_UPDATE_TEMPLATE.md    For researchers enriching the taxonomy
-└── metadata/
-    ├── CITATION.cff                   CFF citation metadata
-    └── CITING.md                      Citation guidelines
+│   └── (architecture notes)
+└── research/
+    └── TAXONOMY_UPDATE_TEMPLATE.md    For researchers enriching the taxonomy
+
+Root-level (key entry points):
+├── CITATION.cff                       CFF citation metadata (parsed by GitHub)
+├── CITING.md                          How to cite this package
+├── CONTRIBUTING.md                    How to contribute code or taxonomy proposals
+└── TESTING_STRATEGY.md                Test suite design and coverage targets
 ```
 
 ---
@@ -117,7 +119,7 @@ docs/
 
 1. **Troubleshooting**: Check `QUICKSTART.md` in the root directory
 2. **API Details**: See `agents/` folder specifications
-3. **Contributing**: Open an issue on [GitHub](https://github.com/MessaoudZouikri/econoPoPop)
+3. **Contributing**: See [CONTRIBUTING.md](../CONTRIBUTING.md) or open an issue on [GitHub](https://github.com/MessaoudZouikri/econoPoPop)
 4. **Questions/Feedback**: Contact: **econoPoPop@proton.me**
 
 ---
@@ -127,9 +129,9 @@ docs/
 | Category | Files | Audience | Purpose |
 |----------|-------|----------|---------|
 | **Getting Started** | 2 | Users, Analysts | Quick reference and visualization guides |
-| **Development** | 2 | Developers, Maintainers | Code quality analysis and implementation roadmap |
+| **Development** | 2 | Developers, Maintainers | Contributing guide and testing strategy |
 | **Research** | 1 | Researchers, Domain Experts | Taxonomy enrichment and contribution guidelines |
-| **Metadata** | 2 | Citation & Attribution | How to cite and attribution information |
+| **Citation** | 2 | All | CITATION.cff and citation instructions |
 
 ---
 

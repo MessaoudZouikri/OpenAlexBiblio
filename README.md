@@ -1,10 +1,19 @@
 # Bibliometric Pipeline — Populism Studies
 
+[![Tests](https://github.com/MessaoudZouikri/econoPoPop/actions/workflows/tests.yml/badge.svg)](https://github.com/MessaoudZouikri/econoPoPop/actions/workflows/tests.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](CITATION.cff)
+
 A modular, reproducible, multi-agent bibliometric pipeline for the study of
 **populism**, **populist**, and **populists** using the [OpenAlex](https://openalex.org) database.
 
-**Quick Navigation**:
-[Quick Start](QUICKSTART.md) — [Tutorial](BIBLIOMETRIC_PIPELINE_TUTORIAL.md) — [Agent Specs](agents/) — [📚 Full Docs](docs/INDEX.md)
+---
+
+**New user?** → [Quick Start](QUICKSTART.md) (10 min setup)
+**Want to understand the pipeline?** → [Tutorial](BIBLIOMETRIC_PIPELINE_TUTORIAL.md) (30 min)
+**Full documentation?** → [docs/INDEX.md](docs/INDEX.md)
+**Want to contribute?** → [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
