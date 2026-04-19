@@ -11,6 +11,7 @@ Outputs:
 Standalone:
     python src/agents/data_collection.py --config config/config.yaml [--test]
 """
+
 from __future__ import annotations
 
 import argparse
@@ -33,6 +34,7 @@ from src.utils.logging_utils import setup_logger
 # Query Helpers
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def _sanitize_term(raw_term: str, logger) -> str:
     """
     Strip non-ASCII characters from a query term.
@@ -44,7 +46,8 @@ def _sanitize_term(raw_term: str, logger) -> str:
     if term != raw_term:
         logger.warning(
             "Query term sanitised: %r → %r  (non-ASCII removed — check config)",
-            raw_term, term,
+            raw_term,
+            term,
         )
     return term
 
@@ -66,6 +69,7 @@ def _build_filters(flt_cfg: dict) -> Dict[str, str]:
 # ═══════════════════════════════════════════════════════════════════════════
 # Collection Orchestration
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def run_collection(
     config: dict,
@@ -92,32 +96,33 @@ def run_collection(
         max_records = float("inf")
 
     client = OpenAlexClient(
-        email           = openalex_cfg["api"]["polite_email"],
-        per_page        = openalex_cfg["api"]["per_page"],
-        rate_limit_delay= openalex_cfg["api"]["rate_limit_delay"],
-        max_retries     = openalex_cfg["api"]["max_retries"],
-        retry_backoff   = openalex_cfg["api"]["retry_backoff"],
-        timeout         = openalex_cfg["api"]["timeout"],
+        email=openalex_cfg["api"]["polite_email"],
+        per_page=openalex_cfg["api"]["per_page"],
+        rate_limit_delay=openalex_cfg["api"]["rate_limit_delay"],
+        max_retries=openalex_cfg["api"]["max_retries"],
+        retry_backoff=openalex_cfg["api"]["retry_backoff"],
+        timeout=openalex_cfg["api"]["timeout"],
     )
 
     api_filters = _build_filters(openalex_cfg["queries"]["filters"])
-    sort_cfg    = openalex_cfg["queries"]["sort"]
-    sort_str    = f"{sort_cfg['field']}:{sort_cfg['order']}"
+    sort_cfg = openalex_cfg["queries"]["sort"]
+    sort_str = f"{sort_cfg['field']}:{sort_cfg['order']}"
 
-    all_records: Dict[str, dict] = {}   # keyed by OpenAlex ID for deduplication
+    all_records: Dict[str, dict] = {}  # keyed by OpenAlex ID for deduplication
     query_stats: List[dict] = []
 
     for query_cfg in openalex_cfg["queries"]["keywords"]:
         raw_term = query_cfg["term"]
-        field    = query_cfg["field"]
-        term     = _sanitize_term(raw_term, logger)
+        field = query_cfg["field"]
+        term = _sanitize_term(raw_term, logger)
         if not term:
             logger.warning("Skipping empty query term (was: %r)", raw_term)
             continue
 
         logger.info(
             "Querying: field=%s, term=%r, max=%s",
-            field, term,
+            field,
+            term,
             "unlimited" if max_records == float("inf") else max_records,
         )
 
@@ -125,11 +130,11 @@ def run_collection(
         batch_count = 0
 
         for raw_work in client.paginate_works(
-            search_term   = term,
-            search_field  = field,
-            filters       = api_filters,
-            sort          = sort_str,
-            max_records   = max_records,
+            search_term=term,
+            search_field=field,
+            filters=api_filters,
+            sort=sort_str,
+            max_records=max_records,
         ):
             work_id = raw_work.get("id", "")
             if not work_id:
@@ -149,12 +154,14 @@ def run_collection(
 
         elapsed = time.time() - batch_start
         logger.info("  → %d new records in %.1fs", batch_count, elapsed)
-        query_stats.append({
-            "term":        term,
-            "field":       field,
-            "new_records": batch_count,
-            "elapsed_s":   round(elapsed, 2),
-        })
+        query_stats.append(
+            {
+                "term": term,
+                "field": field,
+                "new_records": batch_count,
+                "elapsed_s": round(elapsed, 2),
+            }
+        )
 
     total = len(all_records)
     logger.info("Total unique records collected: %d", total)
@@ -172,21 +179,25 @@ def run_collection(
     logger.info("Saved raw data to: %s", output_path)
 
     manifest = {
-        "timestamp":      datetime.now(UTC).isoformat(),
-        "mode":           "test" if test_mode else "full",
-        "total_records":  total,
-        "output_file":    str(output_path),
-        "query_stats":    query_stats,
+        "timestamp": datetime.now(UTC).isoformat(),
+        "mode": "test" if test_mode else "full",
+        "total_records": total,
+        "output_file": str(output_path),
+        "query_stats": query_stats,
         "api_parameters": {
-            "base_url":              openalex_cfg["api"]["base_url"],
-            "per_page":              openalex_cfg["api"]["per_page"],
-            "filters":               api_filters,
-            "sort":                  sort_str,
+            "base_url": openalex_cfg["api"]["base_url"],
+            "per_page": openalex_cfg["api"]["per_page"],
+            "filters": api_filters,
+            "sort": sort_str,
             "max_records_per_query": max_records,
         },
-        "columns":           list(df.columns),
-        "abstract_coverage": int((df["abstract"].str.len() > 0).sum()) if "abstract" in df.columns else 0,
-        "concept_coverage":  int((df["concepts"].apply(len) > 0).sum()) if "concepts" in df.columns else 0,
+        "columns": list(df.columns),
+        "abstract_coverage": (
+            int((df["abstract"].str.len() > 0).sum()) if "abstract" in df.columns else 0
+        ),
+        "concept_coverage": (
+            int((df["concepts"].apply(len) > 0).sum()) if "concepts" in df.columns else 0
+        ),
     }
     save_json(manifest, f"{raw_dir}/collection_manifest.json")
     logger.info("Saved collection manifest.")
@@ -197,6 +208,7 @@ def run_collection(
 # ═══════════════════════════════════════════════════════════════════════════
 # Public API (used by orchestrator and tests)
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def collect_openalex_data(
     search_term: str,
@@ -211,12 +223,12 @@ def collect_openalex_data(
     """
     try:
         client = OpenAlexClient(
-            email            = polite_email,
-            per_page         = per_page,
-            rate_limit_delay = 0.1,
-            max_retries      = 3,
-            retry_backoff    = 2.0,
-            timeout          = 30,
+            email=polite_email,
+            per_page=per_page,
+            rate_limit_delay=0.1,
+            max_retries=3,
+            retry_backoff=2.0,
+            timeout=30,
         )
     except Exception:
         return pd.DataFrame()
@@ -224,11 +236,11 @@ def collect_openalex_data(
     records: List[dict] = []
     try:
         pages = client.paginate_works(
-            search_term  = search_term,
-            search_field = "search",
-            filters      = {},
-            sort         = "cited_by_count:desc",
-            max_records  = max_results,
+            search_term=search_term,
+            search_field="search",
+            filters={},
+            sort="cited_by_count:desc",
+            max_records=max_results,
         )
         # Guard against non-iterable mocks
         try:
@@ -252,17 +264,17 @@ def collect_openalex_data(
 # CLI Entry Point
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="OpenAlex Data Collection Agent")
-    parser.add_argument("--config",          default="config/config.yaml")
+    parser.add_argument("--config", default="config/config.yaml")
     parser.add_argument("--openalex-config", default="config/openalex.yaml")
-    parser.add_argument("--test", action="store_true",
-                        help="Run in test mode (limited records)")
+    parser.add_argument("--test", action="store_true", help="Run in test mode (limited records)")
     args = parser.parse_args()
 
-    config       = load_yaml(args.config)
+    config = load_yaml(args.config)
     openalex_cfg = load_yaml(args.openalex_config)
-    test_mode    = args.test or config["pipeline"]["mode"] == "test"
+    test_mode = args.test or config["pipeline"]["mode"] == "test"
 
     manifest = run_collection(config, openalex_cfg, test_mode=test_mode)
     if not manifest:

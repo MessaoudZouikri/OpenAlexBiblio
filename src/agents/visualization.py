@@ -7,6 +7,7 @@ Outputs: PNG/SVG figures in data/outputs/figures/
 Standalone:
     python src/agents/visualization.py --config config/config.yaml
 """
+
 import argparse
 import logging
 import os
@@ -14,6 +15,7 @@ import sys
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")  # Non-interactive backend
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -54,7 +56,7 @@ def fig_publication_trends(trends: dict, fig_dir: str) -> None:
         df_domain = pd.DataFrame(trends["domain_annual"]).set_index("year")
         df_domain = df_domain.fillna(0)
         colors = ["#2d6be4", "#e84343", "#27ae60", "#f39c12"]
-        df_domain.plot(kind="bar", stacked=True, ax=axes[1], color=colors[:len(df_domain.columns)])
+        df_domain.plot(kind="bar", stacked=True, ax=axes[1], color=colors[: len(df_domain.columns)])
         axes[1].set_title("Publications by Domain")
         axes[1].set_xlabel("Year")
         axes[1].set_ylabel("Publications")
@@ -79,7 +81,12 @@ def fig_citation_distribution(cit_stats: dict, fig_dir: str) -> None:
     axes[0].barh(labels, values, color="#e84343", alpha=0.8)
     axes[0].set_title("Citation Percentiles")
     axes[0].set_xlabel("Citations")
-    axes[0].axvline(cit_stats.get("mean", 0), color="navy", linestyle="--", label=f"Mean={cit_stats.get('mean'):.1f}")
+    axes[0].axvline(
+        cit_stats.get("mean", 0),
+        color="navy",
+        linestyle="--",
+        label=f"Mean={cit_stats.get('mean'):.1f}",
+    )
     axes[0].legend(fontsize=9)
 
     # Right: corpus-level indices
@@ -88,11 +95,22 @@ def fig_citation_distribution(cit_stats: dict, fig_dir: str) -> None:
         "g-index": cit_stats.get("g_index_corpus", 0),
         "zero-citation\n rate (%)": round(cit_stats.get("zero_citation_rate", 0) * 100, 1),
     }
-    bars = axes[1].bar(list(indices.keys()), list(indices.values()), color=["#2d6be4", "#27ae60", "#e8a327"], alpha=0.85)
+    bars = axes[1].bar(
+        list(indices.keys()),
+        list(indices.values()),
+        color=["#2d6be4", "#27ae60", "#e8a327"],
+        alpha=0.85,
+    )
     axes[1].set_title("Corpus Citation Indices")
     for bar, val in zip(bars, indices.values()):
-        axes[1].text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
-                     str(val), ha="center", va="bottom", fontsize=10)
+        axes[1].text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 0.5,
+            str(val),
+            ha="center",
+            va="bottom",
+            fontsize=10,
+        )
 
     plt.tight_layout()
     plt.savefig(f"{fig_dir}/citation_distribution.png", dpi=150, bbox_inches="tight")
@@ -129,8 +147,13 @@ def fig_domain_distribution(df: pd.DataFrame, fig_dir: str) -> None:
 
     domain_counts = df["domain"].value_counts()
     colors = ["#2d6be4", "#e84343", "#27ae60", "#f39c12", "#9b59b6"]
-    domain_counts.plot(kind="pie", ax=axes[0], colors=colors[:len(domain_counts)],
-                       autopct="%1.1f%%", startangle=90)
+    domain_counts.plot(
+        kind="pie",
+        ax=axes[0],
+        colors=colors[: len(domain_counts)],
+        autopct="%1.1f%%",
+        startangle=90,
+    )
     axes[0].set_title("Domain Distribution")
     axes[0].set_ylabel("")
 
@@ -155,8 +178,12 @@ def fig_concept_landscape(concepts: dict, fig_dir: str) -> None:
     counts = [c["count"] for c in top_50]
 
     fig, ax = plt.subplots(figsize=(12, 8))
-    bars = ax.barh(names[::-1], counts[::-1],
-                   color=plt.cm.viridis(np.linspace(0.3, 0.9, len(names))), alpha=0.85)
+    bars = ax.barh(
+        names[::-1],
+        counts[::-1],
+        color=plt.cm.viridis(np.linspace(0.3, 0.9, len(names))),
+        alpha=0.85,
+    )
     ax.set_title("Top 30 OpenAlex Concepts in Populism Literature")
     ax.set_xlabel("Frequency (number of papers)")
     plt.tight_layout()
@@ -182,8 +209,9 @@ def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
     if has_enhanced:
         # New enhanced metrics format
         enhanced = metrics.get("enhanced_cross_domain_metrics", metrics)
-        domains = enhanced.get("metadata", {}).get("domains",
-                ["Political Science", "Economics", "Sociology", "Other"])
+        domains = enhanced.get("metadata", {}).get(
+            "domains", ["Political Science", "Economics", "Sociology", "Other"]
+        )
 
         raw_matrix = enhanced.get("raw_coupling_matrix", {})
         as_matrix = enhanced.get("association_strength", {})
@@ -213,72 +241,118 @@ def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
         as_data = np.array([[as_matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains])
         ax = axes[0, 0]
         im1 = ax.imshow(as_data, cmap="RdBu_r", aspect="auto", vmin=0.5, vmax=2.0)
-        ax.axhline(y=-0.5, color='black', linewidth=0.5)
-        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.axhline(y=-0.5, color="black", linewidth=0.5)
+        ax.axvline(x=-0.5, color="black", linewidth=0.5)
         ax.set_xticks(range(len(domains)))
         ax.set_yticks(range(len(domains)))
         ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
         ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
-        ax.set_title("Association Strength (AS)\nAS > 1.0 = Stronger than random", fontsize=11, weight='bold')
+        ax.set_title(
+            "Association Strength (AS)\nAS > 1.0 = Stronger than random", fontsize=11, weight="bold"
+        )
         for i in range(len(domains)):
             for j in range(len(domains)):
-                ax.text(j, i, f"{as_data[i, j]:.2f}", ha="center", va="center",
-                       color="white" if abs(as_data[i, j] - 1.0) > 0.4 else "black", fontsize=8)
+                ax.text(
+                    j,
+                    i,
+                    f"{as_data[i, j]:.2f}",
+                    ha="center",
+                    va="center",
+                    color="white" if abs(as_data[i, j] - 1.0) > 0.4 else "black",
+                    fontsize=8,
+                )
         plt.colorbar(im1, ax=ax, label="AS Value")
 
         # Panel 2: Coupling Strength Index
-        csi_data = np.array([[csi_matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains])
+        csi_data = np.array(
+            [[csi_matrix.get(d1, {}).get(d2, 0) for d2 in domains] for d1 in domains]
+        )
         ax = axes[0, 1]
         im2 = ax.imshow(csi_data, cmap="YlOrRd", aspect="auto")
-        ax.axhline(y=-0.5, color='black', linewidth=0.5)
-        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.axhline(y=-0.5, color="black", linewidth=0.5)
+        ax.axvline(x=-0.5, color="black", linewidth=0.5)
         ax.set_xticks(range(len(domains)))
         ax.set_yticks(range(len(domains)))
         ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
         ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
-        ax.set_title("Coupling Strength Index (CSI)\nShared refs / min domain size", fontsize=11, weight='bold')
+        ax.set_title(
+            "Coupling Strength Index (CSI)\nShared refs / min domain size",
+            fontsize=11,
+            weight="bold",
+        )
         for i in range(len(domains)):
             for j in range(len(domains)):
-                ax.text(j, i, f"{csi_data[i, j]:.2f}", ha="center", va="center",
-                       color="white" if csi_data[i, j] > csi_data.max() * 0.6 else "black", fontsize=8)
+                ax.text(
+                    j,
+                    i,
+                    f"{csi_data[i, j]:.2f}",
+                    ha="center",
+                    va="center",
+                    color="white" if csi_data[i, j] > csi_data.max() * 0.6 else "black",
+                    fontsize=8,
+                )
         plt.colorbar(im2, ax=ax, label="CSI Value")
 
         # Panel 3: Jaccard Similarity
-        jaccard_data = np.array([[jaccard_matrix.get(d1, {}).get(d2, 1.0 if d1 == d2 else 0)
-                                 for d2 in domains] for d1 in domains])
+        jaccard_data = np.array(
+            [
+                [jaccard_matrix.get(d1, {}).get(d2, 1.0 if d1 == d2 else 0) for d2 in domains]
+                for d1 in domains
+            ]
+        )
         ax = axes[1, 0]
         im3 = ax.imshow(jaccard_data, cmap="Blues", aspect="auto", vmin=0, vmax=1)
-        ax.axhline(y=-0.5, color='black', linewidth=0.5)
-        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.axhline(y=-0.5, color="black", linewidth=0.5)
+        ax.axvline(x=-0.5, color="black", linewidth=0.5)
         ax.set_xticks(range(len(domains)))
         ax.set_yticks(range(len(domains)))
         ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
         ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
-        ax.set_title("Jaccard Similarity\nShared intellectual foundation (0-1)", fontsize=11, weight='bold')
+        ax.set_title(
+            "Jaccard Similarity\nShared intellectual foundation (0-1)", fontsize=11, weight="bold"
+        )
         for i in range(len(domains)):
             for j in range(len(domains)):
-                ax.text(j, i, f"{jaccard_data[i, j]:.2f}", ha="center", va="center",
-                       color="white" if jaccard_data[i, j] > 0.5 else "black", fontsize=8)
+                ax.text(
+                    j,
+                    i,
+                    f"{jaccard_data[i, j]:.2f}",
+                    ha="center",
+                    va="center",
+                    color="white" if jaccard_data[i, j] > 0.5 else "black",
+                    fontsize=8,
+                )
         plt.colorbar(im3, ax=ax, label="Jaccard Value")
 
         # Panel 4: Raw Coupling Counts
         ax = axes[1, 1]
         im4 = ax.imshow(raw_data, cmap="Greys", aspect="auto")
-        ax.axhline(y=-0.5, color='black', linewidth=0.5)
-        ax.axvline(x=-0.5, color='black', linewidth=0.5)
+        ax.axhline(y=-0.5, color="black", linewidth=0.5)
+        ax.axvline(x=-0.5, color="black", linewidth=0.5)
         ax.set_xticks(range(len(domains)))
         ax.set_yticks(range(len(domains)))
         ax.set_xticklabels([d[:10] for d in domains], rotation=45, ha="right", fontsize=9)
         ax.set_yticklabels([d[:10] for d in domains], fontsize=9)
-        ax.set_title("Raw Coupling Counts\nAbsolute shared references", fontsize=11, weight='bold')
+        ax.set_title("Raw Coupling Counts\nAbsolute shared references", fontsize=11, weight="bold")
         for i in range(len(domains)):
             for j in range(len(domains)):
-                ax.text(j, i, str(int(raw_data[i, j])), ha="center", va="center",
-                       color="white" if raw_data[i, j] > raw_data.max() * 0.6 else "black", fontsize=8)
+                ax.text(
+                    j,
+                    i,
+                    str(int(raw_data[i, j])),
+                    ha="center",
+                    va="center",
+                    color="white" if raw_data[i, j] > raw_data.max() * 0.6 else "black",
+                    fontsize=8,
+                )
         plt.colorbar(im4, ax=ax, label="Count")
 
-        fig.suptitle("Cross-Domain Bibliographic Coupling Analysis\n(Multiple Interpretable Metrics)",
-                    fontsize=13, weight='bold', y=0.995)
+        fig.suptitle(
+            "Cross-Domain Bibliographic Coupling Analysis\n(Multiple Interpretable Metrics)",
+            fontsize=13,
+            weight="bold",
+            y=0.995,
+        )
         plt.tight_layout()
         plt.savefig(f"{fig_dir}/cross_domain_heatmap_enhanced.png", dpi=150, bbox_inches="tight")
         plt.close()
@@ -293,8 +367,15 @@ def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
     ax.set_title("Cross-Domain Bibliographic Coupling Matrix (Raw Counts)")
     for i in range(len(domains)):
         for j in range(len(domains)):
-            ax.text(j, i, str(int(raw_data[i, j])), ha="center", va="center",
-                   color="white" if raw_data[i, j] > raw_data.max() * 0.6 else "black", fontsize=9)
+            ax.text(
+                j,
+                i,
+                str(int(raw_data[i, j])),
+                ha="center",
+                va="center",
+                color="white" if raw_data[i, j] > raw_data.max() * 0.6 else "black",
+                fontsize=9,
+            )
     plt.colorbar(im, ax=ax, label="Shared References")
     plt.tight_layout()
     plt.savefig(f"{fig_dir}/cross_domain_heatmap.png", dpi=150, bbox_inches="tight")
@@ -303,14 +384,16 @@ def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
 
 def generate_html_report(fig_dir: str, config: dict) -> None:
     figures = list(Path(fig_dir).glob("*.png"))
-    html = ["<html><head><style>",
-            "body{font-family:Arial,sans-serif;max-width:1200px;margin:auto;padding:20px}",
-            "img{max-width:100%;border:1px solid #ddd;margin:10px 0;border-radius:4px}",
-            "h1{color:#2d6be4}h2{color:#444;border-bottom:1px solid #ddd}",
-            "</style></head><body>",
-            "<h1>Bibliometric Pipeline — Populism Literature</h1>",
-            f"<p><em>Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}</em></p>",
-            "<p>Mode: " + config["pipeline"]["mode"] + "</p>"]
+    html = [
+        "<html><head><style>",
+        "body{font-family:Arial,sans-serif;max-width:1200px;margin:auto;padding:20px}",
+        "img{max-width:100%;border:1px solid #ddd;margin:10px 0;border-radius:4px}",
+        "h1{color:#2d6be4}h2{color:#444;border-bottom:1px solid #ddd}",
+        "</style></head><body>",
+        "<h1>Bibliometric Pipeline — Populism Literature</h1>",
+        f"<p><em>Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}</em></p>",
+        "<p>Mode: " + config["pipeline"]["mode"] + "</p>",
+    ]
     report_path = Path(f"{config['paths']['outputs']}/reports/report.html")
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_dir = report_path.parent

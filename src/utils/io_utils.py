@@ -2,6 +2,7 @@
 I/O utilities: checkpoint management, file discovery, schema helpers.
 All pipeline state is persisted to disk — no in-memory cross-agent state.
 """
+
 import json
 import os
 import glob
@@ -70,6 +71,7 @@ def reset_from_step(step_name: str, all_steps: List[str], path: str = CHECKPOINT
 
 # ── File Discovery ─────────────────────────────────────────────────────────
 
+
 def latest_file(directory: str, pattern: str) -> Optional[Path]:
     """Return the most recently modified file matching a glob pattern."""
     matches = glob.glob(os.path.join(directory, pattern))
@@ -85,6 +87,7 @@ def timestamped_path(directory: str, prefix: str, ext: str) -> Path:
 
 
 # ── Parquet Helpers ────────────────────────────────────────────────────────
+
 
 def save_parquet(df: pd.DataFrame, path: str) -> None:
     """Save DataFrame to parquet file with automatic directory creation."""
@@ -117,8 +120,7 @@ def load_parquet(path: str, required_columns: Optional[List[str]] = None) -> pd.
         missing_cols = set(required_columns) - set(df.columns)
         if missing_cols:
             raise ValueError(
-                f"Missing required columns in {path}: {missing_cols}. "
-                f"Found: {list(df.columns)}"
+                f"Missing required columns in {path}: {missing_cols}. " f"Found: {list(df.columns)}"
             )
 
     return df
@@ -140,14 +142,12 @@ def validate_dataframe_schema(df: pd.DataFrame, required_columns: List[str]) -> 
     """
     missing_cols = set(required_columns) - set(df.columns)
     if missing_cols:
-        raise ValueError(
-            f"Missing required columns: {missing_cols}. "
-            f"Found: {list(df.columns)}"
-        )
+        raise ValueError(f"Missing required columns: {missing_cols}. " f"Found: {list(df.columns)}")
     return True
 
 
 # ── JSON Helpers ───────────────────────────────────────────────────────────
+
 
 def save_json(data: Any, path: str, indent: int = 2) -> None:
     Path(path).parent.mkdir(parents=True, exist_ok=True)
@@ -162,14 +162,17 @@ def load_json(path: str) -> Any:
 
 # ── Config Loading ─────────────────────────────────────────────────────────
 
+
 def load_yaml(path: str) -> Dict:
     """Load YAML config file. Requires PyYAML."""
     import yaml
+
     with open(path, "r") as f:
         return yaml.safe_load(f)
 
 
 # ── Array-safe list coercion ───────────────────────────────────────────────
+
 
 def safe_list(val) -> list:
     """Coerce a value to Python list — handles numpy arrays, None, scalars from parquet."""

@@ -8,6 +8,7 @@ Writes to data/raw/ as if produced by the data_collection agent.
 Run:
     python tests/generate_test_data.py --n 150 --config config/config.yaml
 """
+
 import argparse
 import json
 import random
@@ -95,7 +96,10 @@ ABSTRACTS = [
 
 AUTHORS_POOL = [
     {"name": "Cas Mudde", "institution": "University of Georgia"},
-    {"name": "Cristóbal Rovira Kaltwasser", "institution": "Pontificia Universidad Católica de Chile"},
+    {
+        "name": "Cristóbal Rovira Kaltwasser",
+        "institution": "Pontificia Universidad Católica de Chile",
+    },
     {"name": "Pippa Norris", "institution": "Harvard University"},
     {"name": "Ronald Inglehart", "institution": "University of Michigan"},
     {"name": "Jan-Werner Müller", "institution": "Princeton University"},
@@ -139,33 +143,33 @@ JOURNALS = [
 
 CONCEPTS_POOL = [
     {"id": "C2780916012", "name": "Populism", "level": 2, "score": 0.95},
-    {"id": "C17744445",  "name": "Political science", "level": 0, "score": 0.90},
+    {"id": "C17744445", "name": "Political science", "level": 0, "score": 0.90},
     {"id": "C150903083", "name": "Democracy", "level": 1, "score": 0.85},
     {"id": "C199539241", "name": "Politics", "level": 1, "score": 0.80},
     {"id": "C162324750", "name": "Economics", "level": 0, "score": 0.75},
     {"id": "C144024400", "name": "Sociology", "level": 0, "score": 0.70},
-    {"id": "C2776943663","name": "Far-right politics", "level": 2, "score": 0.65},
+    {"id": "C2776943663", "name": "Far-right politics", "level": 2, "score": 0.65},
     {"id": "C175444787", "name": "Political economy", "level": 1, "score": 0.70},
-    {"id": "C2778154952","name": "Social movement", "level": 2, "score": 0.65},
+    {"id": "C2778154952", "name": "Social movement", "level": 2, "score": 0.65},
     {"id": "C523546767", "name": "Identity politics", "level": 2, "score": 0.60},
-    {"id": "C2778793908","name": "Economic inequality", "level": 2, "score": 0.75},
+    {"id": "C2778793908", "name": "Economic inequality", "level": 2, "score": 0.75},
     {"id": "C136229726", "name": "Media studies", "level": 1, "score": 0.55},
-    {"id": "C2779415391","name": "Nationalism", "level": 2, "score": 0.60},
-    {"id": "C2780591229","name": "Elections", "level": 2, "score": 0.70},
-    {"id": "C2776702681","name": "Voting behavior", "level": 2, "score": 0.65},
-    {"id": "C2780258038","name": "Political parties", "level": 2, "score": 0.72},
+    {"id": "C2779415391", "name": "Nationalism", "level": 2, "score": 0.60},
+    {"id": "C2780591229", "name": "Elections", "level": 2, "score": 0.70},
+    {"id": "C2776702681", "name": "Voting behavior", "level": 2, "score": 0.65},
+    {"id": "C2780258038", "name": "Political parties", "level": 2, "score": 0.72},
     {"id": "C108827166", "name": "Public administration", "level": 1, "score": 0.50},
     {"id": "C175203074", "name": "Globalization", "level": 1, "score": 0.68},
-    {"id": "C2781063489","name": "Immigration", "level": 2, "score": 0.58},
+    {"id": "C2781063489", "name": "Immigration", "level": 2, "score": 0.58},
 ]
 
 COUNTRIES = ["US", "DE", "GB", "FR", "ES", "IT", "NL", "SE", "BR", "AR", "CL", "HU", "PL"]
 INSTITUTIONS = [
     ("I136199984", "Harvard University", "US"),
-    ("I97018004",  "Princeton University", "US"),
-    ("I40347166",  "Stanford University", "US"),
+    ("I97018004", "Princeton University", "US"),
+    ("I40347166", "Stanford University", "US"),
     ("I185261750", "University of Oxford", "GB"),
-    ("I41461786",  "Sciences Po Paris", "FR"),
+    ("I41461786", "Sciences Po Paris", "FR"),
     ("I153911831", "University of Amsterdam", "NL"),
     ("I205783295", "Humboldt University of Berlin", "DE"),
     ("I214568946", "London School of Economics", "GB"),
@@ -175,9 +179,7 @@ INSTITUTIONS = [
 
 
 # Shared reference pool — shared across all generated works to create coupling
-SHARED_REF_POOL = [
-    f"https://openalex.org/W{1000000000 + i}" for i in range(80)
-]
+SHARED_REF_POOL = [f"https://openalex.org/W{1000000000 + i}" for i in range(80)]
 
 # Canonical "landmark" works frequently cited
 LANDMARK_REFS = SHARED_REF_POOL[:20]
@@ -189,9 +191,13 @@ def make_work(i: int) -> dict:
     title_base = TITLES[i % len(TITLES)]
     title = title_base if i < len(TITLES) else f"{title_base} — Study {i}"
     abstract = ABSTRACTS[i % len(ABSTRACTS)]
-    year = int(np.random.choice(range(1995, 2024), p=np.array(
-        [max(0.01, (y - 1994) * 0.004) for y in range(1995, 2024)]
-    ) / sum([max(0.01, (y - 1994) * 0.004) for y in range(1995, 2024)])))
+    year = int(
+        np.random.choice(
+            range(1995, 2024),
+            p=np.array([max(0.01, (y - 1994) * 0.004) for y in range(1995, 2024)])
+            / sum([max(0.01, (y - 1994) * 0.004) for y in range(1995, 2024)]),
+        )
+    )
 
     cited_by = int(np.random.pareto(1.2) * 20)
 
@@ -200,17 +206,21 @@ def make_work(i: int) -> dict:
     authors = []
     for a in chosen_authors:
         inst_id, inst_name, country = random.choice(INSTITUTIONS)
-        authors.append({
-            "id": f"https://openalex.org/A{hash(a['name']) % 10000000:08d}",
-            "name": a["name"],
-            "orcid": None,
-            "institutions": [{
-                "id": f"https://openalex.org/{inst_id}",
-                "name": inst_name,
-                "country": country,
-                "type": "education",
-            }],
-        })
+        authors.append(
+            {
+                "id": f"https://openalex.org/A{hash(a['name']) % 10000000:08d}",
+                "name": a["name"],
+                "orcid": None,
+                "institutions": [
+                    {
+                        "id": f"https://openalex.org/{inst_id}",
+                        "name": inst_name,
+                        "country": country,
+                        "type": "education",
+                    }
+                ],
+            }
+        )
 
     n_concepts = random.randint(2, 5)
     concepts_raw = random.sample(CONCEPTS_POOL, n_concepts)
@@ -222,9 +232,12 @@ def make_work(i: int) -> dict:
     n_shared = random.randint(4, 12)
     n_unique = random.randint(2, 6)
     refs = (
-        random.sample(LANDMARK_REFS, min(n_landmark, len(LANDMARK_REFS))) +
-        random.sample(SHARED_REF_POOL[20:], min(n_shared, len(SHARED_REF_POOL) - 20)) +
-        [f"https://openalex.org/W{random.randint(3000000000, 3999999999)}" for _ in range(n_unique)]
+        random.sample(LANDMARK_REFS, min(n_landmark, len(LANDMARK_REFS)))
+        + random.sample(SHARED_REF_POOL[20:], min(n_shared, len(SHARED_REF_POOL) - 20))
+        + [
+            f"https://openalex.org/W{random.randint(3000000000, 3999999999)}"
+            for _ in range(n_unique)
+        ]
     )
     refs = list(set(refs))  # deduplicate
 

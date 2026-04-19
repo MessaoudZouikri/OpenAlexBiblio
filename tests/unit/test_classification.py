@@ -21,7 +21,7 @@ from src.agents.classification import (
     make_input_text,
     stage3_llm,
     HybridClassifier,
-    run_feedback_loop
+    run_feedback_loop,
 )
 
 
@@ -36,7 +36,7 @@ def rule_based_classification(work_data):
         "domain": domain,
         "subcategory": subcategory,
         "confidence": confidence,
-        "method": "rule_based"
+        "method": "rule_based",
     }
 
 
@@ -52,28 +52,28 @@ def embedding_similarity_classification(work_data):
             "domain": "Other",
             "subcategory": "interdisciplinary",
             "confidence": 0.0,
-            "method": "embedding"
+            "method": "embedding",
         }
     elif "populism" in title or "populism" in abstract:
         return {
             "domain": "Political Science",
             "subcategory": "radical_right",
             "confidence": 0.85,
-            "method": "embedding"
+            "method": "embedding",
         }
     elif "economic" in title or "economic" in abstract:
         return {
             "domain": "Economics",
             "subcategory": "political_economy",
             "confidence": 0.80,
-            "method": "embedding"
+            "method": "embedding",
         }
     else:
         return {
             "domain": "Other",
             "subcategory": "interdisciplinary",
             "confidence": 0.30,
-            "method": "embedding"
+            "method": "embedding",
         }
 
 
@@ -85,14 +85,14 @@ def llm_classification(work_data):
             "domain": "Other",
             "subcategory": "interdisciplinary",
             "confidence": 0.0,
-            "method": "llm"
+            "method": "llm",
         }
     return {
         "domain": "Political Science",
         "subcategory": "radical_right",
         "confidence": 0.85,
         "method": "llm",
-        "reasoning": "Mock reasoning for testing"
+        "reasoning": "Mock reasoning for testing",
     }
 
 
@@ -105,49 +105,44 @@ def classify_work(work_data):
             "domain": "Political Science",
             "subcategory": "radical_right",
             "confidence": 0.85,
-            "stage": "rule_based"
+            "stage": "rule_based",
         }
     elif "ambiguous political topic" in title:
         return {
             "domain": "Political Science",
             "subcategory": "political_theory",
             "confidence": 0.85,
-            "stage": "embedding"
+            "stage": "embedding",
         }
     elif "complex political phenomenon" in title:
         return {
             "domain": "Political Science",
             "subcategory": "political_theory",
             "confidence": 0.85,
-            "stage": "llm"
+            "stage": "llm",
         }
     elif "completely unrelated topic" in title:
-        return {
-            "domain": "Other",
-            "subcategory": "Other",
-            "confidence": 0.0,
-            "stage": "failed"
-        }
+        return {"domain": "Other", "subcategory": "Other", "confidence": 0.0, "stage": "failed"}
     elif "populism" in title:
         return {
             "domain": "Political Science",
             "subcategory": "radical_right",
             "confidence": 0.85,
-            "stage": "rule_based"
+            "stage": "rule_based",
         }
     elif "economic" in title:
         return {
             "domain": "Economics",
             "subcategory": "political_economy",
             "confidence": 0.80,
-            "stage": "embedding"
+            "stage": "embedding",
         }
     else:
         return {
             "domain": "Other",
             "subcategory": "interdisciplinary",
             "confidence": 0.50,
-            "stage": "llm"
+            "stage": "llm",
         }
 
 
@@ -187,7 +182,7 @@ class TestRuleBasedClassification:
         """Test successful keyword matching."""
         work_data = {
             "title": "The rise of radical right populism in Europe",
-            "abstract": "This paper examines far-right political parties"
+            "abstract": "This paper examines far-right political parties",
         }
 
         result = rule_based_classification(work_data)
@@ -201,7 +196,7 @@ class TestRuleBasedClassification:
         """Test when no keywords match."""
         work_data = {
             "title": "Quantum physics and particle acceleration",
-            "abstract": "This paper discusses quantum mechanics"
+            "abstract": "This paper discusses quantum mechanics",
         }
 
         result = rule_based_classification(work_data)
@@ -214,7 +209,7 @@ class TestRuleBasedClassification:
         """Test partial keyword matches where competing signals keep confidence below 1."""
         work_data = {
             "title": "Economic inequality and democratic politics",
-            "abstract": "Trade policies and electoral behavior"
+            "abstract": "Trade policies and electoral behavior",
         }
 
         result = rule_based_classification(work_data)
@@ -230,7 +225,7 @@ class TestEmbeddingSimilarityClassification:
         """Test high confidence embedding match."""
         work_data = {
             "title": "Populism and democracy",
-            "abstract": "Political theory of populist movements"
+            "abstract": "Political theory of populist movements",
         }
 
         result = embedding_similarity_classification(work_data)
@@ -241,12 +236,9 @@ class TestEmbeddingSimilarityClassification:
 
     def test_embedding_similarity_low_confidence(self, mock_embedding_client):
         """Test low confidence embedding match."""
-        work_data = {
-            "title": "Unrelated topic",
-            "abstract": "Something completely different"
-        }
+        work_data = {"title": "Unrelated topic", "abstract": "Something completely different"}
 
-        with patch('sklearn.metrics.pairwise.cosine_similarity') as mock_cos:
+        with patch("sklearn.metrics.pairwise.cosine_similarity") as mock_cos:
             mock_cos.return_value = np.array([[0.3, 0.3, 0.3]])  # Low similarity to all
 
             result = embedding_similarity_classification(work_data)
@@ -256,13 +248,10 @@ class TestEmbeddingSimilarityClassification:
 
     def test_embedding_similarity_error_handling(self):
         """Test error handling in embedding classification."""
-        work_data = {
-            "title": "Test",
-            "abstract": "Test abstract"
-        }
+        work_data = {"title": "Test", "abstract": "Test abstract"}
 
         # Mock embedding client failure
-        with patch('src.utils.embedding_client.EmbeddingClient') as mock_client:
+        with patch("src.utils.embedding_client.EmbeddingClient") as mock_client:
             mock_instance = Mock()
             mock_instance.encode_texts.side_effect = Exception("Embedding failed")
             mock_client.return_value = mock_instance
@@ -281,7 +270,7 @@ class TestLLMClassification:
         """Test successful LLM classification."""
         work_data = {
             "title": "Populism in European politics",
-            "abstract": "Analysis of populist parties and their rise"
+            "abstract": "Analysis of populist parties and their rise",
         }
 
         result = llm_classification(work_data)
@@ -294,13 +283,10 @@ class TestLLMClassification:
 
     def test_llm_classification_failure(self):
         """Test LLM classification failure."""
-        work_data = {
-            "title": "Test work",
-            "abstract": "Test abstract"
-        }
+        work_data = {"title": "Test work", "abstract": "Test abstract"}
 
         # Mock LLM client failure
-        with patch('src.utils.llm_client.LLMClient') as mock_client:
+        with patch("src.utils.llm_client.LLMClient") as mock_client:
             mock_instance = Mock()
             mock_instance.classify_work.side_effect = Exception("LLM failed")
             mock_client.return_value = mock_instance
@@ -319,7 +305,7 @@ class TestWorkClassification:
         """Test work classification with rule-based success."""
         work_data = {
             "title": "Radical right populism in Europe",
-            "abstract": "Far-right parties and their electoral success"
+            "abstract": "Far-right parties and their electoral success",
         }
 
         result = classify_work(work_data)
@@ -333,25 +319,27 @@ class TestWorkClassification:
         """Test fallback to embedding when rule-based fails."""
         work_data = {
             "title": "Ambiguous political topic",
-            "abstract": "Some political content without clear keywords"
+            "abstract": "Some political content without clear keywords",
         }
 
         # Mock rule-based to return low confidence
-        with patch('src.agents.classification.rule_based_classification') as mock_rule:
+        with patch("src.agents.classification.rule_based_classification") as mock_rule:
             mock_rule.return_value = {
                 "domain": "Other",
                 "subcategory": "Other",
                 "confidence": 0.3,
-                "method": "rule_based"
+                "method": "rule_based",
             }
 
             # Mock embedding to return high confidence
-            with patch('src.agents.classification.embedding_similarity_classification') as mock_embed:
+            with patch(
+                "src.agents.classification.embedding_similarity_classification"
+            ) as mock_embed:
                 mock_embed.return_value = {
                     "domain": "Political Science",
                     "subcategory": "political_theory",
                     "confidence": 0.85,
-                    "method": "embedding"
+                    "method": "embedding",
                 }
 
                 result = classify_work(work_data)
@@ -364,20 +352,27 @@ class TestWorkClassification:
         """Test fallback to LLM when embedding confidence is medium."""
         work_data = {
             "title": "Complex political phenomenon",
-            "abstract": "Detailed analysis of political movements"
+            "abstract": "Detailed analysis of political movements",
         }
 
         # Mock rule-based low confidence
-        with patch('src.agents.classification.rule_based_classification') as mock_rule:
+        with patch("src.agents.classification.rule_based_classification") as mock_rule:
             mock_rule.return_value = {
-                "domain": "Other", "subcategory": "Other", "confidence": 0.3, "method": "rule_based"
+                "domain": "Other",
+                "subcategory": "Other",
+                "confidence": 0.3,
+                "method": "rule_based",
             }
 
             # Mock embedding medium confidence
-            with patch('src.agents.classification.embedding_similarity_classification') as mock_embed:
+            with patch(
+                "src.agents.classification.embedding_similarity_classification"
+            ) as mock_embed:
                 mock_embed.return_value = {
-                    "domain": "Political Science", "subcategory": "political_theory",
-                    "confidence": 0.65, "method": "embedding"
+                    "domain": "Political Science",
+                    "subcategory": "political_theory",
+                    "confidence": 0.65,
+                    "method": "embedding",
                 }
 
                 result = classify_work(work_data)
@@ -390,18 +385,35 @@ class TestWorkClassification:
         """Test when all classification methods fail."""
         work_data = {
             "title": "Completely unrelated topic",
-            "abstract": "Something outside the domain scope"
+            "abstract": "Something outside the domain scope",
         }
 
         # Mock all methods to fail
-        with patch('src.agents.classification.rule_based_classification') as mock_rule:
-            mock_rule.return_value = {"domain": "Other", "subcategory": "Other", "confidence": 0.0, "method": "rule_based"}
+        with patch("src.agents.classification.rule_based_classification") as mock_rule:
+            mock_rule.return_value = {
+                "domain": "Other",
+                "subcategory": "Other",
+                "confidence": 0.0,
+                "method": "rule_based",
+            }
 
-            with patch('src.agents.classification.embedding_similarity_classification') as mock_embed:
-                mock_embed.return_value = {"domain": "Other", "subcategory": "Other", "confidence": 0.0, "method": "embedding"}
+            with patch(
+                "src.agents.classification.embedding_similarity_classification"
+            ) as mock_embed:
+                mock_embed.return_value = {
+                    "domain": "Other",
+                    "subcategory": "Other",
+                    "confidence": 0.0,
+                    "method": "embedding",
+                }
 
-                with patch('src.agents.classification.llm_classification') as mock_llm:
-                    mock_llm.return_value = {"domain": "Other", "subcategory": "Other", "confidence": 0.0, "method": "llm"}
+                with patch("src.agents.classification.llm_classification") as mock_llm:
+                    mock_llm.return_value = {
+                        "domain": "Other",
+                        "subcategory": "Other",
+                        "confidence": 0.0,
+                        "method": "llm",
+                    }
 
                     result = classify_work(work_data)
 
@@ -418,7 +430,7 @@ class TestBatchClassification:
         """Test basic batch classification."""
         works_data = [
             {"title": "Populism study", "abstract": "Political analysis"},
-            {"title": "Economic paper", "abstract": "Market analysis"}
+            {"title": "Economic paper", "abstract": "Market analysis"},
         ]
 
         results = classify_batch(works_data)
@@ -437,7 +449,7 @@ class TestBatchClassification:
         works_data = [
             {"title": "Valid work", "abstract": "Valid content"},
             {"title": "", "abstract": ""},  # Invalid work
-            {"title": "Another valid work", "abstract": "More content"}
+            {"title": "Another valid work", "abstract": "More content"},
         ]
 
         results = classify_batch(works_data)
@@ -457,7 +469,7 @@ class TestValidation:
             "subcategory": "radical_right",
             "confidence": 0.85,
             "stage": "rule_based",
-            "method": "rule_based"
+            "method": "rule_based",
         }
 
         is_valid, errors = validate_classification_result(result)
@@ -482,7 +494,7 @@ class TestValidation:
             "subcategory": "radical_right",
             "confidence": 1.5,  # Invalid: > 1.0
             "stage": "rule_based",
-            "method": "rule_based"
+            "method": "rule_based",
         }
 
         is_valid, errors = validate_classification_result(invalid_result)

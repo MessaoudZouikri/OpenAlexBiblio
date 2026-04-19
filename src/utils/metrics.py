@@ -244,10 +244,15 @@ def compute_domain_reach(
             "reach_breadth": round(n_connected / max_possible, 3) if max_possible > 0 else 0,
             "intra_domain_weight": int(reach[d]["intra_weight"]),
             "inter_domain_weight": int(reach[d]["inter_weight"]),
-            "inter_domain_ratio": round(
-                reach[d]["inter_weight"] / (reach[d]["intra_weight"] + reach[d]["inter_weight"]),
-                3
-            ) if (reach[d]["intra_weight"] + reach[d]["inter_weight"]) > 0 else 0,
+            "inter_domain_ratio": (
+                round(
+                    reach[d]["inter_weight"]
+                    / (reach[d]["intra_weight"] + reach[d]["inter_weight"]),
+                    3,
+                )
+                if (reach[d]["intra_weight"] + reach[d]["inter_weight"]) > 0
+                else 0
+            ),
         }
 
     return result
@@ -338,8 +343,9 @@ def _compute_statistics(
         "intra_domain_weight": int(intra_edges),
         "inter_domain_weight": int(inter_edges),
         "average_weight_per_edge": round(total_weight / total_edges, 2) if total_edges > 0 else 0,
-        "interdisciplinarity_index": round(inter_edges / total_weight if total_weight > 0 else 0, 3),
+        "interdisciplinarity_index": round(
+            inter_edges / total_weight if total_weight > 0 else 0, 3
+        ),
         "domain_sizes": domain_sizes,
         "network_density": round(nx.density(G), 4),
     }
-

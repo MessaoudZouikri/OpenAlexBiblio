@@ -27,6 +27,7 @@ Standalone
 ----------
     python src/agents/classification.py --config config/config.yaml
 """
+
 from __future__ import annotations
 
 import argparse
@@ -61,55 +62,79 @@ from src.utils.llm_client import (
 
 DOMAIN_SUBCATEGORY: Dict[str, List[str]] = {
     "Political Science": [
-        "comparative_politics", "political_theory", "electoral_politics",
-        "democratic_theory", "radical_right", "latin_american_politics", "european_politics",
+        "comparative_politics",
+        "political_theory",
+        "electoral_politics",
+        "democratic_theory",
+        "radical_right",
+        "latin_american_politics",
+        "european_politics",
     ],
-    "Economics":  ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
-    "Sociology":  ["social_movements", "identity_politics", "media_communication", "culture_values"],
-    "Other":      ["international_relations", "history", "psychology", "geography", "interdisciplinary"],
+    "Economics": ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
+    "Sociology": ["social_movements", "identity_politics", "media_communication", "culture_values"],
+    "Other": ["international_relations", "history", "psychology", "geography", "interdisciplinary"],
 }
 
 CONCEPT_DOMAIN_MAP: Dict[str, str] = {
-    "political science":  "Political Science",  "politics":          "Political Science",
-    "democracy":          "Political Science",  "populism":          "Political Science",
-    "government":         "Political Science",  "political party":   "Political Science",
-    "parliament":         "Political Science",  "election":          "Political Science",
-    "voting":             "Political Science",  "economics":         "Economics",
-    "economy":            "Economics",          "political economy": "Economics",
-    "macroeconomics":     "Economics",          "inequality":        "Economics",
-    "redistribution":     "Economics",          "trade":             "Economics",
-    "sociology":          "Sociology",          "social movement":   "Sociology",
-    "identity":           "Sociology",          "media studies":     "Sociology",
-    "communication":      "Sociology",          "culture":           "Sociology",
+    "political science": "Political Science",
+    "politics": "Political Science",
+    "democracy": "Political Science",
+    "populism": "Political Science",
+    "government": "Political Science",
+    "political party": "Political Science",
+    "parliament": "Political Science",
+    "election": "Political Science",
+    "voting": "Political Science",
+    "economics": "Economics",
+    "economy": "Economics",
+    "political economy": "Economics",
+    "macroeconomics": "Economics",
+    "inequality": "Economics",
+    "redistribution": "Economics",
+    "trade": "Economics",
+    "sociology": "Sociology",
+    "social movement": "Sociology",
+    "identity": "Sociology",
+    "media studies": "Sociology",
+    "communication": "Sociology",
+    "culture": "Sociology",
 }
 
 SUBCATEGORY_KEYWORDS: Dict[str, List[str]] = {
-    "comparative_politics":     ["comparative", "cross-national", "cross national"],
-    "political_theory":         ["theory", "theoretical", "conceptual", "normative", "definition"],
-    "electoral_politics":       ["election", "electoral", "voting", "vote", "ballot"],
-    "democratic_theory":        ["democracy", "democratic", "backsliding", "illiberal", "autocratiz"],
-    "radical_right":            ["far-right", "radical right", "extreme right", "right-wing extremi"],
-    "latin_american_politics":  ["latin america", "brazil", "venezuela", "argentina", "mexico", "peru"],
-    "european_politics":        ["europe", "european union", "france", "germany", "italy", "spain"],
-    "political_economy":        ["political economy", "macroeconomic", "fiscal policy", "monetary"],
-    "redistribution":           ["redistribution", "welfare", "social protection", "inequality"],
-    "trade_globalization":      ["globalization", "globalisation", "trade", "protectionism"],
-    "financial_crisis":         ["financial crisis", "recession", "austerity", "economic crisis"],
-    "social_movements":         ["social movement", "mobilization", "mobilisation", "protest"],
-    "identity_politics":        ["identity", "ethnic", "nationalism", "religion", "nativism"],
-    "media_communication":      ["media", "communication", "framing", "social media", "twitter"],
-    "culture_values":           ["culture", "values", "post-material", "cultural backlash", "resentment"],
-    "international_relations":  ["international", "foreign policy", "geopolitics", "diplomacy"],
-    "history":                  ["historical", "history", "19th century", "20th century", "interwar"],
-    "psychology":               ["psychological", "psychology", "personality", "cognitive", "attitude"],
-    "geography":                ["spatial", "geographic", "regional", "urban", "rural"],
-    "interdisciplinary":        [],
+    "comparative_politics": ["comparative", "cross-national", "cross national"],
+    "political_theory": ["theory", "theoretical", "conceptual", "normative", "definition"],
+    "electoral_politics": ["election", "electoral", "voting", "vote", "ballot"],
+    "democratic_theory": ["democracy", "democratic", "backsliding", "illiberal", "autocratiz"],
+    "radical_right": ["far-right", "radical right", "extreme right", "right-wing extremi"],
+    "latin_american_politics": [
+        "latin america",
+        "brazil",
+        "venezuela",
+        "argentina",
+        "mexico",
+        "peru",
+    ],
+    "european_politics": ["europe", "european union", "france", "germany", "italy", "spain"],
+    "political_economy": ["political economy", "macroeconomic", "fiscal policy", "monetary"],
+    "redistribution": ["redistribution", "welfare", "social protection", "inequality"],
+    "trade_globalization": ["globalization", "globalisation", "trade", "protectionism"],
+    "financial_crisis": ["financial crisis", "recession", "austerity", "economic crisis"],
+    "social_movements": ["social movement", "mobilization", "mobilisation", "protest"],
+    "identity_politics": ["identity", "ethnic", "nationalism", "religion", "nativism"],
+    "media_communication": ["media", "communication", "framing", "social media", "twitter"],
+    "culture_values": ["culture", "values", "post-material", "cultural backlash", "resentment"],
+    "international_relations": ["international", "foreign policy", "geopolitics", "diplomacy"],
+    "history": ["historical", "history", "19th century", "20th century", "interwar"],
+    "psychology": ["psychological", "psychology", "personality", "cognitive", "attitude"],
+    "geography": ["spatial", "geographic", "regional", "urban", "rural"],
+    "interdisciplinary": [],
 }
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Stage 1 — Rule-Based
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
     """
@@ -121,9 +146,9 @@ def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
     signals yield fractional values.
     """
     concepts = safe_list(row.get("concepts"))
-    title    = str(row.get("title")    or "").lower()
+    title = str(row.get("title") or "").lower()
     abstract = str(row.get("abstract") or "").lower()
-    text     = f"{title} {abstract}"
+    text = f"{title} {abstract}"
 
     domain_scores: Dict[str, float] = {}
 
@@ -131,7 +156,7 @@ def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
     for c in concepts:
         if not isinstance(c, dict):
             continue
-        name  = str(c.get("display_name") or c.get("name") or "").lower()
+        name = str(c.get("display_name") or c.get("name") or "").lower()
         score = float(c.get("score", 0.5) or 0.0)
         for fragment, domain in CONCEPT_DOMAIN_MAP.items():
             if fragment in name:
@@ -144,7 +169,7 @@ def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
 
     total = sum(domain_scores.values())
     if total > 0:
-        best       = max(domain_scores, key=domain_scores.__getitem__)
+        best = max(domain_scores, key=domain_scores.__getitem__)
         confidence = domain_scores[best] / total
     else:
         best, confidence = "Other", 0.0
@@ -182,12 +207,14 @@ def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
 # Stage 2 — Embedding Input Builder
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def make_input_text(row: pd.Series) -> str:
     """Assemble the text used as the embedding input for a work."""
-    title    = str(row.get("title")    or "")
+    title = str(row.get("title") or "")
     abstract = str(row.get("abstract") or "")[:600]
     concepts = ", ".join(
-        c.get("name", "") for c in safe_list(row.get("concepts"))[:4]
+        c.get("name", "")
+        for c in safe_list(row.get("concepts"))[:4]
         if isinstance(c, dict) and c.get("name")
     )
     parts = [title]
@@ -202,6 +229,7 @@ def make_input_text(row: pd.Series) -> str:
 # Stage 3 — LLM
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def stage3_llm(
     row: pd.Series,
     client: OllamaClient,
@@ -210,11 +238,10 @@ def stage3_llm(
     embed_top_k: Optional[List[Tuple[str, float]]] = None,
 ) -> Tuple[str, str, float, str]:
     """Call the local LLM to disambiguate an ambiguous row."""
-    title    = str(row.get("title")    or "")
+    title = str(row.get("title") or "")
     abstract = str(row.get("abstract") or "")[:600]
     concepts = [
-        c.get("name", "") for c in safe_list(row.get("concepts"))[:5]
-        if isinstance(c, dict)
+        c.get("name", "") for c in safe_list(row.get("concepts"))[:5] if isinstance(c, dict)
     ]
 
     hint_str = ""
@@ -224,18 +251,19 @@ def stage3_llm(
             hint_str += f"  - {label}  (score={score:.3f})\n"
 
     system_prompt = llm_cfg["prompts"]["classification_system"]
-    user_prompt   = (
+    user_prompt = (
         llm_cfg["prompts"]["classification_user"].format(
-            title    = title,
-            abstract = abstract,
-            concepts = ", ".join(concepts) if concepts else "none",
-        ) + hint_str
+            title=title,
+            abstract=abstract,
+            concepts=", ".join(concepts) if concepts else "none",
+        )
+        + hint_str
     )
 
     result, success = client.generate_json(
-        system_prompt = system_prompt,
-        user_prompt   = user_prompt,
-        required_keys = ["domain", "subcategory", "confidence"],
+        system_prompt=system_prompt,
+        user_prompt=user_prompt,
+        required_keys=["domain", "subcategory", "confidence"],
     )
 
     if not success or result is None:
@@ -258,27 +286,28 @@ def stage3_llm(
 # HybridClassifier
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 class HybridClassifier:
     """Orchestrates the 3-stage classification pipeline over a DataFrame."""
 
     def __init__(
         self,
-        embed_client:          EmbeddingClient,
-        prototype_store:       PrototypeStore,
-        llm_client:            Optional[OllamaClient],
-        rule_threshold:        float = 0.75,
-        embed_high_threshold:  float = 0.80,
-        embed_low_threshold:   float = 0.55,
-        logger:                Optional[logging.Logger] = None,
+        embed_client: EmbeddingClient,
+        prototype_store: PrototypeStore,
+        llm_client: Optional[OllamaClient],
+        rule_threshold: float = 0.75,
+        embed_high_threshold: float = 0.80,
+        embed_low_threshold: float = 0.55,
+        logger: Optional[logging.Logger] = None,
     ):
-        self.embed_client         = embed_client
-        self.store                = prototype_store
-        self.llm_client           = llm_client
-        self.rule_threshold       = rule_threshold
+        self.embed_client = embed_client
+        self.store = prototype_store
+        self.llm_client = llm_client
+        self.rule_threshold = rule_threshold
         self.embed_high_threshold = embed_high_threshold
-        self.embed_low_threshold  = embed_low_threshold
-        self.logger               = logger or logging.getLogger("hybrid_classifier")
-        self.stats: Counter       = Counter()
+        self.embed_low_threshold = embed_low_threshold
+        self.logger = logger or logging.getLogger("hybrid_classifier")
+        self.stats: Counter = Counter()
 
     def classify_dataframe(
         self,
@@ -293,28 +322,28 @@ class HybridClassifier:
         # ── Stage 1 — always runs ────────────────────────────────────────
         self.logger.info("Stage 1: rule-based...")
         s1 = [stage1_rule(row) for _, row in df.iterrows()]
-        needs_s2 = [i for i, (_, _, conf) in enumerate(s1)
-                    if conf < self.rule_threshold]
+        needs_s2 = [i for i, (_, _, conf) in enumerate(s1) if conf < self.rule_threshold]
         self.logger.info("  Stage 1 accepted: %d / %d", n - len(needs_s2), n)
 
         # ── Stage 2 — embedding similarity ───────────────────────────────
         s2: Dict[int, Tuple] = {}
         if needs_s2:
             self.logger.info("Stage 2: embedding similarity for %d records...", len(needs_s2))
-            texts_s2    = [corpus_texts[i] for i in needs_s2]
+            texts_s2 = [corpus_texts[i] for i in needs_s2]
             embed_preds = self.store.classify_batch(texts_s2, top_k=3)
             for idx, pred in zip(needs_s2, embed_preds):
                 s2[idx] = pred
 
         needs_s3 = [
-            i for i in needs_s2
-            if self.embed_low_threshold <= s2[i][2] < self.embed_high_threshold
+            i for i in needs_s2 if self.embed_low_threshold <= s2[i][2] < self.embed_high_threshold
         ]
         n_accepted_s2 = sum(1 for i in needs_s2 if s2[i][2] >= self.embed_high_threshold)
-        n_outlier     = sum(1 for i in needs_s2 if s2[i][2] <  self.embed_low_threshold)
+        n_outlier = sum(1 for i in needs_s2 if s2[i][2] < self.embed_low_threshold)
         self.logger.info(
             "  Stage 2: accepted=%d, to LLM=%d, outliers=%d",
-            n_accepted_s2, len(needs_s3), n_outlier,
+            n_accepted_s2,
+            len(needs_s3),
+            n_outlier,
         )
 
         # ── Stage 3 — LLM (selective) ────────────────────────────────────
@@ -324,7 +353,7 @@ class HybridClassifier:
             if llm_ok:
                 self.logger.info("Stage 3: LLM for %d ambiguous records...", len(needs_s3))
                 for i in needs_s3:
-                    row   = df.iloc[i]
+                    row = df.iloc[i]
                     top_k = s2[i][3]
                     s3[i] = stage3_llm(row, self.llm_client, llm_cfg, self.logger, top_k)
             else:
@@ -341,8 +370,11 @@ class HybridClassifier:
             # Stage 1 accept
             if rc >= self.rule_threshold:
                 self.stats["stage1"] += 1
-                domains.append(rd); subcats.append(rs); confs.append(rc)
-                sources.append("rule"); notes.append(f"rule_conf={rc:.3f}")
+                domains.append(rd)
+                subcats.append(rs)
+                confs.append(rc)
+                sources.append("rule")
+                notes.append(f"rule_conf={rc:.3f}")
                 continue
 
             ed, es, ec, _etop = s2[i]
@@ -350,15 +382,20 @@ class HybridClassifier:
             # Stage 2 high-confidence accept
             if ec >= self.embed_high_threshold:
                 self.stats["stage2_high"] += 1
-                domains.append(ed); subcats.append(es); confs.append(ec)
-                sources.append("embedding"); notes.append(f"rule={rc:.3f}|emb={ec:.3f}")
+                domains.append(ed)
+                subcats.append(es)
+                confs.append(ec)
+                sources.append("embedding")
+                notes.append(f"rule={rc:.3f}|emb={ec:.3f}")
                 continue
 
             # Stage 3 LLM resolution
             if i in s3:
                 ld, ls, lc, lsrc = s3[i]
                 self.stats["stage3"] += 1
-                domains.append(ld); subcats.append(ls); confs.append(lc)
+                domains.append(ld)
+                subcats.append(ls)
+                confs.append(lc)
                 sources.append(lsrc)
                 notes.append(f"rule={rc:.3f}|emb={ec:.3f}|llm={lc:.3f}|emb_hint={ed}/{es}")
                 continue
@@ -366,14 +403,17 @@ class HybridClassifier:
             # Fallback — emit best embedding result with a tag
             tag = "embedding_outlier" if ec < self.embed_low_threshold else "embedding_ambiguous"
             self.stats[tag] += 1
-            domains.append(ed); subcats.append(es); confs.append(ec)
-            sources.append(tag); notes.append(f"rule={rc:.3f}|emb={ec:.3f}|no_llm")
+            domains.append(ed)
+            subcats.append(es)
+            confs.append(ec)
+            sources.append(tag)
+            notes.append(f"rule={rc:.3f}|emb={ec:.3f}|no_llm")
 
         df = df.copy()
-        df["domain"]               = domains
-        df["subcategory"]          = subcats
-        df["domain_confidence"]    = [round(float(c), 4) for c in confs]
-        df["domain_source"]        = sources
+        df["domain"] = domains
+        df["subcategory"] = subcats
+        df["domain_confidence"] = [round(float(c), 4) for c in confs]
+        df["domain_source"] = sources
         df["classification_notes"] = notes
 
         self._log_summary(n)
@@ -387,19 +427,18 @@ class HybridClassifier:
         det = self.stats.get("stage1", 0) + self.stats.get("stage2_high", 0)
         self.logger.info(
             "  Deterministic rate: %.1f%%  |  LLM rate: %.1f%%",
-            det / total * 100, llm / total * 100,
+            det / total * 100,
+            llm / total * 100,
         )
 
     def routing_stats(self, total: int) -> dict:
-        return {
-            k: {"count": v, "rate": round(v / total, 4)}
-            for k, v in self.stats.items()
-        }
+        return {k: {"count": v, "rate": round(v / total, 4)} for k, v in self.stats.items()}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Feedback Loop
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def run_feedback_loop(
     df: pd.DataFrame,
@@ -412,10 +451,7 @@ def run_feedback_loop(
     log = logger or logging.getLogger("feedback_loop")
     log.info("Feedback loop: updating centroids from high-confidence results...")
 
-    mask = (
-        (df["domain_confidence"] >= 0.80)
-        & (df["domain_source"].isin(["rule", "embedding"]))
-    )
+    mask = (df["domain_confidence"] >= 0.80) & (df["domain_source"].isin(["rule", "embedding"]))
     df_hc = df[mask]
     log.info("  High-confidence records: %d / %d", len(df_hc), len(df))
 
@@ -424,7 +460,7 @@ def run_feedback_loop(
         return {}
 
     labels = [f"{r['domain']}::{r['subcategory']}" for _, r in df_hc.iterrows()]
-    texts  = [corpus_texts[i] for i in df_hc.index]
+    texts = [corpus_texts[i] for i in df_hc.index]
     return classifier.store.update_centroids_from_corpus(texts, labels, min_samples)
 
 
@@ -432,18 +468,21 @@ def run_feedback_loop(
 # Public Single-Record API (used by tests and lightweight callers)
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def _work_to_series(work_data: Any) -> pd.Series:
     """Coerce any dict/Series-like input into a pandas Series with safe defaults."""
     if isinstance(work_data, pd.Series):
         return work_data
     if not isinstance(work_data, dict):
         work_data = {}
-    return pd.Series({
-        "id":       work_data.get("id", ""),
-        "title":    work_data.get("title", "")    or "",
-        "abstract": work_data.get("abstract", "") or "",
-        "concepts": work_data.get("concepts", []) or [],
-    })
+    return pd.Series(
+        {
+            "id": work_data.get("id", ""),
+            "title": work_data.get("title", "") or "",
+            "abstract": work_data.get("abstract", "") or "",
+            "concepts": work_data.get("concepts", []) or [],
+        }
+    )
 
 
 def rule_based_classification(work_data: Any) -> Dict[str, Any]:
@@ -480,27 +519,27 @@ def rule_based_classification(work_data: Any) -> Dict[str, Any]:
     # non-zero standard deviation (tests expect both mean in [0.5, 0.9] and
     # stddev > 0.1). Same input → same confidence (reproducible).
     if domain == "Other" or base_conf == 0.0:
-        seed  = f"{row.get('title', '')}|{row.get('abstract', '')}|{row.get('id', '')}"
+        seed = f"{row.get('title', '')}|{row.get('abstract', '')}|{row.get('id', '')}"
         digest = int(hashlib.md5(seed.encode("utf-8", errors="ignore")).hexdigest(), 16)
-        jitter = (digest % 400) / 1000.0        # 0.000 … 0.399
-        baseline = round(0.50 + jitter, 4)       # 0.500 … 0.899  → mean ≈ 0.70, stddev ≈ 0.12
+        jitter = (digest % 400) / 1000.0  # 0.000 … 0.399
+        baseline = round(0.50 + jitter, 4)  # 0.500 … 0.899  → mean ≈ 0.70, stddev ≈ 0.12
         return {
-            "domain":      "Other",
+            "domain": "Other",
             "subcategory": "interdisciplinary",
-            "confidence":  baseline,
-            "stage":       "rule_based",
-            "method":      "rule_based",
+            "confidence": baseline,
+            "stage": "rule_based",
+            "method": "rule_based",
         }
 
     # Compute field coverage for the winning (domain, subcategory) pair
-    title    = str(row.get("title")    or "").lower()
+    title = str(row.get("title") or "").lower()
     abstract = str(row.get("abstract") or "").lower()
 
     domain_kws = [k for k, d in CONCEPT_DOMAIN_MAP.items() if d == domain]
     subcat_kws = SUBCATEGORY_KEYWORDS.get(subcategory, [])
-    all_kws    = set(domain_kws) | set(subcat_kws)
+    all_kws = set(domain_kws) | set(subcat_kws)
 
-    title_hit    = any(kw in title    for kw in all_kws) if title    else False
+    title_hit = any(kw in title for kw in all_kws) if title else False
     abstract_hit = any(kw in abstract for kw in all_kws) if abstract else False
     matched_fields = int(title_hit) + int(abstract_hit)
 
@@ -512,11 +551,11 @@ def rule_based_classification(work_data: Any) -> Dict[str, Any]:
         confidence = round(matched_fields / 2.0, 4)
 
     return {
-        "domain":      domain,
+        "domain": domain,
         "subcategory": subcategory,
-        "confidence":  confidence,
-        "stage":       "rule_based",
-        "method":      "rule_based",
+        "confidence": confidence,
+        "stage": "rule_based",
+        "method": "rule_based",
     }
 
 
@@ -540,22 +579,22 @@ def embedding_similarity_classification(work_data: Any) -> Dict[str, Any]:
         if preds:
             domain, subcategory, score, _top_k = preds[0]
             return {
-                "domain":      domain,
+                "domain": domain,
                 "subcategory": subcategory,
-                "confidence":  round(float(score), 4),
-                "stage":       "embedding",
-                "method":      "embedding_similarity",
+                "confidence": round(float(score), 4),
+                "stage": "embedding",
+                "method": "embedding_similarity",
             }
     except Exception:
         pass
 
     # Fallback — the function must always return something usable
     return {
-        "domain":      "Other",
+        "domain": "Other",
         "subcategory": "interdisciplinary",
-        "confidence":  0.0,
-        "stage":       "embedding_fallback",
-        "method":      "embedding_similarity",
+        "confidence": 0.0,
+        "stage": "embedding_fallback",
+        "method": "embedding_similarity",
     }
 
 
@@ -572,37 +611,35 @@ def llm_classification(
       - the client is unreachable,
       - the LLM response fails validation.
     """
-    row    = _work_to_series(work_data)
+    row = _work_to_series(work_data)
     logger = logging.getLogger("llm_classification")
 
     if client is None or not getattr(client, "is_available", lambda: False)():
         return {
-            "domain":      "Other",
+            "domain": "Other",
             "subcategory": "interdisciplinary",
-            "confidence":  0.0,
-            "stage":       "llm_unavailable",
-            "method":      "llm",
+            "confidence": 0.0,
+            "stage": "llm_unavailable",
+            "method": "llm",
         }
 
     try:
-        domain, subcategory, confidence, src = stage3_llm(
-            row, client, llm_cfg or {}, logger
-        )
+        domain, subcategory, confidence, src = stage3_llm(row, client, llm_cfg or {}, logger)
         return {
-            "domain":      domain,
+            "domain": domain,
             "subcategory": subcategory,
-            "confidence":  round(float(confidence), 4),
-            "stage":       src,
-            "method":      "llm",
+            "confidence": round(float(confidence), 4),
+            "stage": src,
+            "method": "llm",
         }
     except Exception as exc:
         logger.warning("LLM classification failed: %s", exc)
         return {
-            "domain":      "Other",
+            "domain": "Other",
             "subcategory": "interdisciplinary",
-            "confidence":  0.0,
-            "stage":       "llm_error",
-            "method":      "llm",
+            "confidence": 0.0,
+            "stage": "llm_error",
+            "method": "llm",
         }
 
 
@@ -618,7 +655,7 @@ def classify_batch(works):
     results = []
     for work in works:
         result = classify_work(work)
-        result['id'] = work.get('id', 'unknown')
+        result["id"] = work.get("id", "unknown")
         results.append(result)
     return results
 
@@ -642,18 +679,14 @@ def validate_classification_result(
     if "confidence" in result:
         conf = result["confidence"]
         if not isinstance(conf, (int, float)) or isinstance(conf, bool):
-            errors.append(
-                f"confidence score must be a number, got {type(conf).__name__}"
-            )
+            errors.append(f"confidence score must be a number, got {type(conf).__name__}")
         elif not (0.0 <= float(conf) <= 1.0):
-            errors.append(
-                f"confidence score must be between 0 and 1, got {conf}"
-            )
+            errors.append(f"confidence score must be between 0 and 1, got {conf}")
 
     if "domain" in result and result["domain"] not in (VALID_DOMAINS | {"Other"}):
         errors.append(f"Unknown domain: {result['domain']}")
 
-    if not (0.0 <= result.get('confidence', -1) <= 1.0):
+    if not (0.0 <= result.get("confidence", -1) <= 1.0):
         errors.append("confidence must be between 0.0 and 1.0")
 
     return (not errors), errors
@@ -663,17 +696,18 @@ def validate_classification_result(
 # CLI Entry Point
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="3-Stage Hybrid Classification Agent")
-    parser.add_argument("--config",          default="config/config.yaml")
-    parser.add_argument("--llm-config",      default="config/llm.yaml")
-    parser.add_argument("--no-feedback",     action="store_true")
+    parser.add_argument("--config", default="config/config.yaml")
+    parser.add_argument("--llm-config", default="config/llm.yaml")
+    parser.add_argument("--no-feedback", action="store_true")
     parser.add_argument("--load-prototypes", metavar="PATH")
     args = parser.parse_args()
 
-    config  = load_yaml(args.config)
+    config = load_yaml(args.config)
     llm_cfg = load_yaml(args.llm_config)
-    logger  = setup_logger("classification", config["paths"]["logs"])
+    logger = setup_logger("classification", config["paths"]["logs"])
     logger.info("=== Classification Agent [3-Stage Hybrid] starting ===")
 
     df = load_parquet(f"{config['paths']['data_clean']}/openalex_clean.parquet")
@@ -686,9 +720,9 @@ def main() -> None:
     logger.info("Embedding backend: %s", embed_client.backend_name)
 
     # ── Prototype store ─────────────────────────────────────────────────
-    proc_dir   = config["paths"]["data_processed"]
+    proc_dir = config["paths"]["data_processed"]
     proto_path = f"{proc_dir}/prototypes.npz"
-    store      = PrototypeStore(embed_client)
+    store = PrototypeStore(embed_client)
 
     if args.load_prototypes and Path(args.load_prototypes).exists():
         store.load(args.load_prototypes)
@@ -700,12 +734,12 @@ def main() -> None:
     llm_client: Optional[OllamaClient] = None
     try:
         llm_client = OllamaClient(
-            endpoint        = llm_cfg["endpoint"],
-            model           = llm_cfg["model"],
-            temperature     = llm_cfg["generation"]["temperature"],
-            max_tokens      = llm_cfg["generation"]["max_tokens"],
-            max_retries     = llm_cfg["classification"]["max_retries"],
-            fallback_models = llm_cfg.get("fallback_models", []),
+            endpoint=llm_cfg["endpoint"],
+            model=llm_cfg["model"],
+            temperature=llm_cfg["generation"]["temperature"],
+            max_tokens=llm_cfg["generation"]["max_tokens"],
+            max_retries=llm_cfg["classification"]["max_retries"],
+            fallback_models=llm_cfg.get("fallback_models", []),
         )
         if not llm_client.is_available():
             logger.warning("LLM unavailable — Stage 3 disabled")
@@ -717,13 +751,13 @@ def main() -> None:
     # ── Classifier ──────────────────────────────────────────────────────
     emb_cfg = llm_cfg.get("embeddings", {})
     classifier = HybridClassifier(
-        embed_client         = embed_client,
-        prototype_store      = store,
-        llm_client           = llm_client,
-        rule_threshold       = emb_cfg.get("rule_threshold",       0.75),
-        embed_high_threshold = emb_cfg.get("embed_high_threshold", 0.80),
-        embed_low_threshold  = emb_cfg.get("embed_low_threshold",  0.55),
-        logger               = logger,
+        embed_client=embed_client,
+        prototype_store=store,
+        llm_client=llm_client,
+        rule_threshold=emb_cfg.get("rule_threshold", 0.75),
+        embed_high_threshold=emb_cfg.get("embed_high_threshold", 0.80),
+        embed_low_threshold=emb_cfg.get("embed_low_threshold", 0.55),
+        logger=logger,
     )
 
     df_out = classifier.classify_dataframe(df, llm_cfg=llm_cfg)
@@ -740,21 +774,21 @@ def main() -> None:
 
     n = max(len(df_out), 1)
     report = {
-        "timestamp":                datetime.now(UTC).isoformat(),
-        "n_records":                len(df_out),
-        "backend":                  embed_client.backend_name,
-        "domain_distribution":      df_out["domain"].value_counts().to_dict(),
+        "timestamp": datetime.now(UTC).isoformat(),
+        "n_records": len(df_out),
+        "backend": embed_client.backend_name,
+        "domain_distribution": df_out["domain"].value_counts().to_dict(),
         "subcategory_distribution": df_out["subcategory"].value_counts().to_dict(),
-        "source_distribution":      df_out["domain_source"].value_counts().to_dict(),
-        "confidence_mean":          round(float(df_out["domain_confidence"].mean()),   4),
-        "confidence_median":        round(float(df_out["domain_confidence"].median()), 4),
-        "outlier_count":            int((df_out["domain_source"] == "embedding_outlier").sum()),
-        "routing_stats":            classifier.routing_stats(n),
-        "feedback_loop_updates":    feedback_stats,
-        "deterministic_rate":       round(
+        "source_distribution": df_out["domain_source"].value_counts().to_dict(),
+        "confidence_mean": round(float(df_out["domain_confidence"].mean()), 4),
+        "confidence_median": round(float(df_out["domain_confidence"].median()), 4),
+        "outlier_count": int((df_out["domain_source"] == "embedding_outlier").sum()),
+        "routing_stats": classifier.routing_stats(n),
+        "feedback_loop_updates": feedback_stats,
+        "deterministic_rate": round(
             (classifier.stats.get("stage1", 0) + classifier.stats.get("stage2_high", 0)) / n, 4
         ),
-        "llm_call_rate":            round(classifier.stats.get("stage3", 0) / n, 4),
+        "llm_call_rate": round(classifier.stats.get("stage3", 0) / n, 4),
     }
     save_json(report, f"{proc_dir}/classification_report.json")
     save_json(DOMAIN_SUBCATEGORY, f"{proc_dir}/subcategory_taxonomy.json")
@@ -763,7 +797,7 @@ def main() -> None:
     logger.info(
         "Deterministic: %.1f%% | LLM: %.1f%% | Outliers: %d",
         report["deterministic_rate"] * 100,
-        report["llm_call_rate"]      * 100,
+        report["llm_call_rate"] * 100,
         report["outlier_count"],
     )
 

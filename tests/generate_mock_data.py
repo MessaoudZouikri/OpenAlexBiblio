@@ -29,10 +29,18 @@ def generate_mock_raw_openalex_data(n_works=100):
         "Identity Politics in {}",
         "Media Influence on {}",
         "Institutional Change in {}",
-        "Cultural Backlash and {}"
+        "Cultural Backlash and {}",
     ]
 
-    locations = ["Europe", "Latin America", "Asia", "Africa", "North America", "Modern Society", "Contemporary Politics"]
+    locations = [
+        "Europe",
+        "Latin America",
+        "Asia",
+        "Africa",
+        "North America",
+        "Modern Society",
+        "Contemporary Politics",
+    ]
 
     titles = []
     for i in range(n_works):
@@ -52,9 +60,18 @@ def generate_mock_raw_openalex_data(n_works=100):
 
     # Generate concepts
     concept_pool = [
-        "Political Science", "Economics", "Sociology", "Populism",
-        "Democracy", "Inequality", "Social Movements", "Identity",
-        "Media", "Culture", "Globalization", "Politics"
+        "Political Science",
+        "Economics",
+        "Sociology",
+        "Populism",
+        "Democracy",
+        "Inequality",
+        "Social Movements",
+        "Identity",
+        "Media",
+        "Culture",
+        "Globalization",
+        "Politics",
     ]
 
     concepts = []
@@ -64,14 +81,16 @@ def generate_mock_raw_openalex_data(n_works=100):
         concepts.append([{"display_name": c} for c in work_concepts])
 
     # Create DataFrame
-    df = pd.DataFrame({
-        "id": work_ids,
-        "title": titles,
-        "year": years,
-        "cited_by_count": citation_counts,
-        "is_open_access": is_open_access,
-        "concepts": concepts
-    })
+    df = pd.DataFrame(
+        {
+            "id": work_ids,
+            "title": titles,
+            "year": years,
+            "cited_by_count": citation_counts,
+            "is_open_access": is_open_access,
+            "concepts": concepts,
+        }
+    )
 
     return df
 
@@ -90,21 +109,41 @@ def generate_mock_cleaned_data(n_works=50):
     journals = []
 
     author_pool = [
-        "John Smith", "Jane Doe", "Maria Garcia", "Carlos Rodriguez",
-        "Anna Johnson", "David Brown", "Sarah Wilson", "Michael Davis",
-        "Laura Martinez", "James Anderson", "Emily Taylor", "Robert Thomas"
+        "John Smith",
+        "Jane Doe",
+        "Maria Garcia",
+        "Carlos Rodriguez",
+        "Anna Johnson",
+        "David Brown",
+        "Sarah Wilson",
+        "Michael Davis",
+        "Laura Martinez",
+        "James Anderson",
+        "Emily Taylor",
+        "Robert Thomas",
     ]
 
     institution_pool = [
-        "University of Amsterdam", "Harvard University", "MIT",
-        "University of Sao Paulo", "University of Oxford", "Stanford University",
-        "University of Cambridge", "University of Toronto", "ETH Zurich"
+        "University of Amsterdam",
+        "Harvard University",
+        "MIT",
+        "University of Sao Paulo",
+        "University of Oxford",
+        "Stanford University",
+        "University of Cambridge",
+        "University of Toronto",
+        "ETH Zurich",
     ]
 
     journal_pool = [
-        "American Political Science Review", "European Journal of Political Research",
-        "Journal of Politics", "Political Studies", "Latin American Politics and Society",
-        "World Politics", "International Organization", "Comparative Political Studies"
+        "American Political Science Review",
+        "European Journal of Political Research",
+        "Journal of Politics",
+        "Political Studies",
+        "Latin American Politics and Society",
+        "World Politics",
+        "International Organization",
+        "Comparative Political Studies",
     ]
 
     for i in range(n_works):
@@ -142,10 +181,25 @@ def generate_mock_classified_data(n_works=30):
     # Add classification fields
     domains = ["Political Science", "Economics", "Sociology", "Other"]
     subcategories = {
-        "Political Science": ["radical_right", "comparative_politics", "political_theory", "electoral_politics"],
-        "Economics": ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
-        "Sociology": ["social_movements", "identity_politics", "media_communication", "culture_values"],
-        "Other": ["international_relations", "history", "psychology", "interdisciplinary"]
+        "Political Science": [
+            "radical_right",
+            "comparative_politics",
+            "political_theory",
+            "electoral_politics",
+        ],
+        "Economics": [
+            "political_economy",
+            "redistribution",
+            "trade_globalization",
+            "financial_crisis",
+        ],
+        "Sociology": [
+            "social_movements",
+            "identity_politics",
+            "media_communication",
+            "culture_values",
+        ],
+        "Other": ["international_relations", "history", "psychology", "interdisciplinary"],
     }
 
     classified_domains = []
@@ -198,11 +252,9 @@ def generate_mock_network_data(n_nodes=20):
     citation_counts = shared_refs * np.random.uniform(2, 8, n_nodes)
     citation_counts = citation_counts.astype(int)
 
-    df = pd.DataFrame({
-        "id": node_ids,
-        "shared_references": shared_refs,
-        "cited_by_count": citation_counts
-    })
+    df = pd.DataFrame(
+        {"id": node_ids, "shared_references": shared_refs, "cited_by_count": citation_counts}
+    )
 
     return df
 
@@ -233,14 +285,10 @@ def save_mock_datasets():
             "Political Science": 0.42,
             "Economics": 0.18,
             "Sociology": 0.32,
-            "Other": 0.08
+            "Other": 0.08,
         },
         "avg_confidence": 0.76,
-        "network_metrics": {
-            "avg_degree": 4.2,
-            "modularity": 0.34,
-            "n_communities": 3
-        }
+        "network_metrics": {"avg_degree": 4.2, "modularity": 0.34, "n_communities": 3},
     }
 
     with open(fixtures_dir / "reference_results.json", "w") as f:

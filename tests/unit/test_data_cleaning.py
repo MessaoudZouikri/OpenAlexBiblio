@@ -20,7 +20,7 @@ from src.agents.data_cleaning import (
     normalize_unicode,
     rule_based_domain,
     rule_based_subcategory,
-    clean_dataframe
+    clean_dataframe,
 )
 
 
@@ -56,10 +56,7 @@ class TestRuleBasedDomain:
 
     def test_rule_based_domain_match(self):
         """Test successful domain matching."""
-        concepts = [
-            {"name": "Political Science", "score": 0.8},
-            {"name": "Populism", "score": 0.6}
-        ]
+        concepts = [{"name": "Political Science", "score": 0.8}, {"name": "Populism", "score": 0.6}]
 
         domain, confidence = rule_based_domain(concepts)
         assert domain == "Political Science"
@@ -69,7 +66,7 @@ class TestRuleBasedDomain:
         """Test when no concepts match."""
         concepts = [
             {"name": "Quantum Physics", "score": 0.8},
-            {"name": "Particle Acceleration", "score": 0.6}
+            {"name": "Particle Acceleration", "score": 0.6},
         ]
 
         domain, confidence = rule_based_domain(concepts)
@@ -107,7 +104,12 @@ class TestRuleBasedSubcategory:
 
         result = rule_based_subcategory(title, abstract, "Economics")
         # Should return last subcategory for Economics
-        assert result in ["political_economy", "redistribution", "trade_globalization", "financial_crisis"]
+        assert result in [
+            "political_economy",
+            "redistribution",
+            "trade_globalization",
+            "financial_crisis",
+        ]
 
     def test_rule_based_subcategory_other_domain(self):
         """Test subcategory for Other domain."""
@@ -147,19 +149,21 @@ class TestDataframeCleaning:
         import logging
 
         # Create data with missing IDs and titles
-        problematic_data = pd.DataFrame({
-            "id": ["W1", None, "W3", "W4"],
-            "title": ["Title1", None, "", "Title4"],  # Empty title
-            "year": [2020, 2021, 2022, 2023],
-            "cited_by_count": [10, 20, 30, 40],
-            "is_open_access": [True, False, True, False],
-            "concepts": [
-                [{"name": "Test"}],
-                [{"name": "Test2"}],
-                [{"name": "Test3"}],
-                [{"name": "Test4"}]
-            ]
-        })
+        problematic_data = pd.DataFrame(
+            {
+                "id": ["W1", None, "W3", "W4"],
+                "title": ["Title1", None, "", "Title4"],  # Empty title
+                "year": [2020, 2021, 2022, 2023],
+                "cited_by_count": [10, 20, 30, 40],
+                "is_open_access": [True, False, True, False],
+                "concepts": [
+                    [{"name": "Test"}],
+                    [{"name": "Test2"}],
+                    [{"name": "Test3"}],
+                    [{"name": "Test4"}],
+                ],
+            }
+        )
 
         logger = logging.getLogger("test")
         result_df, report = clean_dataframe(problematic_data, logger)
@@ -177,16 +181,16 @@ class TestDataframeCleaning:
         import logging
 
         # Create data with invalid years
-        year_data = pd.DataFrame({
-            "id": ["W1", "W2", "W3", "W4"],
-            "title": ["Title1", "Title2", "Title3", "Title4"],
-            "year": [1800, 2020, 2021, 2050],  # Invalid years
-            "cited_by_count": [10, 20, 30, 40],
-            "is_open_access": [True, False, True, False],
-            "concepts": [
-                [{"name": "Test"}] for _ in range(4)
-            ]
-        })
+        year_data = pd.DataFrame(
+            {
+                "id": ["W1", "W2", "W3", "W4"],
+                "title": ["Title1", "Title2", "Title3", "Title4"],
+                "year": [1800, 2020, 2021, 2050],  # Invalid years
+                "cited_by_count": [10, 20, 30, 40],
+                "is_open_access": [True, False, True, False],
+                "concepts": [[{"name": "Test"}] for _ in range(4)],
+            }
+        )
 
         logger = logging.getLogger("test")
         result_df, report = clean_dataframe(year_data, logger, min_year=1900)
@@ -203,16 +207,16 @@ class TestDataframeCleaning:
         import logging
 
         # Create data with duplicates
-        duplicate_data = pd.DataFrame({
-            "id": ["W1", "W1", "W2", "W3"],  # W1 appears twice
-            "title": ["Title1", "Title1 Duplicate", "Title2", "Title3"],
-            "year": [2020, 2020, 2021, 2022],
-            "cited_by_count": [10, 5, 20, 30],  # First W1 has higher citations
-            "is_open_access": [True, False, True, False],
-            "concepts": [
-                [{"name": "Test"}] for _ in range(4)
-            ]
-        })
+        duplicate_data = pd.DataFrame(
+            {
+                "id": ["W1", "W1", "W2", "W3"],  # W1 appears twice
+                "title": ["Title1", "Title1 Duplicate", "Title2", "Title3"],
+                "year": [2020, 2020, 2021, 2022],
+                "cited_by_count": [10, 5, 20, 30],  # First W1 has higher citations
+                "is_open_access": [True, False, True, False],
+                "concepts": [[{"name": "Test"}] for _ in range(4)],
+            }
+        )
 
         logger = logging.getLogger("test")
         result_df, report = clean_dataframe(duplicate_data, logger)
@@ -234,9 +238,13 @@ class TestDataframeCleaning:
 
         # Check derived fields exist
         derived_fields = [
-            "has_abstract", "has_concepts", "author_count",
-            "institution_count", "decade", "domain_preliminary",
-            "subcategory_preliminary"
+            "has_abstract",
+            "has_concepts",
+            "author_count",
+            "institution_count",
+            "decade",
+            "domain_preliminary",
+            "subcategory_preliminary",
         ]
 
         for field in derived_fields:
@@ -258,8 +266,12 @@ class TestDataframeCleaning:
 
         # Check required report fields
         required_fields = [
-            "input_records", "output_records", "operations",
-            "abstract_coverage", "concept_coverage", "domain_distribution"
+            "input_records",
+            "output_records",
+            "operations",
+            "abstract_coverage",
+            "concept_coverage",
+            "domain_distribution",
         ]
 
         for field in required_fields:

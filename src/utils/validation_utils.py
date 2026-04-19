@@ -11,6 +11,7 @@ from pathlib import Path
 
 class DataValidationError(Exception):
     """Raised when data validation fails."""
+
     pass
 
 
@@ -18,23 +19,35 @@ class SchemaValidator:
     """Validate DataFrame schemas at various pipeline stages."""
 
     # Define required schemas for each pipeline stage
-    RAW_OPENALEX_SCHEMA = [
-        "id", "title", "year", "cited_by_count", "is_open_access", "concepts"
-    ]
+    RAW_OPENALEX_SCHEMA = ["id", "title", "year", "cited_by_count", "is_open_access", "concepts"]
 
     CLEANED_DATA_SCHEMA = [
-        "id", "title", "abstract", "year", "cited_by_count",
-        "authors", "institution", "journal", "concepts", "decade"
+        "id",
+        "title",
+        "abstract",
+        "year",
+        "cited_by_count",
+        "authors",
+        "institution",
+        "journal",
+        "concepts",
+        "decade",
     ]
 
     CLASSIFIED_DATA_SCHEMA = [
-        "id", "title", "domain", "subcategory", "confidence",
-        "classification_stage", "classification_method"
+        "id",
+        "title",
+        "domain",
+        "subcategory",
+        "confidence",
+        "classification_stage",
+        "classification_method",
     ]
 
     @staticmethod
-    def validate_columns(df: pd.DataFrame, required_columns: List[str],
-                        stage_name: str = "Unknown") -> bool:
+    def validate_columns(
+        df: pd.DataFrame, required_columns: List[str], stage_name: str = "Unknown"
+    ) -> bool:
         """
         Validate that DataFrame has all required columns.
 
@@ -52,14 +65,14 @@ class SchemaValidator:
         missing = set(required_columns) - set(df.columns)
         if missing:
             raise DataValidationError(
-                f"[{stage_name}] Missing required columns: {missing}. "
-                f"Found: {list(df.columns)}"
+                f"[{stage_name}] Missing required columns: {missing}. " f"Found: {list(df.columns)}"
             )
         return True
 
     @staticmethod
-    def validate_non_null_columns(df: pd.DataFrame, columns: List[str],
-                                 stage_name: str = "Unknown") -> Tuple[bool, Dict]:
+    def validate_non_null_columns(
+        df: pd.DataFrame, columns: List[str], stage_name: str = "Unknown"
+    ) -> Tuple[bool, Dict]:
         """
         Check for null values in critical columns.
 
@@ -91,10 +104,10 @@ class SchemaValidator:
     @staticmethod
     def validate_raw_openalex(df: pd.DataFrame) -> Dict:
         """Validate raw OpenAlex data schema and content."""
-        SchemaValidator.validate_columns(df, SchemaValidator.RAW_OPENALEX_SCHEMA,
-                                        "Raw OpenAlex Data")
-        SchemaValidator.validate_non_null_columns(df, ["id", "title", "year"],
-                                                 "Raw OpenAlex Data")
+        SchemaValidator.validate_columns(
+            df, SchemaValidator.RAW_OPENALEX_SCHEMA, "Raw OpenAlex Data"
+        )
+        SchemaValidator.validate_non_null_columns(df, ["id", "title", "year"], "Raw OpenAlex Data")
 
         # Check year range
         if df["year"].min() < 1900 or df["year"].max() > 2100:
@@ -104,31 +117,31 @@ class SchemaValidator:
             "n_rows": len(df),
             "n_columns": len(df.columns),
             "year_range": (int(df["year"].min()), int(df["year"].max())),
-            "status": "✓ Valid"
+            "status": "✓ Valid",
         }
 
     @staticmethod
     def validate_cleaned_data(df: pd.DataFrame) -> Dict:
         """Validate cleaned data schema and content."""
-        SchemaValidator.validate_columns(df, SchemaValidator.CLEANED_DATA_SCHEMA,
-                                        "Cleaned Data")
-        SchemaValidator.validate_non_null_columns(df, ["id", "title", "abstract"],
-                                                 "Cleaned Data")
+        SchemaValidator.validate_columns(df, SchemaValidator.CLEANED_DATA_SCHEMA, "Cleaned Data")
+        SchemaValidator.validate_non_null_columns(df, ["id", "title", "abstract"], "Cleaned Data")
 
         return {
             "n_rows": len(df),
             "n_columns": len(df.columns),
             "unique_years": df["year"].nunique(),
-            "status": "✓ Valid"
+            "status": "✓ Valid",
         }
 
     @staticmethod
     def validate_classified_data(df: pd.DataFrame) -> Dict:
         """Validate classified data schema and content."""
-        SchemaValidator.validate_columns(df, SchemaValidator.CLASSIFIED_DATA_SCHEMA,
-                                        "Classified Data")
-        SchemaValidator.validate_non_null_columns(df, ["id", "domain", "subcategory"],
-                                                 "Classified Data")
+        SchemaValidator.validate_columns(
+            df, SchemaValidator.CLASSIFIED_DATA_SCHEMA, "Classified Data"
+        )
+        SchemaValidator.validate_non_null_columns(
+            df, ["id", "domain", "subcategory"], "Classified Data"
+        )
 
         # Validate confidence scores
         if (df["confidence"] < 0).any() or (df["confidence"] > 1).any():
@@ -139,7 +152,7 @@ class SchemaValidator:
             "n_domains": df["domain"].nunique(),
             "n_subcategories": df["subcategory"].nunique(),
             "avg_confidence": round(df["confidence"].mean(), 3),
-            "status": "✓ Valid"
+            "status": "✓ Valid",
         }
 
     @staticmethod
@@ -156,7 +169,7 @@ class SchemaValidator:
         return {
             "n_nodes": df["id"].nunique(),
             "n_edges": df["shared_references"].sum() / 2,  # Symmetric edges
-            "status": "✓ Valid"
+            "status": "✓ Valid",
         }
 
 
@@ -185,27 +198,28 @@ def validate_parquet_file(path: str, expected_schema: Optional[List[str]] = None
         raise DataValidationError(f"Failed to read parquet: {e}")
 
     if expected_schema:
-        SchemaValidator.validate_columns(df, expected_schema,
-                                        f"Parquet: {path_obj.name}")
+        SchemaValidator.validate_columns(df, expected_schema, f"Parquet: {path_obj.name}")
 
     return {
         "file": path,
         "n_rows": len(df),
         "n_columns": len(df.columns),
         "columns": list(df.columns),
-        "status": "✓ Valid"
+        "status": "✓ Valid",
     }
 
 
 # Decorator for automatic validation
 def require_schema(required_columns: List[str], stage_name: str = "Unknown"):
     """Decorator to enforce schema validation on function input."""
+
     def decorator(func):
         def wrapper(df: pd.DataFrame, *args, **kwargs):
             SchemaValidator.validate_columns(df, required_columns, stage_name)
             return func(df, *args, **kwargs)
+
         wrapper.__name__ = func.__name__
         wrapper.__doc__ = func.__doc__
         return wrapper
-    return decorator
 
+    return decorator

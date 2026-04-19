@@ -3,6 +3,7 @@ Local LLM client for Ollama.
 Handles health checks, prompt formatting, JSON output validation,
 retry logic, and graceful fallback for classification tasks.
 """
+
 import json
 import logging
 import time
@@ -155,10 +156,7 @@ class OllamaClient:
         text = text.strip()
         if text.startswith("```"):
             lines = text.split("\n")
-            text = "\n".join(
-                line for line in lines
-                if not line.startswith("```")
-            ).strip()
+            text = "\n".join(line for line in lines if not line.startswith("```")).strip()
 
         # Try direct parse
         try:
@@ -184,17 +182,32 @@ VALID_DOMAINS = {"Political Science", "Economics", "Sociology", "Other"}
 
 VALID_SUBCATEGORIES = {
     "Political Science": {
-        "comparative_politics", "political_theory", "electoral_politics",
-        "democratic_theory", "radical_right", "latin_american_politics", "european_politics",
+        "comparative_politics",
+        "political_theory",
+        "electoral_politics",
+        "democratic_theory",
+        "radical_right",
+        "latin_american_politics",
+        "european_politics",
     },
     "Economics": {
-        "political_economy", "redistribution", "trade_globalization", "financial_crisis",
+        "political_economy",
+        "redistribution",
+        "trade_globalization",
+        "financial_crisis",
     },
     "Sociology": {
-        "social_movements", "identity_politics", "media_communication", "culture_values",
+        "social_movements",
+        "identity_politics",
+        "media_communication",
+        "culture_values",
     },
     "Other": {
-        "international_relations", "history", "psychology", "geography", "interdisciplinary",
+        "international_relations",
+        "history",
+        "psychology",
+        "geography",
+        "interdisciplinary",
     },
 }
 
@@ -220,6 +233,6 @@ def validate_classification_response(response: Dict) -> Tuple[bool, str]:
 
     return True, ""
 
+
 # Backward compatibility alias
 LLMClient = OllamaClient
-

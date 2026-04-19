@@ -27,11 +27,11 @@ def normalize_doi(doi):
     doi = str(doi).strip()
 
     # Handle various DOI formats
-    doi = re.sub(r'^https?://doi\.org/', '', doi, flags=re.IGNORECASE)
-    doi = re.sub(r'^doi:', '', doi, flags=re.IGNORECASE)
+    doi = re.sub(r"^https?://doi\.org/", "", doi, flags=re.IGNORECASE)
+    doi = re.sub(r"^doi:", "", doi, flags=re.IGNORECASE)
 
     # Basic validation
-    if re.match(r'^10\.\d+/.+', doi):
+    if re.match(r"^10\.\d+/.+", doi):
         return doi
     return ""
 
@@ -64,18 +64,14 @@ def calculate_title_similarity(title1, title2):
 
 def calculate_completeness_score(record):
     """Mock completeness score calculation."""
-    fields = ['title', 'year', 'authors', 'abstract', 'doi']
+    fields = ["title", "year", "authors", "abstract", "doi"]
     present = sum(1 for field in fields if record.get(field))
     return present / len(fields)
 
 
 def generate_quality_report(df):
     """Mock quality report generation."""
-    return {
-        "completeness_score": 0.85,
-        "missing_data_rate": 0.15,
-        "quality_issues": []
-    }
+    return {"completeness_score": 0.85, "missing_data_rate": 0.15, "quality_issues": []}
 
 
 class TestDOIValidation:
@@ -90,7 +86,7 @@ class TestDOIValidation:
             "10.1038/nature.2020.12345",
             "10.1016/j.ejp.2020.123456",
             "https://doi.org/10.1000/j.journal.2020.001",
-            "doi:10.1000/j.journal.2020.001"
+            "doi:10.1000/j.journal.2020.001",
         ]
 
         for doi in valid_dois:
@@ -109,7 +105,7 @@ class TestDOIValidation:
             "not-a-doi",
             "12345",
             "10.1000",  # Incomplete
-            "doi.org/10.1000/j.journal.2020.001"  # Missing protocol
+            "doi.org/10.1000/j.journal.2020.001",  # Missing protocol
         ]
 
         for doi in invalid_dois:
@@ -118,12 +114,14 @@ class TestDOIValidation:
 
     def test_doi_uniqueness(self, sample_cleaned_data):
         """Test that DOIs are unique within dataset."""
-        if 'doi' in sample_cleaned_data.columns:
-            doi_counts = sample_cleaned_data['doi'].value_counts()
+        if "doi" in sample_cleaned_data.columns:
+            doi_counts = sample_cleaned_data["doi"].value_counts()
             duplicates = doi_counts[doi_counts > 1]
 
             # Allow some duplicates but flag excessive ones
-            assert len(duplicates) < len(sample_cleaned_data) * 0.1, f"Too many duplicate DOIs: {len(duplicates)}"
+            assert (
+                len(duplicates) < len(sample_cleaned_data) * 0.1
+            ), f"Too many duplicate DOIs: {len(duplicates)}"
 
 
 class TestAuthorValidation:
@@ -140,7 +138,7 @@ class TestAuthorValidation:
             ("J. Smith", "J. Smith"),
             ("Smith, J.", "J. Smith"),
             ("", ""),
-            (None, None)
+            (None, None),
         ]
 
         for input_name, expected in test_cases:
@@ -150,7 +148,7 @@ class TestAuthorValidation:
     def test_author_consistency_across_works(self, sample_cleaned_data):
         """Test that same authors are represented consistently."""
         all_authors = []
-        for authors_list in sample_cleaned_data['authors']:
+        for authors_list in sample_cleaned_data["authors"]:
             if authors_list:
                 all_authors.extend(authors_list)
 
@@ -160,24 +158,32 @@ class TestAuthorValidation:
         # Look for potential duplicates with different formatting
         potential_duplicates = []
         for i, (author1, count1) in enumerate(author_counts.items()):
-            for author2, count2 in list(author_counts.items())[i+1:]:
+            for author2, count2 in list(author_counts.items())[i + 1 :]:
                 # Simple check for similar names
-                if (author1.lower().replace(".", "") == author2.lower().replace(".", "") and
-                    author1 != author2):
+                if (
+                    author1.lower().replace(".", "") == author2.lower().replace(".", "")
+                    and author1 != author2
+                ):
                     potential_duplicates.append((author1, author2))
 
         # Should not have obvious duplicates
-        assert len(potential_duplicates) == 0, f"Potential author name duplicates: {potential_duplicates}"
+        assert (
+            len(potential_duplicates) == 0
+        ), f"Potential author name duplicates: {potential_duplicates}"
 
     def test_author_affiliation_consistency(self, sample_cleaned_data):
         """Test that author-affiliation relationships are consistent."""
         for idx, row in sample_cleaned_data.iterrows():
-            authors = row['authors'] or []
-            institutions = row['institution'] or []
+            authors = row["authors"] or []
+            institutions = row["institution"] or []
 
             # Number of authors and institutions should be reasonable
-            assert len(authors) <= len(institutions) + 2, f"Too many authors vs institutions in row {idx}"
-            assert len(institutions) <= len(authors) + 2, f"Too many institutions vs authors in row {idx}"
+            assert (
+                len(authors) <= len(institutions) + 2
+            ), f"Too many authors vs institutions in row {idx}"
+            assert (
+                len(institutions) <= len(authors) + 2
+            ), f"Too many institutions vs authors in row {idx}"
 
 
 class TestCitationValidation:
@@ -185,14 +191,16 @@ class TestCitationValidation:
 
     def test_citation_count_reasonableness(self, sample_cleaned_data):
         """Test that citation counts are reasonable."""
-        citation_counts = sample_cleaned_data['cited_by_count']
+        citation_counts = sample_cleaned_data["cited_by_count"]
 
         # Should be non-negative
         assert (citation_counts >= 0).all(), "Negative citation counts found"
 
         # Should not have extreme outliers (more than 10,000 citations)
         reasonable_range = citation_counts <= 10000
-        assert reasonable_range.sum() / len(citation_counts) > 0.95, "Too many extreme citation counts"
+        assert (
+            reasonable_range.sum() / len(citation_counts) > 0.95
+        ), "Too many extreme citation counts"
 
         # Most works should have low citation counts
         median_citations = citation_counts.median()
@@ -203,15 +211,16 @@ class TestCitationValidation:
         current_year = 2026  # Based on context
 
         for idx, row in sample_cleaned_data.iterrows():
-            year = row['year']
-            citations = row['cited_by_count']
+            year = row["year"]
+            citations = row["cited_by_count"]
 
             # Cannot have citations before publication
             max_possible_years = current_year - year
             max_reasonable_citations = max_possible_years * 10  # Rough estimate
 
-            assert citations <= max_reasonable_citations, \
-                f"Unrealistic citation count for {year} publication: {citations} citations"
+            assert (
+                citations <= max_reasonable_citations
+            ), f"Unrealistic citation count for {year} publication: {citations} citations"
 
     def test_self_citation_detection(self):
         """Test detection of potential self-citations."""
@@ -223,7 +232,7 @@ class TestCitationValidation:
         citations_data = [
             {"citing_author": "John Smith", "cited_authors": ["John Smith", "Jane Doe"]},
             {"citing_author": "Jane Doe", "cited_authors": ["John Smith"]},
-            {"citing_author": "Bob Johnson", "cited_authors": ["Alice Brown", "Charlie Wilson"]}
+            {"citing_author": "Bob Johnson", "cited_authors": ["Alice Brown", "Charlie Wilson"]},
         ]
 
         self_citations = detect_self_citations(citations_data)
@@ -242,12 +251,14 @@ class TestDuplicateDetection:
         from src.agents.data_cleaning import detect_exact_duplicates
 
         # Add a duplicate row
-        duplicate_data = pd.concat([sample_cleaned_data, sample_cleaned_data.iloc[:1]], ignore_index=True)
+        duplicate_data = pd.concat(
+            [sample_cleaned_data, sample_cleaned_data.iloc[:1]], ignore_index=True
+        )
 
         duplicates = detect_exact_duplicates(duplicate_data)
 
         assert len(duplicates) > 0, "Should detect the added duplicate"
-        assert duplicates.iloc[-1]['is_duplicate'] == True
+        assert duplicates.iloc[-1]["is_duplicate"] == True
 
     def test_near_duplicate_detection(self):
         """Test detection of near-duplicate works."""
@@ -258,7 +269,7 @@ class TestDuplicateDetection:
             {"title": "The Rise of Populism", "abstract": "This paper examines populism"},
             {"title": "The Rise of Populism", "abstract": "This paper examines populism in detail"},
             {"title": "Populism Rising", "abstract": "An examination of populism"},
-            {"title": "Economic Theory", "abstract": "This paper examines economics"}
+            {"title": "Economic Theory", "abstract": "This paper examines economics"},
         ]
 
         duplicates = detect_near_duplicates(works)
@@ -273,23 +284,27 @@ class TestDuplicateDetection:
         similar_pairs = [
             ("The Rise of Populism", "The Rise of Populism in Europe"),
             ("Economic Inequality", "Economic Inequality and Politics"),
-            ("Social Movements", "Social Movements Theory")
+            ("Social Movements", "Social Movements Theory"),
         ]
 
         dissimilar_pairs = [
             ("Populism Study", "Quantum Physics"),
-            ("Political Economy", "Marine Biology")
+            ("Political Economy", "Marine Biology"),
         ]
 
         # Similar titles should have high similarity
         for title1, title2 in similar_pairs:
             similarity = calculate_title_similarity(title1, title2)
-            assert similarity >= 0.5, f"Low similarity for similar titles: {title1} vs {title2} = {similarity}"
+            assert (
+                similarity >= 0.5
+            ), f"Low similarity for similar titles: {title1} vs {title2} = {similarity}"
 
         # Dissimilar titles should have low similarity
         for title1, title2 in dissimilar_pairs:
             similarity = calculate_title_similarity(title1, title2)
-            assert similarity < 0.3, f"High similarity for dissimilar titles: {title1} vs {title2} = {similarity}"
+            assert (
+                similarity < 0.3
+            ), f"High similarity for dissimilar titles: {title1} vs {title2} = {similarity}"
 
 
 class TestMetadataCompleteness:
@@ -297,7 +312,7 @@ class TestMetadataCompleteness:
 
     def test_required_field_completeness(self, sample_cleaned_data):
         """Test that required fields are present and non-empty."""
-        required_fields = ['id', 'title', 'year']
+        required_fields = ["id", "title", "year"]
 
         for field in required_fields:
             assert field in sample_cleaned_data.columns, f"Missing required field: {field}"
@@ -308,7 +323,7 @@ class TestMetadataCompleteness:
 
     def test_year_range_validity(self, sample_cleaned_data):
         """Test that publication years are in valid range."""
-        years = sample_cleaned_data['year'].dropna()
+        years = sample_cleaned_data["year"].dropna()
 
         # Reasonable year range
         min_year = 1900
@@ -319,17 +334,19 @@ class TestMetadataCompleteness:
 
     def test_title_length_reasonableness(self, sample_cleaned_data):
         """Test that titles have reasonable lengths."""
-        titles = sample_cleaned_data['title'].dropna()
+        titles = sample_cleaned_data["title"].dropna()
 
         # Titles should be between 10 and 200 characters
         reasonable_length = titles.str.len().between(10, 200)
         reasonable_pct = reasonable_length.mean()
 
-        assert reasonable_pct > 0.8, f"Too many titles with unreasonable length: {reasonable_pct:.1%}"
+        assert (
+            reasonable_pct > 0.8
+        ), f"Too many titles with unreasonable length: {reasonable_pct:.1%}"
 
     def test_abstract_quality_check(self, sample_cleaned_data):
         """Test that abstracts meet quality standards."""
-        abstracts = sample_cleaned_data['abstract'].dropna()
+        abstracts = sample_cleaned_data["abstract"].dropna()
 
         # Abstracts should be at least 50 characters
         long_enough = abstracts.str.len() >= 50
@@ -338,7 +355,9 @@ class TestMetadataCompleteness:
         assert quality_pct > 0.7, f"Too many abstracts too short: {quality_pct:.1%}"
 
         # Should contain actual content words, not just placeholders
-        has_content = abstracts.str.contains(r'\b(?:the|a|an|and|or|but|in|on|at|to|for|of|with|by)\b', case=False)
+        has_content = abstracts.str.contains(
+            r"\b(?:the|a|an|and|or|but|in|on|at|to|for|of|with|by)\b", case=False
+        )
         content_pct = has_content.mean()
 
         assert content_pct > 0.8, f"Too many abstracts lack content: {content_pct:.1%}"
@@ -352,7 +371,7 @@ class TestBibliometricConsistency:
         from collections import Counter
 
         all_authors = []
-        for authors_list in sample_cleaned_data['authors']:
+        for authors_list in sample_cleaned_data["authors"]:
             if authors_list:
                 all_authors.extend(authors_list)
 
@@ -364,7 +383,7 @@ class TestBibliometricConsistency:
 
     def test_journal_name_consistency(self, sample_cleaned_data):
         """Test that journal names are consistent."""
-        journals = sample_cleaned_data['journal'].dropna()
+        journals = sample_cleaned_data["journal"].dropna()
 
         # Check for minor variations
         journal_counts = journals.value_counts()
@@ -374,17 +393,19 @@ class TestBibliometricConsistency:
         journal_names = list(journal_counts.index)
 
         for i, journal1 in enumerate(journal_names):
-            for journal2 in journal_names[i+1:]:
+            for journal2 in journal_names[i + 1 :]:
                 if journal1.lower() == journal2.lower() and journal1 != journal2:
                     potential_duplicates.append((journal1, journal2))
 
         # Should not have obvious case duplicates
-        assert len(potential_duplicates) == 0, f"Potential journal name duplicates: {potential_duplicates}"
+        assert (
+            len(potential_duplicates) == 0
+        ), f"Potential journal name duplicates: {potential_duplicates}"
 
     def test_concept_hierarchy_consistency(self, sample_cleaned_data):
         """Test that concept hierarchies are consistent."""
         all_concepts = []
-        for concepts_list in sample_cleaned_data['concepts']:
+        for concepts_list in sample_cleaned_data["concepts"]:
             if concepts_list:
                 all_concepts.extend(concepts_list)
 
@@ -403,8 +424,8 @@ class TestCrossReferenceValidation:
     def test_author_institution_alignment(self, sample_cleaned_data):
         """Test that authors and institutions are properly aligned."""
         for idx, row in sample_cleaned_data.iterrows():
-            authors = row['authors'] or []
-            institutions = row['institution'] or []
+            authors = row["authors"] or []
+            institutions = row["institution"] or []
 
             # If there are authors, should have institutions (though not necessarily 1:1)
             if authors:
@@ -416,12 +437,12 @@ class TestCrossReferenceValidation:
             "Political Science": ["politics", "political", "democracy", "populism"],
             "Economics": ["economic", "economy", "finance", "trade"],
             "Sociology": ["social", "society", "culture", "identity"],
-            "Other": ["international", "history", "psychology"]
+            "Other": ["international", "history", "psychology"],
         }
 
         for idx, row in sample_classified_data.iterrows():
-            domain = row['domain']
-            concepts = row.get('concepts', [])
+            domain = row["domain"]
+            concepts = row.get("concepts", [])
 
             if concepts and domain in domain_concept_map:
                 expected_keywords = domain_concept_map[domain]
@@ -431,7 +452,9 @@ class TestCrossReferenceValidation:
                 )
 
                 # Should have at least one concept related to the domain
-                assert has_relevant_concept, f"No relevant concepts for {domain} in row {idx}: {concepts}"
+                assert (
+                    has_relevant_concept
+                ), f"No relevant concepts for {domain} in row {idx}: {concepts}"
 
 
 class TestDataQualityMetrics:
@@ -455,13 +478,11 @@ class TestDataQualityMetrics:
 
         report = generate_quality_report(sample_cleaned_data)
 
-        required_sections = [
-            'completeness', 'consistency', 'validity', 'uniqueness'
-        ]
+        required_sections = ["completeness", "consistency", "validity", "uniqueness"]
 
         for section in required_sections:
             assert section in report, f"Missing section in quality report: {section}"
 
         # Check completeness scores
-        assert 'overall_score' in report['completeness']
-        assert 0 <= report['completeness']['overall_score'] <= 100
+        assert "overall_score" in report["completeness"]
+        assert 0 <= report["completeness"]["overall_score"] <= 100

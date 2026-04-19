@@ -11,6 +11,7 @@ Outputs:
 Standalone:
     python src/agents/data_cleaning.py --config config/config.yaml
 """
+
 from __future__ import annotations
 
 import argparse
@@ -29,7 +30,11 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.utils.io_utils import (
-    load_parquet, save_parquet, save_json, load_yaml, latest_file,
+    load_parquet,
+    save_parquet,
+    save_json,
+    load_yaml,
+    latest_file,
 )
 from src.utils.logging_utils import setup_logger
 
@@ -40,63 +45,99 @@ from src.utils.logging_utils import setup_logger
 
 DOMAIN_CONCEPT_FRAGMENTS: Dict[str, List[str]] = {
     "Political Science": [
-        "political science", "politics", "democracy", "populism",
-        "government", "voting", "electoral", "party", "parliament",
+        "political science",
+        "politics",
+        "democracy",
+        "populism",
+        "government",
+        "voting",
+        "electoral",
+        "party",
+        "parliament",
     ],
     "Economics": [
-        "economics", "economy", "political economy", "macroeconomics",
-        "inequality", "redistribution", "trade",
+        "economics",
+        "economy",
+        "political economy",
+        "macroeconomics",
+        "inequality",
+        "redistribution",
+        "trade",
     ],
     "Sociology": [
-        "sociology", "social science", "social movement", "identity",
-        "media", "communication", "culture",
+        "sociology",
+        "social science",
+        "social movement",
+        "identity",
+        "media",
+        "communication",
+        "culture",
     ],
 }
 
 SUBCATEGORY_KEYWORD_MAP: Dict[str, List[str]] = {
-    "comparative_politics":     ["comparative", "cross-national"],
-    "political_theory":         ["theory", "theoretical", "conceptual", "normative", "definition"],
-    "electoral_politics":       ["election", "electoral", "voting", "vote", "ballot"],
-    "democratic_theory":        ["democracy", "democratic", "backsliding", "illiberal", "autocratization"],
-    "radical_right":            ["far-right", "radical right", "extreme right", "right-wing extremi"],
-    "latin_american_politics":  ["latin america", "brazil", "venezuela", "argentina", "mexico", "peru"],
-    "european_politics":        ["europe", "european union", "france", "germany", "italy", "spain"],
-    "political_economy":        ["political economy", "macroeconomic", "fiscal policy"],
-    "redistribution":           ["redistribution", "welfare", "social protection", "inequality"],
-    "trade_globalization":      ["globalization", "trade", "import", "export", "protectionism"],
-    "financial_crisis":         ["crisis", "recession", "austerity", "financial crash"],
-    "social_movements":         ["social movement", "mobilization", "protest", "civil society"],
-    "identity_politics":        ["identity", "ethnic", "nationalism", "religion", "nativism"],
-    "media_communication":      ["media", "communication", "framing", "social media", "twitter", "facebook"],
-    "culture_values":           ["culture", "values", "post-material", "cultural backlash", "resentment"],
+    "comparative_politics": ["comparative", "cross-national"],
+    "political_theory": ["theory", "theoretical", "conceptual", "normative", "definition"],
+    "electoral_politics": ["election", "electoral", "voting", "vote", "ballot"],
+    "democratic_theory": ["democracy", "democratic", "backsliding", "illiberal", "autocratization"],
+    "radical_right": ["far-right", "radical right", "extreme right", "right-wing extremi"],
+    "latin_american_politics": [
+        "latin america",
+        "brazil",
+        "venezuela",
+        "argentina",
+        "mexico",
+        "peru",
+    ],
+    "european_politics": ["europe", "european union", "france", "germany", "italy", "spain"],
+    "political_economy": ["political economy", "macroeconomic", "fiscal policy"],
+    "redistribution": ["redistribution", "welfare", "social protection", "inequality"],
+    "trade_globalization": ["globalization", "trade", "import", "export", "protectionism"],
+    "financial_crisis": ["crisis", "recession", "austerity", "financial crash"],
+    "social_movements": ["social movement", "mobilization", "protest", "civil society"],
+    "identity_politics": ["identity", "ethnic", "nationalism", "religion", "nativism"],
+    "media_communication": [
+        "media",
+        "communication",
+        "framing",
+        "social media",
+        "twitter",
+        "facebook",
+    ],
+    "culture_values": ["culture", "values", "post-material", "cultural backlash", "resentment"],
 }
 
 DOMAIN_SUBCATEGORY: Dict[str, List[str]] = {
     "Political Science": [
-        "comparative_politics", "political_theory", "electoral_politics",
-        "democratic_theory", "radical_right", "latin_american_politics", "european_politics",
+        "comparative_politics",
+        "political_theory",
+        "electoral_politics",
+        "democratic_theory",
+        "radical_right",
+        "latin_american_politics",
+        "european_politics",
     ],
-    "Economics":  ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
-    "Sociology":  ["social_movements", "identity_politics", "media_communication", "culture_values"],
-    "Other":      ["international_relations", "history", "psychology", "geography", "interdisciplinary"],
+    "Economics": ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
+    "Sociology": ["social_movements", "identity_politics", "media_communication", "culture_values"],
+    "Other": ["international_relations", "history", "psychology", "geography", "interdisciplinary"],
 }
 
 # Columns expected by downstream pipeline, with safe defaults
 EXPECTED_COLUMNS: Dict[str, Any] = {
-    "id":             "",
-    "title":          "",
-    "doi":            "",
-    "abstract":       "",
-    "journal":        "",
-    "year":           None,
+    "id": "",
+    "title": "",
+    "doi": "",
+    "abstract": "",
+    "journal": "",
+    "year": None,
     "cited_by_count": 0,
     "is_open_access": False,
-    "concepts":       None,   # list
-    "authors":        None,   # list
-    "institutions":   None,   # list
-    "references":     None,   # list
-    "mesh_terms":     None,   # list
-    "keywords_matched": None, # list
+    "concepts": None,  # list
+    "authors": None,  # list
+    "institutions": None,  # list
+    "references": None,  # list
+    "mesh_terms": None,  # list
+    "keywords_matched": None,  # list
 }
 
 _DOI_REGEX = re.compile(r"(10\.\d{4,9}/[^\s]+)", re.IGNORECASE)
@@ -105,6 +146,7 @@ _DOI_REGEX = re.compile(r"(10\.\d{4,9}/[^\s]+)", re.IGNORECASE)
 # ═══════════════════════════════════════════════════════════════════════════
 # Normalisation Utilities
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def normalize_unicode(text: Optional[str]) -> str:
     """NFC-normalise and strip a string. Returns '' for None/non-string input."""
@@ -144,7 +186,7 @@ def normalize_doi(doi: Optional[str]) -> str:
 
     # Strip recognised valid prefixes (protocol required for URL forms)
     candidate = re.sub(r"^https?://(dx\.)?doi\.org/", "", candidate, flags=re.IGNORECASE)
-    candidate = re.sub(r"^doi:\s*",                   "", candidate, flags=re.IGNORECASE)
+    candidate = re.sub(r"^doi:\s*", "", candidate, flags=re.IGNORECASE)
 
     # Must match the canonical DOI pattern: 10.<registrant>/<suffix>
     match = _DOI_REGEX.search(candidate)
@@ -213,7 +255,7 @@ def calculate_title_similarity(title1: Optional[str], title2: Optional[str]) -> 
         return 0.0
 
     intersection = len(a & b)
-    union        = len(a | b)
+    union = len(a | b)
     return round(intersection / union, 4) if union else 0.0
 
 
@@ -225,18 +267,16 @@ def calculate_completeness_score(df: pd.DataFrame) -> float:
     columns considered critical for bibliometric analysis.
     """
     critical_cols = ["id", "title", "abstract", "year", "cited_by_count"]
-    present_cols  = [c for c in critical_cols if c in df.columns]
+    present_cols = [c for c in critical_cols if c in df.columns]
     if not present_cols or len(df) == 0:
         return 0.0
 
-    total_cells  = len(df) * len(present_cols)
+    total_cells = len(df) * len(present_cols)
     filled_cells = 0
     for col in present_cols:
         series = df[col]
         if series.dtype == object:
-            filled_cells += series.apply(
-                lambda v: v is not None and str(v).strip() != ""
-            ).sum()
+            filled_cells += series.apply(lambda v: v is not None and str(v).strip() != "").sum()
         else:
             filled_cells += series.notna().sum()
 
@@ -246,6 +286,7 @@ def calculate_completeness_score(df: pd.DataFrame) -> float:
 # ═══════════════════════════════════════════════════════════════════════════
 # Column Normalisation
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def _ensure_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Guarantee all expected columns exist with safe default values."""
@@ -301,7 +342,7 @@ def _coerce_bool(value: Any) -> bool:
         s = value.strip().lower()
         if s in ("true", "t", "yes", "y", "1"):
             return True
-        return False   # "false", "none", "nan", "", "maybe" → False
+        return False  # "false", "none", "nan", "", "maybe" → False
     return False
 
 
@@ -324,6 +365,7 @@ def _extract_concept_field(concepts: Any, field: str) -> str:
 # Rule-Based Domain Pre-Labelling
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def rule_based_domain(concepts: Any) -> Tuple[str, float]:
     """
     Assign a preliminary domain using OpenAlex concept names.
@@ -340,7 +382,7 @@ def rule_based_domain(concepts: Any) -> Tuple[str, float]:
         if not isinstance(concept, dict):
             continue
         name_lower = str(concept.get("name") or concept.get("display_name") or "").lower()
-        score      = float(concept.get("score", 0.5) or 0.0)
+        score = float(concept.get("score", 0.5) or 0.0)
         for domain, fragments in DOMAIN_CONCEPT_FRAGMENTS.items():
             if any(frag in name_lower for frag in fragments):
                 domain_scores[domain] = domain_scores.get(domain, 0.0) + score
@@ -348,7 +390,7 @@ def rule_based_domain(concepts: Any) -> Tuple[str, float]:
     if not domain_scores:
         return "Other", 0.0
 
-    best  = max(domain_scores, key=domain_scores.__getitem__)
+    best = max(domain_scores, key=domain_scores.__getitem__)
     total = sum(domain_scores.values())
     confidence = domain_scores[best] / total if total > 0 else 0.0
     return best, round(confidence, 4)
@@ -370,6 +412,7 @@ def rule_based_subcategory(title: str, abstract: str, domain: str) -> str:
 # ═══════════════════════════════════════════════════════════════════════════
 # Core Cleaning Pipeline
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def clean_dataframe(
     df: pd.DataFrame,
@@ -414,19 +457,18 @@ def clean_dataframe(
         pd.to_numeric(df["cited_by_count"], errors="coerce").fillna(0).astype(int)
     )
     n_before = len(df)
-    df = (
-        df.sort_values("cited_by_count", ascending=False)
-          .drop_duplicates(subset=["id"], keep="first")
+    df = df.sort_values("cited_by_count", ascending=False).drop_duplicates(
+        subset=["id"], keep="first"
     )
     dupes = n_before - len(df)
     logger.info("Removed %d duplicates (by OpenAlex ID)", dupes)
     report["operations"].append({"op": "dedup_id", "removed": int(dupes)})
 
     # ── 4. Normalise text fields ─────────────────────────────────────────
-    df["title"]    = df["title"].apply(normalize_unicode)
+    df["title"] = df["title"].apply(normalize_unicode)
     df["abstract"] = df["abstract"].fillna("").apply(normalize_unicode)
-    df["journal"]  = df["journal"].fillna("").apply(normalize_unicode)
-    df["doi"]      = df["doi"].fillna("").apply(normalize_doi)
+    df["journal"] = df["journal"].fillna("").apply(normalize_unicode)
+    df["doi"] = df["doi"].fillna("").apply(normalize_doi)
 
     # ── 4b. Coerce boolean field ─────────────────────────────────────────
     # ``is_open_access`` may arrive as real bools, strings ("True"/"False"),
@@ -436,15 +478,21 @@ def clean_dataframe(
     df["is_open_access"] = df["is_open_access"].apply(_coerce_bool).astype(bool)
 
     # ── 5. Coerce list columns to real lists ─────────────────────────────
-    for col in ("authors", "institutions", "concepts", "references",
-                "mesh_terms", "keywords_matched"):
+    for col in (
+        "authors",
+        "institutions",
+        "concepts",
+        "references",
+        "mesh_terms",
+        "keywords_matched",
+    ):
         df[col] = df[col].apply(_as_list)
 
     # ── 6. Derived fields ────────────────────────────────────────────────
-    df["has_abstract"]   = df["abstract"].str.len() > 20
-    df["has_concepts"]   = df["concepts"].apply(bool)
+    df["has_abstract"] = df["abstract"].str.len() > 20
+    df["has_concepts"] = df["concepts"].apply(bool)
     df["has_references"] = df["references"].apply(bool)
-    df["author_count"]   = df["authors"].apply(len)
+    df["author_count"] = df["authors"].apply(len)
 
     # Expose `institution` (singular) as an alias to `institutions` for tests
     # and downstream code that uses either spelling. Both point to the same
@@ -452,27 +500,25 @@ def clean_dataframe(
     df["institution"] = df["institutions"]
 
     df["institution_count"] = df["institutions"].apply(
-        lambda insts: len({
-            i.get("id", "") for i in insts
-            if isinstance(i, dict) and i.get("id")
-        })
+        lambda insts: len({i.get("id", "") for i in insts if isinstance(i, dict) and i.get("id")})
     )
     df["country_list"] = df["institutions"].apply(
-        lambda insts: sorted({
-            i.get("country", "") for i in insts
-            if isinstance(i, dict) and i.get("country")
-        })
+        lambda insts: sorted(
+            {i.get("country", "") for i in insts if isinstance(i, dict) and i.get("country")}
+        )
     )
     df["is_international"] = df["country_list"].apply(lambda xs: len(xs) > 1)
 
-    df["top_concept"]    = df["concepts"].apply(lambda c: _extract_concept_field(c, "display_name") or _extract_concept_field(c, "name"))
+    df["top_concept"] = df["concepts"].apply(
+        lambda c: _extract_concept_field(c, "display_name") or _extract_concept_field(c, "name")
+    )
     df["top_concept_id"] = df["concepts"].apply(lambda c: _extract_concept_field(c, "id"))
-    df["decade"]         = (df["year"] // 10 * 10).astype(int)
+    df["decade"] = (df["year"] // 10 * 10).astype(int)
 
     # ── 7. Rule-based domain pre-labelling ───────────────────────────────
     logger.info("Applying rule-based domain classification...")
     domain_results = df["concepts"].apply(rule_based_domain)
-    df["domain_preliminary"]            = domain_results.apply(lambda r: r[0])
+    df["domain_preliminary"] = domain_results.apply(lambda r: r[0])
     df["domain_confidence_preliminary"] = domain_results.apply(lambda r: r[1])
     df["subcategory_preliminary"] = df.apply(
         lambda row: rule_based_subcategory(
@@ -490,16 +536,24 @@ def clean_dataframe(
     df["high_author_count"] = df["author_count"] > 50
 
     # ── 9. Finalise report ───────────────────────────────────────────────
-    report.update({
-        "output_records":         len(df),
-        "abstract_coverage":      int(df["has_abstract"].sum()) if len(df) else 0,
-        "abstract_coverage_rate": round(float(df["has_abstract"].mean()), 4) if len(df) else 0.0,
-        "concept_coverage":       int(df["has_concepts"].sum()) if len(df) else 0,
-        "concept_coverage_rate":  round(float(df["has_concepts"].mean()), 4) if len(df) else 0.0,
-        "domain_distribution":    df["domain_preliminary"].value_counts().to_dict() if len(df) else {},
-        "year_range":             [int(df["year"].min()), int(df["year"].max())] if len(df) else [None, None],
-        "timestamp":              datetime.now(UTC).isoformat(),
-    })
+    report.update(
+        {
+            "output_records": len(df),
+            "abstract_coverage": int(df["has_abstract"].sum()) if len(df) else 0,
+            "abstract_coverage_rate": (
+                round(float(df["has_abstract"].mean()), 4) if len(df) else 0.0
+            ),
+            "concept_coverage": int(df["has_concepts"].sum()) if len(df) else 0,
+            "concept_coverage_rate": round(float(df["has_concepts"].mean()), 4) if len(df) else 0.0,
+            "domain_distribution": (
+                df["domain_preliminary"].value_counts().to_dict() if len(df) else {}
+            ),
+            "year_range": (
+                [int(df["year"].min()), int(df["year"].max())] if len(df) else [None, None]
+            ),
+            "timestamp": datetime.now(UTC).isoformat(),
+        }
+    )
 
     logger.info("Cleaning complete: %d records (from %d)", len(df), report["input_records"])
     return df, report
@@ -508,6 +562,7 @@ def clean_dataframe(
 # ═══════════════════════════════════════════════════════════════════════════
 # Public API (used by orchestrator, tests, and other agents)
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 def clean_bibliometric_data(
     df: pd.DataFrame,
@@ -536,21 +591,27 @@ def clean_bibliometric_data(
     df = _ensure_columns(df).copy()
 
     # Numeric coercion — never drops rows, just turns bad values into NaN/0
-    df['year'] = pd.to_numeric(df['year'], errors='coerce').astype('Int64')
-    df['cited_by_count'] = pd.to_numeric(df['cited_by_count'], errors='coerce').astype('Int64')
+    df["year"] = pd.to_numeric(df["year"], errors="coerce").astype("Int64")
+    df["cited_by_count"] = pd.to_numeric(df["cited_by_count"], errors="coerce").astype("Int64")
 
     # Text normalisation (no row drops)
-    df["title"]    = df["title"].fillna("").apply(normalize_unicode)
+    df["title"] = df["title"].fillna("").apply(normalize_unicode)
     df["abstract"] = df["abstract"].fillna("").apply(normalize_unicode)
-    df["journal"]  = df["journal"].fillna("").apply(normalize_unicode)
-    df["doi"]      = df["doi"].fillna("").apply(normalize_doi)
+    df["journal"] = df["journal"].fillna("").apply(normalize_unicode)
+    df["doi"] = df["doi"].fillna("").apply(normalize_doi)
 
     # Value-aware boolean coercion
     df["is_open_access"] = df["is_open_access"].apply(_coerce_bool).astype(bool)
 
     # List-column coercion
-    for col in ("authors", "institutions", "concepts", "references",
-                "mesh_terms", "keywords_matched"):
+    for col in (
+        "authors",
+        "institutions",
+        "concepts",
+        "references",
+        "mesh_terms",
+        "keywords_matched",
+    ):
         df[col] = df[col].apply(_as_list)
 
     # Alias for test compatibility
@@ -560,15 +621,13 @@ def clean_bibliometric_data(
     df["has_abstract"] = df["abstract"].str.len() > 20
     df["has_concepts"] = df["concepts"].apply(bool)
     df["author_count"] = df["authors"].apply(len)
-    df["top_concept"]    = df["concepts"].apply(
+    df["top_concept"] = df["concepts"].apply(
         lambda c: _extract_concept_field(c, "display_name") or _extract_concept_field(c, "name")
     )
     df["top_concept_id"] = df["concepts"].apply(lambda c: _extract_concept_field(c, "id"))
 
     # decade can stay blank if year is NaN
-    df["decade"] = df["year"].apply(
-        lambda y: int(y // 10 * 10) if pd.notna(y) else None
-    )
+    df["decade"] = df["year"].apply(lambda y: int(y // 10 * 10) if pd.notna(y) else None)
 
     # Outlier flags — safe on empty / small frames
     if len(df) > 0:
@@ -653,7 +712,7 @@ def detect_near_duplicates(
         return result
 
     titles = result["title"].fillna("").astype(str).tolist()
-    ids    = result["id"].tolist() if "id" in result.columns else list(range(len(result)))
+    ids = result["id"].tolist() if "id" in result.columns else list(range(len(result)))
 
     for i in range(len(titles)):
         for j in range(i + 1, len(titles)):
@@ -678,7 +737,7 @@ def generate_quality_report(df: pd.DataFrame) -> Dict[str, Any]:
     is_valid, validation_errors = validate_cleaned_data(df)
 
     completeness_score = calculate_completeness_score(df)
-    duplicate_rate     = 0.0
+    duplicate_rate = 0.0
     if "id" in df.columns and len(df) > 0:
         duplicate_rate = round(float(df["id"].duplicated().sum() / len(df)), 4)
 
@@ -690,14 +749,14 @@ def generate_quality_report(df: pd.DataFrame) -> Dict[str, Any]:
 
     return {
         "completeness": {
-            "overall_score":  completeness_score,
-            "total_records":  len(df),
+            "overall_score": completeness_score,
+            "total_records": len(df),
         },
         "consistency": {
             "type_coherence": type_ok,
         },
         "validity": {
-            "is_valid":         is_valid,
+            "is_valid": is_valid,
             "validation_errors": validation_errors,
         },
         "uniqueness": {
@@ -711,11 +770,11 @@ def generate_quality_report(df: pd.DataFrame) -> Dict[str, Any]:
 # CLI Entry Point
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Data Cleaning Agent")
     parser.add_argument("--config", default="config/config.yaml")
-    parser.add_argument("--input",  default=None,
-                        help="Path to raw parquet (overrides auto-detect)")
+    parser.add_argument("--input", default=None, help="Path to raw parquet (overrides auto-detect)")
     args = parser.parse_args()
 
     config = load_yaml(args.config)

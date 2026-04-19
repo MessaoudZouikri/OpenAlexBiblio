@@ -3,6 +3,7 @@ OpenAlex API client.
 Handles cursor-based pagination, rate limiting, abstract reconstruction,
 and deduplication for the bibliometric pipeline.
 """
+
 import time
 import logging
 import re
@@ -40,7 +41,9 @@ class OpenAlexClient:
         self.timeout = timeout
         self.session = requests.Session()
         if email:
-            self.session.headers.update({"User-Agent": f"bibliometric-pipeline/0.1 (mailto:{email})"})
+            self.session.headers.update(
+                {"User-Agent": f"bibliometric-pipeline/0.1 (mailto:{email})"}
+            )
 
     # ── Core HTTP ──────────────────────────────────────────────────────────
 
@@ -104,7 +107,9 @@ class OpenAlexClient:
             if not cursor:
                 break
             params["cursor"] = cursor
-            logger.debug("Fetched %d records so far (cursor=%s)", fetched, cursor[:20] if cursor else "none")
+            logger.debug(
+                "Fetched %d records so far (cursor=%s)", fetched, cursor[:20] if cursor else "none"
+            )
 
     def _build_filter(
         self,
@@ -167,12 +172,14 @@ class OpenAlexClient:
                 }
                 for i in authorship.get("institutions", [])
             ]
-            authors.append({
-                "id": author.get("id", ""),
-                "name": author.get("display_name", ""),
-                "orcid": author.get("orcid", ""),
-                "institutions": insts,
-            })
+            authors.append(
+                {
+                    "id": author.get("id", ""),
+                    "name": author.get("display_name", ""),
+                    "orcid": author.get("orcid", ""),
+                    "institutions": insts,
+                }
+            )
 
         concepts = [
             {
@@ -193,18 +200,12 @@ class OpenAlexClient:
             "id": raw.get("id", ""),
             "doi": raw.get("doi", ""),
             "title": raw.get("title", "") or "",
-            "abstract": OpenAlexClient.reconstruct_abstract(
-                raw.get("abstract_inverted_index")
-            ),
+            "abstract": OpenAlexClient.reconstruct_abstract(raw.get("abstract_inverted_index")),
             "year": raw.get("publication_year"),
             "publication_date": raw.get("publication_date", ""),
             "cited_by_count": raw.get("cited_by_count", 0) or 0,
             "authors": authors,
-            "institutions": [
-                inst
-                for a in authors
-                for inst in a["institutions"]
-            ],
+            "institutions": [inst for a in authors for inst in a["institutions"]],
             "concepts": concepts,
             "journal": source_info.get("display_name", ""),
             "journal_id": source_info.get("id", ""),
@@ -219,7 +220,18 @@ class OpenAlexClient:
 
 # Fields to request from OpenAlex API (reduces payload size)
 WORK_SELECT_FIELDS = [
-    "id", "doi", "title", "abstract_inverted_index", "publication_year",
-    "publication_date", "cited_by_count", "authorships", "concepts",
-    "primary_location", "open_access", "type", "referenced_works", "mesh",
+    "id",
+    "doi",
+    "title",
+    "abstract_inverted_index",
+    "publication_year",
+    "publication_date",
+    "cited_by_count",
+    "authorships",
+    "concepts",
+    "primary_location",
+    "open_access",
+    "type",
+    "referenced_works",
+    "mesh",
 ]

@@ -20,6 +20,7 @@ import pytest
 def author_productivity_metrics(df):
     """Wrapper for author_productivity function."""
     from src.agents.bibliometric_analysis import author_productivity
+
     return author_productivity(df)
 
 
@@ -32,7 +33,7 @@ def graph_summary(graph, name):
         "density": 0.333,
         "n_components": 1,
         "largest_component_size": graph.number_of_nodes(),
-        "avg_clustering": 0.45
+        "avg_clustering": 0.45,
     }
 
 
@@ -68,20 +69,20 @@ class TestClassificationRegression:
                 "domain": "Political Science",
                 "subcategory": "radical_right",
                 "confidence": 0.85,
-                "stage": "rule_based"
+                "stage": "rule_based",
             },
             "W987654321": {
                 "domain": "Economics",
                 "subcategory": "redistribution",
                 "confidence": 0.92,
-                "stage": "embedding"
+                "stage": "embedding",
             },
             "W111111111": {
                 "domain": "Sociology",
                 "subcategory": "social_movements",
                 "confidence": 1.0,
-                "stage": "rule_based"
-            }
+                "stage": "rule_based",
+            },
         }
 
     def test_classification_consistency(self, reference_classification_results):
@@ -92,18 +93,18 @@ class TestClassificationRegression:
             {
                 "id": "W123456789",
                 "title": "The Rise of Populism in Europe",
-                "abstract": "This paper examines the rise of populism..."
+                "abstract": "This paper examines the rise of populism...",
             },
             {
                 "id": "W987654321",
                 "title": "Economic Inequality and Political Behavior",
-                "abstract": "We analyze how economic inequality affects..."
+                "abstract": "We analyze how economic inequality affects...",
             },
             {
                 "id": "W111111111",
                 "title": "Social Movements in Latin America",
-                "abstract": "This study explores social movements..."
-            }
+                "abstract": "This study explores social movements...",
+            },
         ]
 
         for work in test_works:
@@ -114,11 +115,15 @@ class TestClassificationRegression:
             if reference:
                 # Check that results are reasonably similar
                 assert result["domain"] == reference["domain"], f"Domain changed for {work_id}"
-                assert result["subcategory"] == reference["subcategory"], f"Subcategory changed for {work_id}"
+                assert (
+                    result["subcategory"] == reference["subcategory"]
+                ), f"Subcategory changed for {work_id}"
 
                 # Allow some tolerance for confidence scores
                 confidence_diff = abs(result["confidence"] - reference["confidence"])
-                assert confidence_diff < 0.2, f"Confidence changed significantly for {work_id}: {confidence_diff}"
+                assert (
+                    confidence_diff < 0.2
+                ), f"Confidence changed significantly for {work_id}: {confidence_diff}"
 
     def test_classification_distribution_stability(self):
         """Test that classification distributions remain stable."""
@@ -135,7 +140,7 @@ class TestClassificationRegression:
             {"title": "Electoral politics", "abstract": "Voting behavior study"},
             {"title": "Media communication", "abstract": "Journalism and society"},
             {"title": "Political economy", "abstract": "Economics and politics"},
-            {"title": "Identity politics", "abstract": "Social identity studies"}
+            {"title": "Identity politics", "abstract": "Social identity studies"},
         ]
 
         results = classify_batch(test_works)
@@ -147,15 +152,17 @@ class TestClassificationRegression:
         # Expected distributions (these would be calibrated based on reference data)
         expected_distributions = {
             "Political Science": 0.4,  # 40% political science
-            "Economics": 0.2,         # 20% economics
-            "Sociology": 0.3,         # 30% sociology
-            "Other": 0.1              # 10% other
+            "Economics": 0.2,  # 20% economics
+            "Sociology": 0.3,  # 30% sociology
+            "Other": 0.1,  # 10% other
         }
 
         for domain, expected_pct in expected_distributions.items():
             actual_pct = domain_counts.get(domain, 0) / len(results)
             # Allow 20% tolerance
-            assert abs(actual_pct - expected_pct) < 0.2, f"Domain {domain} distribution changed: {actual_pct:.2f} vs {expected_pct:.2f}"
+            assert (
+                abs(actual_pct - expected_pct) < 0.2
+            ), f"Domain {domain} distribution changed: {actual_pct:.2f} vs {expected_pct:.2f}"
 
 
 class TestBibliometricMetricsRegression:
@@ -190,8 +197,12 @@ class TestBibliometricMetricsRegression:
 
         # Check required metrics
         required_metrics = [
-            "total_citations", "mean_citations", "median_citations",
-            "h_index", "g_index", "citation_percentiles"
+            "total_citations",
+            "mean_citations",
+            "median_citations",
+            "h_index",
+            "g_index",
+            "citation_percentiles",
         ]
 
         for metric in required_metrics:
@@ -231,13 +242,13 @@ class TestNetworkAnalysisRegression:
         domain_map = dict(zip(sample_classified_data["id"], sample_classified_data["domain"]))
 
         # Mock network with consistent structure
-        with patch('networkx.Graph') as mock_graph:
+        with patch("networkx.Graph") as mock_graph:
             mock_instance = Mock()
             # Create consistent mock edges
             mock_edges = [
                 (sample_classified_data["id"][0], sample_classified_data["id"][1], {"weight": 5}),
                 (sample_classified_data["id"][1], sample_classified_data["id"][2], {"weight": 3}),
-                (sample_classified_data["id"][0], sample_classified_data["id"][2], {"weight": 2})
+                (sample_classified_data["id"][0], sample_classified_data["id"][2], {"weight": 2}),
             ]
             mock_instance.edges.return_value = mock_edges
             mock_instance.number_of_nodes.return_value = 3
@@ -247,9 +258,13 @@ class TestNetworkAnalysisRegression:
 
             # Check that all expected metrics are present
             required_keys = [
-                "raw_coupling_matrix", "association_strength",
-                "coupling_strength_index", "jaccard_similarity",
-                "inter_domain_ratio", "interpretation", "metadata"
+                "raw_coupling_matrix",
+                "association_strength",
+                "coupling_strength_index",
+                "jaccard_similarity",
+                "inter_domain_ratio",
+                "interpretation",
+                "metadata",
             ]
 
             for key in required_keys:
@@ -257,7 +272,12 @@ class TestNetworkAnalysisRegression:
 
             # Check that matrices have expected domains
             domains = set(domain_map.values())
-            for matrix_name in ["raw_coupling_matrix", "association_strength", "coupling_strength_index", "jaccard_similarity"]:
+            for matrix_name in [
+                "raw_coupling_matrix",
+                "association_strength",
+                "coupling_strength_index",
+                "jaccard_similarity",
+            ]:
                 matrix = results[matrix_name]
                 assert set(matrix.keys()) == domains, f"Matrix {matrix_name} missing domains"
 
@@ -266,21 +286,26 @@ class TestNetworkAnalysisRegression:
         from src.agents.network_analysis import graph_summary
 
         # Create mock graph with consistent properties
-        with patch('networkx.Graph') as mock_graph:
+        with patch("networkx.Graph") as mock_graph:
             mock_instance = Mock()
             mock_instance.number_of_nodes.return_value = 10
             mock_instance.number_of_edges.return_value = 15
             mock_instance.degree.return_value = [(i, 3) for i in range(10)]  # Consistent degrees
 
-            with patch('networkx.density', return_value=0.333):
-                with patch('networkx.average_clustering', return_value=0.45):
-                    with patch('networkx.number_connected_components', return_value=1):
+            with patch("networkx.density", return_value=0.333):
+                with patch("networkx.average_clustering", return_value=0.45):
+                    with patch("networkx.number_connected_components", return_value=1):
                         metrics = graph_summary(mock_instance, "test_network")
 
                         # Check required metrics
                         required_keys = [
-                            "network", "n_nodes", "n_edges", "density",
-                            "n_components", "largest_component_size", "avg_clustering"
+                            "network",
+                            "n_nodes",
+                            "n_edges",
+                            "density",
+                            "n_components",
+                            "largest_component_size",
+                            "avg_clustering",
                         ]
 
                         for key in required_keys:
@@ -304,8 +329,16 @@ class TestDataProcessingRegression:
 
         # Check output structure
         required_cols = [
-            "id", "title", "abstract", "year", "cited_by_count",
-            "authors", "institution", "journal", "concepts", "decade"
+            "id",
+            "title",
+            "abstract",
+            "year",
+            "cited_by_count",
+            "authors",
+            "institution",
+            "journal",
+            "concepts",
+            "decade",
         ]
 
         for col in required_cols:
@@ -340,8 +373,7 @@ class TestStatisticalPropertiesRegression:
 
         # Create diverse test works
         test_works = [
-            {"title": f"Work {i}", "abstract": f"Content about topic {i}"}
-            for i in range(50)
+            {"title": f"Work {i}", "abstract": f"Content about topic {i}"} for i in range(50)
         ]
 
         results = classify_batch(test_works)
@@ -368,20 +400,20 @@ class TestStatisticalPropertiesRegression:
         # Create works that should trigger different domains
         test_works = [
             # Political Science triggers
-            {"title": "Populism and democracy", "abstract": "Political theory of populist movements"},
+            {
+                "title": "Populism and democracy",
+                "abstract": "Political theory of populist movements",
+            },
             {"title": "Electoral politics", "abstract": "Voting behavior and elections"},
             {"title": "Radical right parties", "abstract": "Far-right political movements"},
-
             # Economics triggers
             {"title": "Political economy", "abstract": "Economic institutions and policy"},
             {"title": "Income inequality", "abstract": "Distribution of wealth and income"},
             {"title": "Trade globalization", "abstract": "International trade and economy"},
-
             # Sociology triggers
             {"title": "Social movements", "abstract": "Collective action and protest"},
             {"title": "Identity politics", "abstract": "Social identity and culture"},
             {"title": "Media communication", "abstract": "Society and communication"},
-
             # Other triggers
             {"title": "International relations", "abstract": "Foreign policy and diplomacy"},
             {"title": "History of populism", "abstract": "Historical analysis"},
@@ -397,7 +429,9 @@ class TestStatisticalPropertiesRegression:
         expected_domains = {"Political Science", "Economics", "Sociology", "Other"}
         actual_domains = set(domain_counts.index)
 
-        assert expected_domains.issubset(actual_domains), f"Missing domains: {expected_domains - actual_domains}"
+        assert expected_domains.issubset(
+            actual_domains
+        ), f"Missing domains: {expected_domains - actual_domains}"
 
         # Political Science should be most represented (3 works)
         assert domain_counts["Political Science"] >= 2
@@ -416,12 +450,12 @@ class TestSnapshotComparisons:
 
         # Create sample output data
         sample_output = {
-            "classification_results": sample_classified_data.to_dict('records'),
+            "classification_results": sample_classified_data.to_dict("records"),
             "summary": {
                 "total_works": len(sample_classified_data),
                 "domains": sample_classified_data["domain"].value_counts().to_dict(),
-                "avg_confidence": sample_classified_data["confidence"].mean()
-            }
+                "avg_confidence": sample_classified_data["confidence"].mean(),
+            },
         }
 
         output_path = temp_data_dir / "test_output.json"
@@ -444,21 +478,21 @@ class TestSnapshotComparisons:
 
         # Process through classification
         from src.agents.classification import classify_batch
-        works = sample_cleaned_data.to_dict('records')
+
+        works = sample_cleaned_data.to_dict("records")
         classifications = classify_batch(works)
 
         # Add classification results to data
         processed_data = sample_cleaned_data.copy()
         for result in classifications:
-            idx = processed_data[processed_data['id'] == result['id']].index
+            idx = processed_data[processed_data["id"] == result["id"]].index
             if len(idx) > 0:
-                processed_data.loc[idx[0], 'classified_domain'] = result['domain']
-                processed_data.loc[idx[0], 'classified_subcategory'] = result['subcategory']
-                processed_data.loc[idx[0], 'classification_confidence'] = result['confidence']
+                processed_data.loc[idx[0], "classified_domain"] = result["domain"]
+                processed_data.loc[idx[0], "classified_subcategory"] = result["subcategory"]
+                processed_data.loc[idx[0], "classification_confidence"] = result["confidence"]
 
         # Schema should be preserved plus new columns
-        new_columns = {'classified_domain', 'classified_subcategory', 'classification_confidence'}
+        new_columns = {"classified_domain", "classified_subcategory", "classification_confidence"}
         expected_schema = original_schema | new_columns
 
         assert set(processed_data.columns) == expected_schema
-

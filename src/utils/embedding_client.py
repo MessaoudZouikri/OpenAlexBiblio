@@ -49,6 +49,7 @@ import requests
 
 logger = logging.getLogger("embedding_client")
 
+
 # ── Suppress benign "adapters not activated" warning ─────────────────────────
 # After merge_adapter() + delete_adapter(), the adapters library logs this
 # message on every forward pass because its infrastructure remains in the model
@@ -60,8 +61,10 @@ logger = logging.getLogger("embedding_client")
 # are covered.
 class _NoAdaptersActivatedFilter(logging.Filter):
     """Drop the 'adapters available but none are activated' log record."""
+
     def filter(self, record: logging.LogRecord) -> bool:
         return "adapters available but none are activated" not in str(record.getMessage())
+
 
 _adapters_filter = _NoAdaptersActivatedFilter()
 logging.getLogger("adapters").addFilter(_adapters_filter)
@@ -72,7 +75,7 @@ logging.getLogger("adapters.models").addFilter(_adapters_filter)
 # Input truncation: SPECTER2 context window is 512 tokens (~400 words)
 # Longer texts are silently truncated by the model; we pre-truncate for
 # consistent behaviour across all backends.
-MAX_CHARS = 1800   # ~400 words — covers title + most abstracts
+MAX_CHARS = 1800  # ~400 words — covers title + most abstracts
 
 
 def _truncate(text: str) -> str:
@@ -89,6 +92,7 @@ def _l2_normalise(matrix: np.ndarray) -> np.ndarray:
 # ─────────────────────────────────────────────────────────────────────────────
 # Tier 1 — SPECTER2 Backend
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 class SPECTER2Backend:
     """
@@ -114,16 +118,16 @@ class SPECTER2Backend:
         giving ~1,500–3,000 embeddings/sec at 768d — far faster than Ollama HTTP.
     """
 
-    MODEL_ID   = "allenai/specter2_base"
+    MODEL_ID = "allenai/specter2_base"
     ADAPTER_ID = "allenai/specter2"
     ADAPTER_NAME = "proximity"
 
     def __init__(self, device: Optional[str] = None, batch_size: int = 32):
-        self._model          = None
-        self._device         = device
-        self._batch_size     = batch_size
-        self._dim            = 768
-        self._adapter_active = False   # True only when proximity adapter is confirmed loaded
+        self._model = None
+        self._device = device
+        self._batch_size = batch_size
+        self._dim = 768
+        self._adapter_active = False  # True only when proximity adapter is confirmed loaded
 
     # ── Availability / lazy load ──────────────────────────────────────────────
 
@@ -136,6 +140,7 @@ class SPECTER2Backend:
         """
         try:
             import sentence_transformers  # noqa: F401
+
             return True
         except ImportError:
             logger.warning(
@@ -149,6 +154,7 @@ class SPECTER2Backend:
     def _peft_available() -> bool:
         try:
             import peft  # noqa: F401
+
             return True
         except ImportError:
             return False
@@ -187,7 +193,9 @@ class SPECTER2Backend:
             if self._adapter_active:
                 logger.info(
                     "SPECTER2 loaded — adapter=%s, device=%s, dim=%d  [FULL QUALITY]",
-                    self.ADAPTER_NAME, self._model.device, self._dim,
+                    self.ADAPTER_NAME,
+                    self._model.device,
+                    self._dim,
                 )
             else:
                 logger.warning(
@@ -197,7 +205,8 @@ class SPECTER2Backend:
                 )
                 logger.info(
                     "SPECTER2 base loaded (adapter failed) — device=%s, dim=%d  [DEGRADED]",
-                    self._model.device, self._dim,
+                    self._model.device,
+                    self._dim,
                 )
         else:
             # ── Strategy B: base model only, no adapter ───────────────────────
@@ -207,7 +216,8 @@ class SPECTER2Backend:
             )
             logger.info(
                 "SPECTER2 base loaded (no adapter) — device=%s, dim=%d  [DEGRADED]",
-                self._model.device, self._dim,
+                self._model.device,
+                self._dim,
             )
 
     def _load_adapter_versioned(self) -> bool:
@@ -264,7 +274,7 @@ class SPECTER2Backend:
             # on every forward pass. The weights ARE correctly merged — the
             # warning is a false positive. Fix: clear active adapter state.
             try:
-                underlying.set_active_adapters([])    # clear active list
+                underlying.set_active_adapters([])  # clear active list
             except Exception:
                 pass
             try:
@@ -273,9 +283,7 @@ class SPECTER2Backend:
             except Exception:
                 pass
 
-            logger.debug(
-                "Adapter loaded via Attempt 1 (adapters library, AdapterHub format)"
-            )
+            logger.debug("Adapter loaded via Attempt 1 (adapters library, AdapterHub format)")
             return True
 
         except ImportError:
@@ -327,10 +335,10 @@ class SPECTER2Backend:
         Tries multiple access patterns for ST 2.x, 3.x, 4.x, 5.x compatibility.
         """
         for getter in [
-            lambda m: m[0].auto_model,                              # ST 3.x / 4.x / 5.x
-            lambda m: list(m.children())[0].auto_model,            # ST 3.x alternate
-            lambda m: m._first_module().auto_model,                 # ST 2.x
-            lambda m: next(iter(m._modules.values())).auto_model,   # generic fallback
+            lambda m: m[0].auto_model,  # ST 3.x / 4.x / 5.x
+            lambda m: list(m.children())[0].auto_model,  # ST 3.x alternate
+            lambda m: m._first_module().auto_model,  # ST 2.x
+            lambda m: next(iter(m._modules.values())).auto_model,  # generic fallback
         ]:
             try:
                 model = getter(self._model)
@@ -370,12 +378,12 @@ class SPECTER2Backend:
         # sentence-transformers handles batching, padding, and device transfer
         vecs = self._model.encode(
             truncated,
-            batch_size        = self._batch_size,
-            show_progress_bar = len(texts) > 200,
-            convert_to_numpy  = True,
-            normalize_embeddings = True,   # L2 normalise inside the model
+            batch_size=self._batch_size,
+            show_progress_bar=len(texts) > 200,
+            convert_to_numpy=True,
+            normalize_embeddings=True,  # L2 normalise inside the model
         ).astype(np.float32)
-        return vecs   # already normalised
+        return vecs  # already normalised
 
     @property
     def dim(self) -> int:
@@ -384,10 +392,10 @@ class SPECTER2Backend:
     @property
     def name(self) -> str:
         if self._model is None:
-            return "specter2:selected"          # lazy — not loaded yet
+            return "specter2:selected"  # lazy — not loaded yet
         if self._adapter_active:
-            return f"specter2:{self.ADAPTER_NAME}"   # full quality
-        return "specter2:base_only"             # degraded — base model, no adapter
+            return f"specter2:{self.ADAPTER_NAME}"  # full quality
+        return "specter2:base_only"  # degraded — base model, no adapter
 
     @property
     def adapter_active(self) -> bool:
@@ -398,6 +406,7 @@ class SPECTER2Backend:
 # ─────────────────────────────────────────────────────────────────────────────
 # Tier 2 — Ollama Embedding Backend
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 class OllamaEmbeddingBackend:
     """
@@ -414,14 +423,14 @@ class OllamaEmbeddingBackend:
 
     def __init__(
         self,
-        endpoint:    str = "http://localhost:11434",
-        model:       str = "nomic-embed-text",
-        timeout:     int = 60,
+        endpoint: str = "http://localhost:11434",
+        model: str = "nomic-embed-text",
+        timeout: int = 60,
         max_retries: int = 3,
     ):
-        self.endpoint    = endpoint.rstrip("/")
-        self.model       = model
-        self.timeout     = timeout
+        self.endpoint = endpoint.rstrip("/")
+        self.model = model
+        self.timeout = timeout
         self.max_retries = max_retries
         self._dim: Optional[int] = None
 
@@ -431,12 +440,14 @@ class OllamaEmbeddingBackend:
             if resp.status_code != 200:
                 return False
             models = [m["name"] for m in resp.json().get("models", [])]
-            base   = self.model.split(":")[0]
-            found  = any(base in m for m in models)
+            base = self.model.split(":")[0]
+            found = any(base in m for m in models)
             if not found:
                 logger.warning(
-                    "Ollama embedding model '%s' not found. Available: %s\n"
-                    "  → ollama pull %s", self.model, models, self.model
+                    "Ollama embedding model '%s' not found. Available: %s\n" "  → ollama pull %s",
+                    self.model,
+                    models,
+                    self.model,
                 )
             return found
         except Exception as exc:
@@ -454,8 +465,8 @@ class OllamaEmbeddingBackend:
                 )
                 resp.raise_for_status()
                 data = resp.json()
-                vec  = data.get("embeddings", [[]])[0] or data.get("embedding", [])
-                arr  = np.array(vec, dtype=np.float32)
+                vec = data.get("embeddings", [[]])[0] or data.get("embedding", [])
+                arr = np.array(vec, dtype=np.float32)
                 self._dim = len(arr)
                 return arr
             except Exception as exc:
@@ -465,12 +476,14 @@ class OllamaEmbeddingBackend:
         return None
 
     def embed_batch(self, texts: List[str]) -> np.ndarray:
-        dim     = self._dim or 768
+        dim = self._dim or 768
         results = []
         for i, text in enumerate(texts):
             vec = self._embed_one(text)
             if vec is None:
-                logger.warning("Ollama embed failed for text %d/%d — zero vector", i + 1, len(texts))
+                logger.warning(
+                    "Ollama embed failed for text %d/%d — zero vector", i + 1, len(texts)
+                )
                 vec = np.zeros(dim, dtype=np.float32)
             else:
                 dim = len(vec)
@@ -489,6 +502,7 @@ class OllamaEmbeddingBackend:
 # ─────────────────────────────────────────────────────────────────────────────
 # Tier 3 — TF-IDF LSA Fallback Backend
 # ─────────────────────────────────────────────────────────────────────────────
+
 
 class TFIDFFallbackBackend:
     """
@@ -512,17 +526,22 @@ class TFIDFFallbackBackend:
         from sklearn.pipeline import Pipeline
 
         self._max_features = max_features
-        self._pipeline = Pipeline([
-            ("tfidf", TfidfVectorizer(
-                max_features  = max_features,
-                ngram_range   = (1, 2),
-                min_df        = 2,
-                sublinear_tf  = True,
-                strip_accents = "unicode",
-            )),
-            ("svd", TruncatedSVD(n_components=n_components, random_state=42)),
-        ])
-        self._fitted       = False
+        self._pipeline = Pipeline(
+            [
+                (
+                    "tfidf",
+                    TfidfVectorizer(
+                        max_features=max_features,
+                        ngram_range=(1, 2),
+                        min_df=2,
+                        sublinear_tf=True,
+                        strip_accents="unicode",
+                    ),
+                ),
+                ("svd", TruncatedSVD(n_components=n_components, random_state=42)),
+            ]
+        )
+        self._fitted = False
         self._n_components = n_components
 
     def fit(self, texts: List[str]) -> "TFIDFFallbackBackend":
@@ -542,8 +561,8 @@ class TFIDFFallbackBackend:
             sublinear_tf=True,
             strip_accents="unicode",
         )
-        X_probe    = tfidf_probe.fit_transform(truncated)
-        n_samples  = len(truncated)
+        X_probe = tfidf_probe.fit_transform(truncated)
+        n_samples = len(truncated)
         n_features = X_probe.shape[1]
 
         # TruncatedSVD requires n_components < min(n_samples, n_features)
@@ -551,27 +570,37 @@ class TFIDFFallbackBackend:
         if safe_n < self._n_components:
             logger.warning(
                 "TF-IDF: n_components capped %d → %d (n_samples=%d, n_features=%d)",
-                self._n_components, safe_n, n_samples, n_features,
+                self._n_components,
+                safe_n,
+                n_samples,
+                n_features,
             )
             self._n_components = safe_n
 
         # Rebuild pipeline with correct parameters (avoids sklearn in-place mutation issues)
-        self._pipeline = Pipeline([
-            ("tfidf", TfidfVectorizer(
-                max_features=self._max_features,
-                ngram_range=(1, 2),
-                min_df=min_df,
-                sublinear_tf=True,
-                strip_accents="unicode",
-            )),
-            ("svd", TruncatedSVD(n_components=self._n_components, random_state=42)),
-        ])
+        self._pipeline = Pipeline(
+            [
+                (
+                    "tfidf",
+                    TfidfVectorizer(
+                        max_features=self._max_features,
+                        ngram_range=(1, 2),
+                        min_df=min_df,
+                        sublinear_tf=True,
+                        strip_accents="unicode",
+                    ),
+                ),
+                ("svd", TruncatedSVD(n_components=self._n_components, random_state=42)),
+            ]
+        )
         self._pipeline.fit(truncated)
         self._fitted = True
         explained = self._pipeline["svd"].explained_variance_ratio_.sum()
         logger.info(
             "TF-IDF LSA fitted — dim=%d, features=%d, explained_variance=%.1f%%",
-            self._n_components, n_features, explained * 100,
+            self._n_components,
+            n_features,
+            explained * 100,
         )
         return self
 
@@ -615,18 +644,18 @@ class EmbeddingClient:
 
     def __init__(
         self,
-        ollama_endpoint:    str = "http://localhost:11434",
-        ollama_model:       str = "nomic-embed-text",
-        specter2_device:    Optional[str] = None,
-        specter2_batch:     int = 32,
+        ollama_endpoint: str = "http://localhost:11434",
+        ollama_model: str = "nomic-embed-text",
+        specter2_device: Optional[str] = None,
+        specter2_batch: int = 32,
         tfidf_n_components: int = 256,
-        force_backend:      Optional[str] = None,   # "specter2"|"ollama"|"tfidf"
+        force_backend: Optional[str] = None,  # "specter2"|"ollama"|"tfidf"
     ):
         self._specter2 = SPECTER2Backend(device=specter2_device, batch_size=specter2_batch)
-        self._ollama   = OllamaEmbeddingBackend(ollama_endpoint, ollama_model)
-        self._tfidf    = TFIDFFallbackBackend(n_components=tfidf_n_components)
-        self._force    = force_backend
-        self._active   = None   # set by .initialise()
+        self._ollama = OllamaEmbeddingBackend(ollama_endpoint, ollama_model)
+        self._tfidf = TFIDFFallbackBackend(n_components=tfidf_n_components)
+        self._force = force_backend
+        self._active = None  # set by .initialise()
 
     # ── Initialisation ────────────────────────────────────────────────────────
 
@@ -644,25 +673,21 @@ class EmbeddingClient:
                 peft_ready = self._specter2._peft_available()
                 logger.info(
                     "Embedding backend: SPECTER2  [%s]",
-                    "full quality — proximity adapter" if peft_ready else "DEGRADED — peft missing, base model only"
+                    (
+                        "full quality — proximity adapter"
+                        if peft_ready
+                        else "DEGRADED — peft missing, base model only"
+                    ),
                 )
-                logger.info(
-                    "  → Citation-supervised, 768d, ~1500 emb/sec on Apple M-series"
-                )
+                logger.info("  → Citation-supervised, 768d, ~1500 emb/sec on Apple M-series")
                 if not peft_ready:
-                    logger.warning(
-                        "  → Run: pip install peft   for full citation-geometry quality"
-                    )
+                    logger.warning("  → Run: pip install peft   for full citation-geometry quality")
                 return self._active
 
             if tier == "ollama" and self._ollama.is_available():
                 self._active = "ollama"
-                logger.info(
-                    "Embedding backend: Ollama (%s)", self._ollama.model
-                )
-                logger.info(
-                    "  → General-purpose neural, good quality but not citation-aware"
-                )
+                logger.info("Embedding backend: Ollama (%s)", self._ollama.model)
+                logger.info("  → General-purpose neural, good quality but not citation-aware")
                 logger.info(
                     "  → For better subcategory discrimination: pip install sentence-transformers"
                 )
@@ -737,12 +762,12 @@ class EmbeddingClient:
         """
         emb = cfg.get("embeddings", {})
         return cls(
-            ollama_endpoint    = cfg.get("endpoint", "http://localhost:11434"),
-            ollama_model       = emb.get("ollama_model", "nomic-embed-text"),
-            specter2_device    = emb.get("specter2_device", None),
-            specter2_batch     = emb.get("specter2_batch", 32),
-            tfidf_n_components = emb.get("tfidf_components", 256),
-            force_backend      = emb.get("backend", None),
+            ollama_endpoint=cfg.get("endpoint", "http://localhost:11434"),
+            ollama_model=emb.get("ollama_model", "nomic-embed-text"),
+            specter2_device=emb.get("specter2_device", None),
+            specter2_batch=emb.get("specter2_batch", 32),
+            tfidf_n_components=emb.get("tfidf_components", 256),
+            force_backend=emb.get("backend", None),
         )
 
     # ── Diagnostic ────────────────────────────────────────────────────────────
@@ -750,14 +775,14 @@ class EmbeddingClient:
     def diagnostics(self) -> dict:
         """Return backend availability status for all three tiers."""
         return {
-            "active_backend":    self.backend_name,
+            "active_backend": self.backend_name,
             "is_citation_aware": self.is_citation_aware,
-            "dim":               self.dim,
+            "dim": self.dim,
             "specter2_available": self._specter2.is_available(),
             "specter2_peft_available": self._specter2._peft_available(),
             "specter2_full_quality": (
                 self._specter2.is_available() and self._specter2._peft_available()
             ),
-            "ollama_available":  self._ollama.is_available(),
-            "tfidf_available":   True,
+            "ollama_available": self._ollama.is_available(),
+            "tfidf_available": True,
         }
