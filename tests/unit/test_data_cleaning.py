@@ -10,10 +10,11 @@ Tests data cleaning functionality including:
 - Duplicate handling
 """
 
-import pytest
-import pandas as pd
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import pytest
 
 from src.agents.data_cleaning import (
     normalize_unicode,

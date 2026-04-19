@@ -8,15 +8,12 @@ Tests interactions between agents to ensure proper data flow:
 - Cross-agent data consistency
 """
 
-import pytest
+from unittest.mock import Mock, patch
+
 import pandas as pd
-from pathlib import Path
-from unittest.mock import patch, Mock
 
 from src.agents.data_cleaning import clean_dataframe
-from src.agents.classification import HybridClassifier
 from src.agents.network_analysis import enhanced_cross_domain_analysis
-from src.agents.bibliometric_analysis import publication_trends
 
 
 # Wrapper function to match test expectations
@@ -32,12 +29,6 @@ def clean_bibliometric_data(df):
 def classify_batch(works_data):
     """Mock batch classification for testing."""
     return [classify_work(work) for work in works_data]
-
-
-# ... existing code ...
-
-# ... existing code ...
-
 
 
 def classify_work(work_data):

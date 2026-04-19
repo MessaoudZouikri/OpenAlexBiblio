@@ -17,7 +17,7 @@ class OllamaClient:
     """
     HTTP client for local Ollama inference server.
     Designed for deterministic, structured-output tasks (classification).
-    
+
     All LLM outputs are treated as HYPOTHESES to validate, not facts.
     """
 
@@ -78,7 +78,7 @@ class OllamaClient:
     ) -> Tuple[str, bool]:
         """
         Generate text from the LLM.
-        
+
         Returns:
             (response_text, success_flag)
         """
@@ -122,7 +122,7 @@ class OllamaClient:
     ) -> Tuple[Optional[Dict[str, Any]], bool]:
         """
         Generate and parse a JSON response from the LLM.
-        
+
         Includes cleanup of markdown code fences and validation.
         Returns:
             (parsed_dict or None, success_flag)
@@ -130,20 +130,20 @@ class OllamaClient:
         text, ok = self.generate(system_prompt, user_prompt)
         if not ok or not text:
             return None, False
-        
+
         # Attempt to extract JSON from response
         parsed = self._extract_json(text)
         if parsed is None:
             logger.warning("Failed to parse LLM JSON response: %s", text[:200])
             return None, False
-        
+
         # Validate required keys
         if required_keys:
             missing = [k for k in required_keys if k not in parsed]
             if missing:
                 logger.warning("LLM response missing keys %s: %s", missing, text[:200])
                 return None, False
-        
+
         return parsed, True
 
     @staticmethod
@@ -159,13 +159,13 @@ class OllamaClient:
                 line for line in lines
                 if not line.startswith("```")
             ).strip()
-        
+
         # Try direct parse
         try:
             return json.loads(text)
         except json.JSONDecodeError:
             pass
-        
+
         # Try to find JSON object within text
         start = text.find("{")
         end = text.rfind("}") + 1
@@ -174,7 +174,7 @@ class OllamaClient:
                 return json.loads(text[start:end])
             except json.JSONDecodeError:
                 pass
-        
+
         return None
 
 
@@ -207,17 +207,17 @@ def validate_classification_response(response: Dict) -> Tuple[bool, str]:
     domain = response.get("domain", "")
     subcategory = response.get("subcategory", "")
     confidence = response.get("confidence")
-    
+
     if domain not in VALID_DOMAINS:
         return False, f"Invalid domain: '{domain}'"
-    
+
     valid_subs = VALID_SUBCATEGORIES.get(domain, set())
     if subcategory not in valid_subs:
         return False, f"Invalid subcategory '{subcategory}' for domain '{domain}'"
-    
+
     if not isinstance(confidence, (int, float)) or not (0.0 <= confidence <= 1.0):
         return False, f"Invalid confidence: {confidence}"
-    
+
     return True, ""
 
 # Backward compatibility alias

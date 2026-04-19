@@ -16,7 +16,7 @@ logger = logging.getLogger("openalex_client")
 class OpenAlexClient:
     """
     Stateless HTTP client for the OpenAlex REST API.
-    
+
     Respects rate limits, implements retry logic with exponential backoff,
     and reconstructs abstracts from the inverted index format.
     """

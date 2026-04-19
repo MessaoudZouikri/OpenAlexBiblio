@@ -11,10 +11,11 @@ Tests for bibliometric data integrity and consistency:
 - Metadata completeness
 """
 
-import pytest
-import pandas as pd
 import re
 from unittest.mock import Mock
+
+import pandas as pd
+import pytest
 
 
 # Mock implementations for functions not yet implemented
@@ -22,13 +23,13 @@ def normalize_doi(doi):
     """Mock DOI normalization function."""
     if not doi:
         return ""
-    
+
     doi = str(doi).strip()
-    
+
     # Handle various DOI formats
     doi = re.sub(r'^https?://doi\.org/', '', doi, flags=re.IGNORECASE)
     doi = re.sub(r'^doi:', '', doi, flags=re.IGNORECASE)
-    
+
     # Basic validation
     if re.match(r'^10\.\d+/.+', doi):
         return doi

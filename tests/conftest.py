@@ -9,13 +9,14 @@ Usage:
     pytest tests/ -v --cov=src --cov-report=html
 """
 
-import pytest
-import pandas as pd
-import numpy as np
+import shutil
+import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
-import tempfile
-import shutil
+
+import numpy as np
+import pandas as pd
+import pytest
 
 # Add src to path for imports
 import sys
@@ -113,8 +114,8 @@ def sample_cleaned_data():
             "We analyze how economic inequality affects political behavior and voter polarization in OECD countries.",
             "This study explores social movements and collective action over three decades of Latin American politics.",
         ],
-        "year":            [2020, 2019, 2021],
-        "cited_by_count":  [45,   23,   45],          # ← was [45, 23, 67]
+        "year": [2020, 2019, 2021],
+        "cited_by_count": [45, 23, 45],  # ← was [45, 23, 67]
         "authors": [
             ["John Smith", "Jane Doe"],
             ["Bob Johnson"],
@@ -135,7 +136,7 @@ def sample_cleaned_data():
             ["Economics", "Political Behavior"],
             ["Sociology", "Social Movements"],
         ],
-        "decade":             [2020, 2010, 2020],
+        "decade": [2020, 2010, 2020],
         "domain_preliminary": ["Political Science", "Economics", "Sociology"],
     })
 

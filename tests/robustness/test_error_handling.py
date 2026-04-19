@@ -10,12 +10,11 @@ Tests system behavior under adverse conditions:
 - Resource constraints
 """
 
-import pytest
-import pandas as pd
+from unittest.mock import Mock, patch
+
 import numpy as np
-from unittest.mock import Mock, patch, MagicMock
+import pandas as pd
 import requests
-from pathlib import Path
 
 
 class TestCorruptedDataHandling:
