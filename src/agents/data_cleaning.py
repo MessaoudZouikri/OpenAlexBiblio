@@ -19,7 +19,7 @@ import logging
 import re
 import sys
 import unicodedata
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -425,7 +425,7 @@ def clean_dataframe(
         (cleaned_df, report_dict)
     """
     report: Dict[str, Any] = {"input_records": len(df), "operations": []}
-    current_year = datetime.now(UTC).year
+    current_year = datetime.now(timezone.utc).year
 
     # ── 0. Ensure expected schema ────────────────────────────────────────
     df = _ensure_columns(df)
@@ -550,7 +550,7 @@ def clean_dataframe(
             "year_range": (
                 [int(df["year"].min()), int(df["year"].max())] if len(df) else [None, None]
             ),
-            "timestamp": datetime.now(UTC).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         }
     )
 
@@ -761,7 +761,7 @@ def generate_quality_report(df: pd.DataFrame) -> Dict[str, Any]:
         "uniqueness": {
             "duplicate_rate": duplicate_rate,
         },
-        "generated_at": datetime.now(UTC).isoformat(),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
 

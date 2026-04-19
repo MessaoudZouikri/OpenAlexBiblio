@@ -13,7 +13,7 @@ Usage:
 
 import argparse
 import sys
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
@@ -29,7 +29,7 @@ def _make_report(agent: str, stage: str = "") -> dict:
     return {
         "agent": agent,
         "stage": stage,
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "status": "PASS",
         "errors": [],
         "warnings": [],
@@ -126,7 +126,7 @@ def validate_data(config: dict, stage: str = "D1") -> dict:
         )
 
         # Year checks
-        current_year = datetime.now(UTC).year
+        current_year = datetime.now(timezone.utc).year
         _check(
             report,
             "year_no_nulls",

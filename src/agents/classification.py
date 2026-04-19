@@ -35,7 +35,7 @@ import hashlib
 import logging
 import sys
 from collections import Counter
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -771,7 +771,7 @@ def main() -> None:
 
     n = max(len(df_out), 1)
     report = {
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "n_records": len(df_out),
         "backend": embed_client.backend_name,
         "domain_distribution": df_out["domain"].value_counts().to_dict(),
