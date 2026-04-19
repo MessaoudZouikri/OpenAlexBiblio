@@ -3,11 +3,10 @@ Logging utilities for the bibliometric pipeline.
 Provides structured, file-per-agent logging with JSON audit trail support.
 """
 
-import logging
 import json
-import os
+import logging
 import sys
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
 

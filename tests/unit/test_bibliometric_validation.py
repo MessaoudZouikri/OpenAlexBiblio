@@ -12,10 +12,8 @@ Tests for bibliometric data integrity and consistency:
 """
 
 import re
-from unittest.mock import Mock
 
 import pandas as pd
-import pytest
 
 
 # Mock implementations for functions not yet implemented
@@ -258,7 +256,7 @@ class TestDuplicateDetection:
         duplicates = detect_exact_duplicates(duplicate_data)
 
         assert len(duplicates) > 0, "Should detect the added duplicate"
-        assert duplicates.iloc[-1]["is_duplicate"] == True
+        assert duplicates.iloc[-1]["is_duplicate"] is True
 
     def test_near_duplicate_detection(self):
         """Test detection of near-duplicate works."""

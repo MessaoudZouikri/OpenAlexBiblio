@@ -13,11 +13,10 @@ import json
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from src.utils.io_utils import load_yaml, load_json, latest_file
+from src.utils.io_utils import latest_file, load_yaml
 
 PASS = "\033[32m  PASS\033[0m"
 FAIL = "\033[31m  FAIL\033[0m"
@@ -307,8 +306,6 @@ def test_bibliometric(proc_dir: str, df_clean: pd.DataFrame):
 def test_classification(proc_dir: str, df_clean: pd.DataFrame):
     print("\n── Stage 4: Classification ───────────────────────────────────")
     classified_path = Path(proc_dir) / "classified_works.parquet"
-    report_path = Path(proc_dir) / "classification_report.json"
-
     check("classified_works.parquet exists", classified_path.exists())
     if not classified_path.exists():
         return None
@@ -561,45 +558,6 @@ def test_id_integrity(raw_dir: str, clean_path: str, classified_path: str):
         )
 
 
-# ... existing code ...
-
-
-def test_raw(raw_dir: str, manifest_path: str):
-    # Test implementation
-    pass
-
-
-def test_clean(clean_path: str, df_raw: pd.DataFrame, report_path: str):
-    # Test implementation
-    pass
-
-
-def test_bibliometric(proc_dir: str, df_clean: pd.DataFrame):
-    # Test implementation
-    pass
-
-
-def test_classification(proc_dir: str, df_clean: pd.DataFrame):
-    # Test implementation
-    pass
-
-
-def test_network(proc_dir: str, net_dir: str, df_classified):
-    # Test implementation
-    pass
-
-
-def test_visualization(fig_dir: str, outputs_dir: str):
-    # Test implementation
-    pass
-
-
-def test_id_integrity(raw_dir: str, clean_path: str, classified_path: str):
-    # Test implementation
-    pass
-
-
-# ... existing code ...
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -653,7 +611,7 @@ def main():
         for w in warnings:
             print(f"    ⚠  {w}")
     else:
-        print(f"\033[32m  RESULT: ALL CHECKS PASSED\033[0m")
+        print("\033[32m  RESULT: ALL CHECKS PASSED\033[0m")
 
 
 if __name__ == "__main__":

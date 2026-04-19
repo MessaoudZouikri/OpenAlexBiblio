@@ -10,18 +10,17 @@ Run:
 """
 
 import argparse
-import json
 import random
 import sys
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.utils.io_utils import save_parquet, save_json, load_yaml, timestamped_path
+from src.utils.io_utils import load_yaml, save_json, save_parquet, timestamped_path
 
 random.seed(42)
 np.random.seed(42)

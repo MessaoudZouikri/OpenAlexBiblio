@@ -12,20 +12,15 @@ Usage:
 """
 
 import argparse
-import logging
 import sys
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
-
-import pandas as pd
-import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
-from src.utils.io_utils import load_parquet, load_json, save_json, load_yaml, latest_file
-from src.utils.logging_utils import setup_logger
+from src.utils.io_utils import latest_file, load_json, load_parquet, load_yaml, save_json
 from src.utils.llm_client import VALID_DOMAINS, VALID_SUBCATEGORIES
-
+from src.utils.logging_utils import setup_logger
 
 # ── Shared helpers ────────────────────────────────────────────────────────
 
@@ -243,8 +238,6 @@ def validate_statistical(config: dict) -> dict:
             trends = load_json(trends_path)
             annual = trends.get("annual", [])
             if annual:
-                counts = [r["count"] for r in annual if r["count"]]
-                mean_count = np.mean(counts)
                 max_yoy = max(
                     (abs(r.get("yoy_growth_pct") or 0) for r in annual if r.get("yoy_growth_pct")),
                     default=0,
@@ -524,7 +517,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if result["status"] == "FAIL":
-        print(f"\n[FAIL] Validation errors:")
+        print("\n[FAIL] Validation errors:")
         for e in result["errors"]:
             print(f"  ✗ {e}")
         sys.exit(1)

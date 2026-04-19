@@ -19,22 +19,21 @@ import logging
 import subprocess
 import sys
 import time
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import List, Optional, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.utils.io_utils import (
-    load_yaml,
-    load_checkpoint,
-    save_checkpoint,
-    mark_step_complete,
     is_step_complete,
+    load_checkpoint,
+    load_yaml,
+    mark_step_complete,
     reset_from_step,
+    save_checkpoint,
 )
-from src.utils.logging_utils import setup_logger, AuditTrail
-
+from src.utils.logging_utils import AuditTrail, setup_logger
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Step Definitions

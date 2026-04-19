@@ -5,10 +5,11 @@ Generate Mock Test Datasets
 Creates synthetic bibliometric data for testing purposes.
 """
 
-import pandas as pd
-import numpy as np
-from pathlib import Path
 import json
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
 
 
 def generate_mock_raw_openalex_data(n_works=100):

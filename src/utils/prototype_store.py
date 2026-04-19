@@ -20,7 +20,6 @@ Usage:
 
 from __future__ import annotations
 
-import json
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -281,7 +280,7 @@ class PrototypeStore:
 
         # Build centroid matrix (L, D)
         labels = list(self._centroids.keys())
-        centroid_matrix = np.stack([self._centroids[l] for l in labels])  # (L, D)
+        centroid_matrix = np.stack([self._centroids[label] for label in labels])  # (L, D)
 
         # Embed all texts at once (N, D)
         vecs = self._client.embed_batch(texts)

@@ -17,7 +17,7 @@ from __future__ import annotations
 import argparse
 import sys
 import time
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -25,10 +25,9 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.utils.openalex_client import OpenAlexClient
-from src.utils.io_utils import save_parquet, save_json, load_yaml, timestamped_path
+from src.utils.io_utils import load_yaml, save_json, save_parquet, timestamped_path
 from src.utils.logging_utils import setup_logger
-
+from src.utils.openalex_client import OpenAlexClient
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Query Helpers

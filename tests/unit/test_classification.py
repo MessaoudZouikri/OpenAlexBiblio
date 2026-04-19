@@ -14,14 +14,9 @@ from unittest.mock import Mock, patch
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from src.agents.classification import (
     stage1_rule,
-    make_input_text,
-    stage3_llm,
-    HybridClassifier,
-    run_feedback_loop,
 )
 
 

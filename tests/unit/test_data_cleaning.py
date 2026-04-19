@@ -10,17 +10,14 @@ Tests data cleaning functionality including:
 - Duplicate handling
 """
 
-from pathlib import Path
 
-import numpy as np
 import pandas as pd
-import pytest
 
 from src.agents.data_cleaning import (
+    clean_dataframe,
     normalize_unicode,
     rule_based_domain,
     rule_based_subcategory,
-    clean_dataframe,
 )
 
 

@@ -3,15 +3,14 @@ I/O utilities: checkpoint management, file discovery, schema helpers.
 All pipeline state is persisted to disk — no in-memory cross-agent state.
 """
 
+import glob
 import json
 import os
-import glob
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-
 
 # ── Checkpoint Management ──────────────────────────────────────────────────
 

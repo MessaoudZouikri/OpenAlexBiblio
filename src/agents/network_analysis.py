@@ -14,13 +14,13 @@ Standalone:
 
 import argparse
 import logging
+import math
 import sys
-from collections import defaultdict, Counter
-from datetime import datetime, UTC
+from collections import Counter, defaultdict
+from datetime import UTC, datetime
 from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
-import math
 
 import networkx as nx
 import numpy as np
@@ -28,7 +28,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.utils.io_utils import load_parquet, save_parquet, save_json, load_yaml, safe_list
+from src.utils.io_utils import load_parquet, load_yaml, safe_list, save_json, save_parquet
 from src.utils.logging_utils import setup_logger
 
 # Try to import community detection (python-louvain)
@@ -42,7 +42,6 @@ except ImportError:
 # Try to import sklearn for additional clustering
 try:
     from sklearn.cluster import SpectralClustering
-    from sklearn.metrics import silhouette_score
 
     SKLEARN_AVAILABLE = True
 except ImportError:
@@ -228,7 +227,6 @@ def build_coauthorship_network(df: pd.DataFrame, min_papers: int = 2) -> nx.Grap
 
 
 def build_concept_cooccurrence_network(df: pd.DataFrame, top_n: int = 100) -> nx.Graph:
-    from collections import Counter
 
     concept_counts: Counter = Counter()
     for _, row in df.iterrows():

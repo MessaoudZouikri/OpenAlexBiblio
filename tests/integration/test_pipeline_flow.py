@@ -281,23 +281,15 @@ class TestPerformanceIntegration:
 
     def test_batch_processing_efficiency(self, sample_cleaned_data):
         """Test that batch processing is more efficient than individual."""
-        import time
-
         works = sample_cleaned_data.to_dict("records")
 
-        # Time batch processing
-        start = time.time()
         batch_results = classify_batch(works)
-        batch_time = time.time() - start
 
-        # Time individual processing
-        start = time.time()
         individual_results = []
         for work in works:
             from src.agents.classification import classify_work
 
             individual_results.append(classify_work(work))
-        individual_time = time.time() - start
 
         # Batch should be faster (though this is a rough test)
         assert len(batch_results) == len(individual_results)
@@ -305,8 +297,9 @@ class TestPerformanceIntegration:
 
     def test_memory_usage_stability(self, sample_cleaned_data):
         """Test that processing doesn't cause memory leaks."""
-        import psutil
         import os
+
+        import psutil
 
         # Get initial memory
         process = psutil.Process(os.getpid())

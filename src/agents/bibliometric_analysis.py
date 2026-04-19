@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
@@ -26,9 +26,8 @@ from scipy import stats
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.utils.io_utils import load_parquet, save_json, load_yaml, safe_list
+from src.utils.io_utils import load_parquet, load_yaml, safe_list, save_json
 from src.utils.logging_utils import setup_logger
-
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Bibliometric Indices

@@ -9,7 +9,6 @@ Standalone:
 """
 
 import argparse
-import logging
 import os
 import sys
 from pathlib import Path
@@ -18,13 +17,12 @@ import matplotlib
 
 matplotlib.use("Agg")  # Non-interactive backend
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.utils.io_utils import load_parquet, load_json, save_json, load_yaml
+from src.utils.io_utils import load_json, load_parquet, load_yaml
 from src.utils.logging_utils import setup_logger
 
 STYLE = {
@@ -69,7 +67,6 @@ def fig_publication_trends(trends: dict, fig_dir: str) -> None:
 
 
 def fig_citation_distribution(cit_stats: dict, fig_dir: str) -> None:
-    data = {"x": [], "y": []}
     if not cit_stats:
         return
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
@@ -123,8 +120,6 @@ def fig_top_authors(authors: dict, fig_dir: str) -> None:
         return
     names = [a["name"][:25] for a in top]
     counts = [a["paper_count"] for a in top]
-    cites = [a["total_citations"] for a in top]
-
     fig, axes = plt.subplots(1, 2, figsize=(15, 6))
     axes[0].barh(names[::-1], counts[::-1], color="#2d6be4", alpha=0.85)
     axes[0].set_title("Top 15 Authors by Output")
@@ -178,7 +173,7 @@ def fig_concept_landscape(concepts: dict, fig_dir: str) -> None:
     counts = [c["count"] for c in top_50]
 
     fig, ax = plt.subplots(figsize=(12, 8))
-    bars = ax.barh(
+    ax.barh(
         names[::-1],
         counts[::-1],
         color=plt.cm.viridis(np.linspace(0.3, 0.9, len(names))),

@@ -35,26 +35,23 @@ import hashlib
 import logging
 import sys
 from collections import Counter
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.utils.io_utils import load_parquet, save_parquet, save_json, load_yaml, safe_list
-from src.utils.logging_utils import setup_logger
 from src.utils.embedding_client import EmbeddingClient
-from src.utils.prototype_store import PrototypeStore, SEED_TEXTS
+from src.utils.io_utils import load_parquet, load_yaml, safe_list, save_json, save_parquet
 from src.utils.llm_client import (
+    VALID_DOMAINS,
     OllamaClient,
     validate_classification_response,
-    VALID_DOMAINS,
-    VALID_SUBCATEGORIES,
 )
-
+from src.utils.logging_utils import setup_logger
+from src.utils.prototype_store import PrototypeStore
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Taxonomy Constants

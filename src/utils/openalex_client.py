@@ -4,10 +4,9 @@ Handles cursor-based pagination, rate limiting, abstract reconstruction,
 and deduplication for the bibliometric pipeline.
 """
 
-import time
 import logging
-import re
-from typing import Dict, Generator, List, Optional, Any, Union
+import time
+from typing import Dict, Generator, Optional, Union
 
 import requests
 

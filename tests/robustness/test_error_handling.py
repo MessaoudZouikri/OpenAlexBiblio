@@ -236,8 +236,9 @@ class TestLargeDataVolumes:
 
     def test_memory_efficient_processing(self):
         """Test that processing is memory efficient."""
-        import psutil
         import os
+
+        import psutil
 
         # Create moderately large dataset
         n_works = 500
@@ -332,8 +333,9 @@ class TestResourceConstraints:
 
     def test_file_handle_leaks(self):
         """Test that file handles are properly closed."""
-        import psutil
         import os
+
+        import psutil
 
         process = psutil.Process(os.getpid())
         initial_handles = len(process.open_files())
@@ -353,7 +355,7 @@ class TestResourceConstraints:
             }
         )
 
-        result = clean_bibliometric_data(test_data)
+        clean_bibliometric_data(test_data)
 
         final_handles = len(process.open_files())
 
@@ -399,8 +401,8 @@ class TestDataConsistencyUnderStress:
 
     def test_id_preservation_through_pipeline(self):
         """Test that work IDs are preserved through all pipeline stages."""
-        from src.agents.data_cleaning import clean_bibliometric_data
         from src.agents.classification import classify_batch
+        from src.agents.data_cleaning import clean_bibliometric_data
 
         # Create test data with specific IDs
         test_ids = ["W100", "W200", "W300"]

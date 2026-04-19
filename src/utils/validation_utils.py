@@ -4,9 +4,10 @@ Data Validation Utilities
 Comprehensive schema and data quality validation for pipeline stages.
 """
 
-from typing import Dict, List, Optional, Tuple
-import pandas as pd
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+import pandas as pd
 
 
 class DataValidationError(Exception):

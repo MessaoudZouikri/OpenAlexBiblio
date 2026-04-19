@@ -286,7 +286,7 @@ class TestNetworkAnalysisRegression:
         from src.agents.network_analysis import graph_summary
 
         # Create mock graph with consistent properties
-        with patch("networkx.Graph") as mock_graph:
+        with patch("networkx.Graph"):
             mock_instance = Mock()
             mock_instance.number_of_nodes.return_value = 10
             mock_instance.number_of_edges.return_value = 15

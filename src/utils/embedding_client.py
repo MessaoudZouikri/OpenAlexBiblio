@@ -521,8 +521,8 @@ class TFIDFFallbackBackend:
     """
 
     def __init__(self, n_components: int = 256, max_features: int = 20000):
-        from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.decomposition import TruncatedSVD
+        from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.pipeline import Pipeline
 
         self._max_features = max_features
@@ -545,8 +545,8 @@ class TFIDFFallbackBackend:
         self._n_components = n_components
 
     def fit(self, texts: List[str]) -> "TFIDFFallbackBackend":
-        from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.decomposition import TruncatedSVD
+        from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.pipeline import Pipeline
 
         logger.info("Fitting TF-IDF LSA on %d texts (dim=%d)...", len(texts), self._n_components)
