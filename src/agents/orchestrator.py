@@ -19,7 +19,7 @@ import logging
 import subprocess
 import sys
 import time
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -157,7 +157,7 @@ def run_pipeline(
         or if any non-halting step failed (partial success).
     """
     config = load_yaml(config_path)
-    run_id = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     logger = setup_logger("orchestrator", config["paths"]["logs"])
     audit = AuditTrail(run_id, config["paths"]["logs"])
 

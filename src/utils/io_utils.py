@@ -6,7 +6,7 @@ All pipeline state is persisted to disk — no in-memory cross-agent state.
 import glob
 import json
 import os
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -28,7 +28,7 @@ def load_checkpoint(path: str = CHECKPOINT_FILE) -> Dict[str, Any]:
 def save_checkpoint(state: Dict[str, Any], path: str = CHECKPOINT_FILE) -> None:
     """Persist pipeline state to disk atomically."""
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    state["last_updated"] = datetime.now(UTC).isoformat()
+    state["last_updated"] = datetime.now(timezone.utc).isoformat()
     tmp = path + ".tmp"
     with open(tmp, "w") as f:
         json.dump(state, f, indent=2)
@@ -81,7 +81,7 @@ def latest_file(directory: str, pattern: str) -> Optional[Path]:
 
 def timestamped_path(directory: str, prefix: str, ext: str) -> Path:
     """Generate a timestamped output file path."""
-    ts = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     return Path(directory) / f"{prefix}_{ts}.{ext}"
 
 

@@ -15,7 +15,7 @@ from __future__ import annotations
 import argparse
 import sys
 from collections import Counter, defaultdict
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
@@ -473,7 +473,7 @@ def main() -> None:
     save_json(concepts, f"{proc_dir}/concept_landscape.json")
 
     summary = {
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "n_records": len(df),
         "year_range": pub_trends["year_range"],
         "total_citations": cit_stats["total_citations"],

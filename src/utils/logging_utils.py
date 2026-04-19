@@ -6,7 +6,7 @@ Provides structured, file-per-agent logging with JSON audit trail support.
 import json
 import logging
 import sys
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -70,7 +70,7 @@ class AuditTrail:
         self.log_dir.mkdir(parents=True, exist_ok=True)
         self.trail_path = self.log_dir / f"pipeline_run_{run_id}.json"
         self.entries: list[Dict[str, Any]] = []
-        self._start_time = datetime.now(UTC).isoformat()
+        self._start_time = datetime.now(timezone.utc).isoformat()
 
     def record(
         self,
@@ -85,7 +85,7 @@ class AuditTrail:
         entry = {
             "step": step,
             "status": status,
-            "timestamp": datetime.now(UTC).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "duration_s": duration_s,
             "inputs": inputs or {},
             "outputs": outputs or {},
@@ -99,7 +99,7 @@ class AuditTrail:
         payload = {
             "run_id": self.run_id,
             "started_at": self._start_time,
-            "updated_at": datetime.now(UTC).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
             "entries": self.entries,
         }
         with open(self.trail_path, "w", encoding="utf-8") as f:
@@ -109,7 +109,7 @@ class AuditTrail:
         payload = {
             "run_id": self.run_id,
             "started_at": self._start_time,
-            "finished_at": datetime.now(UTC).isoformat(),
+            "finished_at": datetime.now(timezone.utc).isoformat(),
             "overall_status": overall_status,
             "entries": self.entries,
         }

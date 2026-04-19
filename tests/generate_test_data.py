@@ -12,7 +12,7 @@ Run:
 import argparse
 import random
 import sys
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
@@ -283,7 +283,7 @@ def main():
     save_parquet(df, str(output_path))
 
     manifest = {
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "mode": "test_synthetic",
         "total_records": len(df),
         "output_file": str(output_path),

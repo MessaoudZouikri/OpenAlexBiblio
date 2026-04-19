@@ -17,7 +17,7 @@ from __future__ import annotations
 import argparse
 import sys
 import time
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -178,7 +178,7 @@ def run_collection(
     logger.info("Saved raw data to: %s", output_path)
 
     manifest = {
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "mode": "test" if test_mode else "full",
         "total_records": total,
         "output_file": str(output_path),

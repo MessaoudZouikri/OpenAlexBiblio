@@ -17,7 +17,7 @@ import logging
 import math
 import sys
 from collections import Counter, defaultdict
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from itertools import combinations
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -755,7 +755,7 @@ def main():
 
     domain_map = df.set_index("id")["domain"].to_dict()
     subcategory_map = df.set_index("id")["subcategory"].to_dict()
-    metrics = {"timestamp": datetime.now(UTC).isoformat()}
+    metrics = {"timestamp": datetime.now(timezone.utc).isoformat()}
 
     # ── 1. Bibliographic Coupling ────────────────────────────────────
     logger.info("Building bibliographic coupling network...")
