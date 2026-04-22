@@ -454,6 +454,10 @@ class OllamaEmbeddingBackend:
             logger.warning("Ollama not reachable: %s", exc)
             return False
 
+    # Ollama /api/embed accepts a list of strings in the `input` field since v0.5.
+    # Sending N texts per request reduces HTTP overhead from O(N) to O(N/chunk).
+    _CHUNK_SIZE = 64
+
     def _embed_one(self, text: str) -> Optional[np.ndarray]:
         payload = {"model": self.model, "input": _truncate(text)}
         for attempt in range(1, self.max_retries + 1):
@@ -475,29 +479,54 @@ class OllamaEmbeddingBackend:
                     time.sleep(1.0 * attempt)
         return None
 
-    def embed_batch(self, texts: List[str]) -> np.ndarray:
-        # Resolve the true embedding dimension before processing any texts so
-        # that zero-fill fallbacks always match successful vectors in shape.
-        dim = self._dim
-        if dim is None:
-            for text in texts:
-                probe = self._embed_one(text)
-                if probe is not None:
-                    dim = len(probe)
-                    self._dim = dim
-                    break
-        dim = dim or 768
-
-        results = []
-        for i, text in enumerate(texts):
-            vec = self._embed_one(text)
-            if vec is None:
-                logger.warning(
-                    "Ollama embed failed for text %d/%d — zero vector", i + 1, len(texts)
+    def _embed_chunk(self, texts: List[str]) -> List[np.ndarray]:
+        """Send one batch request for up to _CHUNK_SIZE texts; fall back to per-item."""
+        payload = {
+            "model": self.model,
+            "input": [_truncate(t) for t in texts],
+        }
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                resp = requests.post(
+                    f"{self.endpoint}/api/embed",
+                    json=payload,
+                    timeout=self.timeout + len(texts) * 2,
                 )
-                vec = np.zeros(dim, dtype=np.float32)
-            results.append(vec)
-        return _l2_normalise(np.stack(results))
+                resp.raise_for_status()
+                data = resp.json()
+                embs = data.get("embeddings") or []
+                if len(embs) == len(texts):
+                    self._dim = len(embs[0])
+                    return [np.array(e, dtype=np.float32) for e in embs]
+            except Exception as exc:
+                logger.warning(
+                    "Ollama batch embed attempt %d/%d (chunk=%d): %s",
+                    attempt,
+                    self.max_retries,
+                    len(texts),
+                    exc,
+                )
+                if attempt < self.max_retries:
+                    time.sleep(1.0 * attempt)
+
+        # Per-item fallback (older Ollama versions / transient failures)
+        dim = self._dim or 768
+        results = []
+        for text in texts:
+            vec = self._embed_one(text)
+            results.append(vec if vec is not None else np.zeros(dim, dtype=np.float32))
+        return results
+
+    def embed_batch(self, texts: List[str]) -> np.ndarray:
+        if not texts:
+            return np.zeros((0, self._dim or 768), dtype=np.float32)
+
+        all_vecs: List[np.ndarray] = []
+        for start in range(0, len(texts), self._CHUNK_SIZE):
+            chunk = texts[start : start + self._CHUNK_SIZE]
+            all_vecs.extend(self._embed_chunk(chunk))
+
+        return _l2_normalise(np.stack(all_vecs).astype(np.float32))
 
     @property
     def dim(self) -> Optional[int]:

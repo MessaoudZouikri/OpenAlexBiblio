@@ -35,6 +35,7 @@ import hashlib
 import logging
 import sys
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -45,11 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.utils.embedding_client import EmbeddingClient
 from src.utils.io_utils import load_parquet, load_yaml, safe_list, save_json, save_parquet
-from src.utils.llm_client import (
-    VALID_DOMAINS,
-    OllamaClient,
-    validate_classification_response,
-)
+from src.utils.llm_client import OllamaClient, validate_classification_response
 from src.utils.logging_utils import setup_logger
 from src.utils.prototype_store import PrototypeStore
 from src.utils.taxonomy import (
@@ -57,6 +54,7 @@ from src.utils.taxonomy import (
     DOMAIN_SUBCATEGORY,
     SUBCATEGORY_BOOSTS,
     SUBCATEGORY_KEYWORDS,
+    VALID_DOMAINS,
 )
 
 
@@ -276,16 +274,23 @@ class HybridClassifier:
             n_outlier,
         )
 
-        # ── Stage 3 — LLM (selective) ────────────────────────────────────
+        # ── Stage 3 — LLM (concurrent) ───────────────────────────────────
         s3: Dict[int, Tuple] = {}
         llm_ok = self.llm_client is not None and self.llm_client.is_available()
         if needs_s3:
             if llm_ok:
-                self.logger.info("Stage 3: LLM for %d ambiguous records...", len(needs_s3))
-                for i in needs_s3:
-                    row = df.iloc[i]
-                    top_k = s2[i][3]
-                    s3[i] = stage3_llm(row, self.llm_client, llm_cfg, self.logger, top_k)
+                self.logger.info(
+                    "Stage 3: LLM for %d ambiguous records (concurrent)...", len(needs_s3)
+                )
+
+                def _classify_one(i: int) -> Tuple[int, Tuple]:
+                    return i, stage3_llm(
+                        df.iloc[i], self.llm_client, llm_cfg, self.logger, s2[i][3]
+                    )
+
+                with ThreadPoolExecutor(max_workers=4) as pool:
+                    for i, result in pool.map(_classify_one, needs_s3):
+                        s3[i] = result
             else:
                 self.logger.warning(
                     "LLM unavailable — %d ambiguous records use best embedding result",
@@ -389,7 +394,7 @@ def run_feedback_loop(
         log.warning("  Insufficient samples — skipping feedback loop")
         return {}
 
-    labels = [f"{r['domain']}::{r['subcategory']}" for _, r in df_hc.iterrows()]
+    labels = (df_hc["domain"] + "::" + df_hc["subcategory"]).tolist()
     texts = [corpus_texts[i] for i in df_hc.index]
     return classifier.store.update_centroids_from_corpus(texts, labels, min_samples)
 
