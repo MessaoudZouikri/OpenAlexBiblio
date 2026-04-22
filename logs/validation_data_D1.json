@@ -1,15 +1,17 @@
 {
   "agent": "data_validator",
   "stage": "D1",
-  "timestamp": "2026-04-17T08:55:57.759474+00:00",
+  "timestamp": "2026-04-21T17:16:43.156435+00:00",
   "status": "PASS",
   "errors": [],
-  "warnings": [],
+  "warnings": [
+    "year_valid_range: Year range: 1980–2028"
+  ],
   "checks": [
     {
       "name": "file_exists",
       "passed": true,
-      "detail": "data/raw/openalex_raw_20260416_222628.parquet"
+      "detail": "data/raw/openalex_raw_20260421_080241.parquet"
     },
     {
       "name": "schema_required_columns",
@@ -43,8 +45,8 @@
     },
     {
       "name": "year_valid_range",
-      "passed": "True",
-      "detail": "Year range: 1980–2026"
+      "passed": "False",
+      "detail": "Year range: 1980–2028"
     },
     {
       "name": "citations_non_negative",
@@ -54,19 +56,19 @@
     {
       "name": "abstract_coverage_50pct",
       "passed": "True",
-      "detail": "Abstract coverage: 86.5%"
+      "detail": "Abstract coverage: 79.4%"
     },
     {
       "name": "concept_coverage_60pct",
       "passed": "True",
-      "detail": "Concept coverage: 100.0%"
+      "detail": "Concept coverage: 99.7%"
     },
     {
       "name": "record_count_matches_manifest",
       "passed": true,
-      "detail": "DF=10000, manifest=10000"
+      "detail": "DF=57448, manifest=57448, diff=0, tolerance=57"
     }
   ],
-  "n_records": 10000,
-  "abstract_coverage_rate": 0.8654
+  "n_records": 57448,
+  "abstract_coverage_rate": 0.7938
 }

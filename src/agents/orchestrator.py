@@ -78,9 +78,13 @@ def run_step(
     config_path: str,
     logger: logging.Logger,
     dry_run: bool = False,
+    logs_dir: str = "logs",
 ) -> Tuple[bool, float]:
     """
     Execute a single pipeline step via ``python -m``.
+
+    Stdout/stderr are captured and written to ``logs/{step_name}_subprocess.log``
+    so that failure tracebacks are preserved in the audit trail.
 
     Returns:
         (success, duration_seconds)
@@ -92,26 +96,44 @@ def run_step(
         logger.info("  [DRY RUN] skipping execution")
         return True, 0.0
 
+    subprocess_log = Path(logs_dir) / f"{step_name}_subprocess.log"
+    subprocess_log.parent.mkdir(parents=True, exist_ok=True)
+
     t0 = time.time()
     try:
         result = subprocess.run(
             cmd,
-            capture_output=False,
+            capture_output=True,
             text=True,
             check=False,
         )
         duration = time.time() - t0
         success = result.returncode == 0
 
+        with open(subprocess_log, "w") as fh:
+            fh.write(f"# cmd: {' '.join(cmd)}\n")
+            fh.write(f"# rc: {result.returncode}\n\n")
+            if result.stdout:
+                fh.write("=== STDOUT ===\n")
+                fh.write(result.stdout)
+            if result.stderr:
+                fh.write("\n=== STDERR ===\n")
+                fh.write(result.stderr)
+
         if success:
             logger.info("  ✓ Step [%s] completed in %.1fs", step_name, duration)
         else:
             logger.error(
-                "  ✗ Step [%s] FAILED (rc=%d) in %.1fs",
+                "  ✗ Step [%s] FAILED (rc=%d) in %.1fs — see %s",
                 step_name,
                 result.returncode,
                 duration,
+                subprocess_log,
             )
+            if result.stderr:
+                # Echo last 20 lines of stderr directly into the orchestrator log
+                tail = result.stderr.strip().splitlines()[-20:]
+                logger.error("  stderr tail:\n%s", "\n".join(f"    {l}" for l in tail))
         return success, duration
 
     except FileNotFoundError as exc:
@@ -204,6 +226,7 @@ def run_pipeline(
             config_path,
             logger,
             dry_run,
+            logs_dir=config["paths"]["logs"],
         )
 
         audit.record(

@@ -3,6 +3,7 @@ I/O utilities: checkpoint management, file discovery, schema helpers.
 All pipeline state is persisted to disk — no in-memory cross-agent state.
 """
 
+import fcntl
 import glob
 import json
 import os
@@ -17,8 +18,19 @@ import pandas as pd
 CHECKPOINT_FILE = "checkpoints/pipeline_state.json"
 
 
+def _checkpoint_lock_path(path: str) -> str:
+    return path + ".lock"
+
+
 def load_checkpoint(path: str = CHECKPOINT_FILE) -> Dict[str, Any]:
     """Load existing pipeline state; return empty state if not found."""
+    # Remove stale .tmp left by a previously interrupted write
+    tmp = path + ".tmp"
+    if Path(tmp).exists():
+        try:
+            os.remove(tmp)
+        except OSError:
+            pass
     if Path(path).exists():
         with open(path, "r") as f:
             return json.load(f)
@@ -40,12 +52,19 @@ def mark_step_complete(
     outputs: Optional[Dict] = None,
     path: str = CHECKPOINT_FILE,
 ) -> None:
-    """Mark a pipeline step as successfully completed."""
-    state = load_checkpoint(path)
-    if step_name not in state["completed_steps"]:
-        state["completed_steps"].append(step_name)
-    state.setdefault("step_outputs", {})[step_name] = outputs or {}
-    save_checkpoint(state, path)
+    """Mark a pipeline step as successfully completed (file-lock protected)."""
+    lock_path = _checkpoint_lock_path(path)
+    Path(lock_path).parent.mkdir(parents=True, exist_ok=True)
+    with open(lock_path, "w") as lock_file:
+        fcntl.flock(lock_file, fcntl.LOCK_EX)
+        try:
+            state = load_checkpoint(path)
+            if step_name not in state["completed_steps"]:
+                state["completed_steps"].append(step_name)
+            state.setdefault("step_outputs", {})[step_name] = outputs or {}
+            save_checkpoint(state, path)
+        finally:
+            fcntl.flock(lock_file, fcntl.LOCK_UN)
 
 
 def is_step_complete(step_name: str, path: str = CHECKPOINT_FILE) -> bool:
@@ -179,6 +198,8 @@ def safe_list(val) -> list:
         return []
     if isinstance(val, list):
         return val
+    if isinstance(val, dict):
+        return [val]
     try:
         return list(val)
     except Exception:

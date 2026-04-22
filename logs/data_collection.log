@@ -29,3 +29,11 @@
 2026-04-17 00:26:28 [INFO] data_collection: Saved raw data to: data/raw/openalex_raw_20260416_222628.parquet
 2026-04-17 00:26:28 [INFO] data_collection: Saved collection manifest.
 2026-04-17 00:26:28 [INFO] data_collection: === Data Collection Agent complete ===
+2026-04-21 09:53:07 [INFO] data_collection: === Data Collection Agent starting ===
+2026-04-21 09:53:07 [INFO] data_collection: Mode: FULL
+2026-04-21 09:53:07 [INFO] data_collection: Querying: field=title_and_abstract.search, term='populism OR populist OR populists', max=unlimited
+2026-04-21 10:02:41 [INFO] data_collection:   → 57448 new records in 573.5s
+2026-04-21 10:02:41 [INFO] data_collection: Total unique records collected: 57448
+2026-04-21 10:02:42 [INFO] data_collection: Saved raw data to: data/raw/openalex_raw_20260421_080241.parquet
+2026-04-21 10:02:42 [INFO] data_collection: Saved collection manifest.
+2026-04-21 10:02:42 [INFO] data_collection: === Data Collection Agent complete ===

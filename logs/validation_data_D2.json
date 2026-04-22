@@ -1,7 +1,7 @@
 {
   "agent": "data_validator",
   "stage": "D2",
-  "timestamp": "2026-04-14T17:06:26.849931+00:00",
+  "timestamp": "2026-04-21T17:16:47.059223+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -54,19 +54,19 @@
     {
       "name": "abstract_coverage_50pct",
       "passed": "True",
-      "detail": "Abstract coverage: 86.5%"
+      "detail": "Abstract coverage: 79.3%"
     },
     {
       "name": "concept_coverage_60pct",
       "passed": "True",
-      "detail": "Concept coverage: 100.0%"
+      "detail": "Concept coverage: 99.7%"
     },
     {
       "name": "record_count_matches_manifest",
       "passed": true,
-      "detail": "DF=9999, manifest=9999"
+      "detail": "DF=57339, manifest=57339, diff=0, tolerance=57"
     }
   ],
-  "n_records": 9999,
-  "abstract_coverage_rate": 0.8653
+  "n_records": 57339,
+  "abstract_coverage_rate": 0.7934
 }

@@ -2,16 +2,16 @@
 Centralized Domain Taxonomy Management
 =====================================
 Single source of truth for domain/subcategory definitions.
-Shared across all classification and analysis modules.
-
-Version: 1.0
-Last updated: 2026-04-16
+Shared across data_cleaning, classification, llm_client, and validators.
 
 Usage:
-    from src.utils.taxonomy import DOMAIN_SUBCATEGORY, CONCEPT_DOMAIN_MAP, SUBCATEGORY_KEYWORDS
+    from src.utils.taxonomy import (
+        DOMAIN_SUBCATEGORY, CONCEPT_DOMAIN_MAP, SUBCATEGORY_KEYWORDS,
+        VALID_DOMAINS, VALID_SUBCATEGORIES, SUBCATEGORY_BOOSTS,
+    )
 """
 
-from typing import Dict, List
+from typing import Dict, List, Set
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Primary Domain Structure
@@ -333,6 +333,24 @@ DOMAIN_CONCEPT_FRAGMENTS: Dict[str, List[str]] = {
         "culture",
     ],
 }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Derived sets — used by llm_client and validators
+# ─────────────────────────────────────────────────────────────────────────────
+
+VALID_DOMAINS: Set[str] = set(DOMAIN_SUBCATEGORY.keys())
+
+VALID_SUBCATEGORIES: Dict[str, Set[str]] = {
+    domain: set(subcats) for domain, subcats in DOMAIN_SUBCATEGORY.items()
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Subcategory boost rules — replaces hardcoded boosts in stage1_rule
+# ─────────────────────────────────────────────────────────────────────────────
+
+SUBCATEGORY_BOOSTS: List[Dict] = [
+    {"subcategory": "radical_right", "keywords": ["populism", "populist"], "score": 2},
+]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Metadata

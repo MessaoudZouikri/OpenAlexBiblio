@@ -52,80 +52,12 @@ from src.utils.llm_client import (
 )
 from src.utils.logging_utils import setup_logger
 from src.utils.prototype_store import PrototypeStore
-
-# ═══════════════════════════════════════════════════════════════════════════
-# Taxonomy Constants
-# ═══════════════════════════════════════════════════════════════════════════
-
-DOMAIN_SUBCATEGORY: Dict[str, List[str]] = {
-    "Political Science": [
-        "comparative_politics",
-        "political_theory",
-        "electoral_politics",
-        "democratic_theory",
-        "radical_right",
-        "latin_american_politics",
-        "european_politics",
-    ],
-    "Economics": ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
-    "Sociology": ["social_movements", "identity_politics", "media_communication", "culture_values"],
-    "Other": ["international_relations", "history", "psychology", "geography", "interdisciplinary"],
-}
-
-CONCEPT_DOMAIN_MAP: Dict[str, str] = {
-    "political science": "Political Science",
-    "politics": "Political Science",
-    "democracy": "Political Science",
-    "populism": "Political Science",
-    "government": "Political Science",
-    "political party": "Political Science",
-    "parliament": "Political Science",
-    "election": "Political Science",
-    "voting": "Political Science",
-    "economics": "Economics",
-    "economy": "Economics",
-    "political economy": "Economics",
-    "macroeconomics": "Economics",
-    "inequality": "Economics",
-    "redistribution": "Economics",
-    "trade": "Economics",
-    "sociology": "Sociology",
-    "social movement": "Sociology",
-    "identity": "Sociology",
-    "media studies": "Sociology",
-    "communication": "Sociology",
-    "culture": "Sociology",
-}
-
-SUBCATEGORY_KEYWORDS: Dict[str, List[str]] = {
-    "comparative_politics": ["comparative", "cross-national", "cross national"],
-    "political_theory": ["theory", "theoretical", "conceptual", "normative", "definition"],
-    "electoral_politics": ["election", "electoral", "voting", "vote", "ballot"],
-    "democratic_theory": ["democracy", "democratic", "backsliding", "illiberal", "autocratiz"],
-    "radical_right": ["far-right", "radical right", "extreme right", "right-wing extremi"],
-    "latin_american_politics": [
-        "latin america",
-        "brazil",
-        "venezuela",
-        "argentina",
-        "mexico",
-        "peru",
-    ],
-    "european_politics": ["europe", "european union", "france", "germany", "italy", "spain"],
-    "political_economy": ["political economy", "macroeconomic", "fiscal policy", "monetary"],
-    "redistribution": ["redistribution", "welfare", "social protection", "inequality"],
-    "trade_globalization": ["globalization", "globalisation", "trade", "protectionism"],
-    "financial_crisis": ["financial crisis", "recession", "austerity", "economic crisis"],
-    "social_movements": ["social movement", "mobilization", "mobilisation", "protest"],
-    "identity_politics": ["identity", "ethnic", "nationalism", "religion", "nativism"],
-    "media_communication": ["media", "communication", "framing", "social media", "twitter"],
-    "culture_values": ["culture", "values", "post-material", "cultural backlash", "resentment"],
-    "international_relations": ["international", "foreign policy", "geopolitics", "diplomacy"],
-    "history": ["historical", "history", "19th century", "20th century", "interwar"],
-    "psychology": ["psychological", "psychology", "personality", "cognitive", "attitude"],
-    "geography": ["spatial", "geographic", "regional", "urban", "rural"],
-    "interdisciplinary": [],
-}
+from src.utils.taxonomy import (
+    CONCEPT_DOMAIN_MAP,
+    DOMAIN_SUBCATEGORY,
+    SUBCATEGORY_BOOSTS,
+    SUBCATEGORY_KEYWORDS,
+)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -187,12 +119,11 @@ def stage1_rule(row: pd.Series) -> Tuple[str, str, float]:
             subcat_scores[sub] = score
 
     if subcat_scores:
-        # Boost the "populism-native" subcategory — the project's core topic —
-        # so that articles about populism in specific regions are filed under
-        # radical_right rather than the regional subcategory.
-        if "populism" in text or "populist" in text:
-            if "radical_right" in valid_subs:
-                subcat_scores["radical_right"] = subcat_scores.get("radical_right", 0) + 2
+        # Apply configurable subcategory boosts from taxonomy.SUBCATEGORY_BOOSTS
+        for boost in SUBCATEGORY_BOOSTS:
+            target = boost["subcategory"]
+            if target in valid_subs and any(kw in text for kw in boost["keywords"]):
+                subcat_scores[target] = subcat_scores.get(target, 0) + boost["score"]
         subcategory = max(subcat_scores, key=subcat_scores.__getitem__)
     else:
         subcategory = valid_subs[-1]
@@ -310,11 +241,13 @@ class HybridClassifier:
         self,
         df: pd.DataFrame,
         llm_cfg: Optional[dict] = None,
+        corpus_texts: Optional[List[str]] = None,
     ) -> pd.DataFrame:
         n = len(df)
         self.logger.info("3-stage classification of %d records", n)
 
-        corpus_texts = [make_input_text(row) for _, row in df.iterrows()]
+        if corpus_texts is None:
+            corpus_texts = [make_input_text(row) for _, row in df.iterrows()]
 
         # ── Stage 1 — always runs ────────────────────────────────────────
         self.logger.info("Stage 1: rule-based...")
@@ -757,7 +690,7 @@ def main() -> None:
         logger=logger,
     )
 
-    df_out = classifier.classify_dataframe(df, llm_cfg=llm_cfg)
+    df_out = classifier.classify_dataframe(df, llm_cfg=llm_cfg, corpus_texts=corpus_texts)
 
     # ── Feedback loop ───────────────────────────────────────────────────
     feedback_stats: Dict[str, Any] = {}

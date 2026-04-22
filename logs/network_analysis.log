@@ -311,3 +311,27 @@
 2026-04-17 01:41:45 [INFO] network_analysis: Computing VOS-inspired layout...
 2026-04-17 01:42:33 [INFO] network_analysis: === Network Analysis Agent complete ===
 2026-04-17 01:42:33 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0
+2026-04-21 23:39:55 [INFO] network_analysis: === Network Analysis Agent starting ===
+2026-04-21 23:39:55 [INFO] network_analysis: VOSviewer-inspired analysis: threshold=1.0, subfield=False
+2026-04-21 23:39:55 [INFO] network_analysis: Loaded 57339 classified works
+2026-04-21 23:39:55 [INFO] network_analysis: Thresholds — min_shared_refs=10, min_cocitations=10  (corpus n=57339)
+2026-04-21 23:39:55 [INFO] network_analysis: Building bibliographic coupling network...
+2026-04-21 23:40:05 [INFO] network_analysis:   Bib coupling: 57339 nodes, 50299 edges
+2026-04-21 23:40:05 [INFO] network_analysis:   After VOS filtering: 5840 nodes, 46912 edges
+2026-04-21 23:40:07 [INFO] network_analysis: Graph connectivity: 710 component(s), LCC = 4145 nodes (71.0%)
+2026-04-21 23:40:07 [WARNING] network_analysis: LCC fraction 71.0% below threshold 95%. Spectral clustering not appropriate. Delegating to Louvain.
+2026-04-21 23:57:30 [INFO] network_analysis: Computed enhanced coupling metrics: AS, CSI, Jaccard, IDCR
+2026-04-22 00:31:40 [INFO] network_analysis:   Modularity: 0.9917, Communities: 807
+2026-04-22 00:31:40 [INFO] network_analysis: Building co-citation network...
+2026-04-22 00:49:43 [INFO] network_analysis:   Co-citation: 115963 nodes, 157791 edges
+2026-04-22 00:49:43 [INFO] network_analysis:   After VOS filtering: 4658 nodes, 146764 edges
+2026-04-22 00:50:07 [INFO] network_analysis: Building co-authorship network...
+2026-04-22 00:50:08 [INFO] network_analysis:   Co-authorship: 11902 nodes, 11454 edges
+2026-04-22 00:50:08 [INFO] network_analysis:   Sampled to 5000 nodes
+2026-04-22 00:50:08 [INFO] network_analysis: Building concept co-occurrence network...
+2026-04-22 00:50:10 [INFO] network_analysis:   Concept: 100 nodes, 4946 edges
+2026-04-22 00:50:10 [INFO] network_analysis: Detecting interdisciplinary bridges...
+2026-04-22 01:40:28 [INFO] network_analysis:   Found 50 bridge nodes
+2026-04-22 01:40:28 [INFO] network_analysis: Computing VOS-inspired layout...
+2026-04-22 02:06:43 [INFO] network_analysis: === Network Analysis Agent complete ===
+2026-04-22 02:06:43 [INFO] network_analysis: VOSviewer-inspired analysis completed with threshold 1.0

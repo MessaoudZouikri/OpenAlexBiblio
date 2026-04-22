@@ -193,3 +193,22 @@
 2026-04-17 00:56:56 [INFO] classification:   High-confidence records: 9452 / 9999
 2026-04-17 00:57:40 [INFO] classification: === Classification Agent complete ===
 2026-04-17 00:57:40 [INFO] classification: Deterministic: 98.8% | LLM: 1.2% | Outliers: 0
+2026-04-21 19:16:51 [INFO] classification: === Classification Agent [3-Stage Hybrid] starting ===
+2026-04-21 19:16:52 [INFO] classification: Loaded 57339 records
+2026-04-21 19:16:55 [INFO] classification: Embedding backend: specter2:selected
+2026-04-21 19:16:58 [INFO] classification: 3-stage classification of 57339 records
+2026-04-21 19:16:58 [INFO] classification: Stage 1: rule-based...
+2026-04-21 19:17:02 [INFO] classification:   Stage 1 accepted: 15242 / 57339
+2026-04-21 19:17:02 [INFO] classification: Stage 2: embedding similarity for 42097 records...
+2026-04-21 19:21:04 [INFO] classification:   Stage 2: accepted=40492, to LLM=1604, outliers=1
+2026-04-21 19:21:04 [INFO] classification: Stage 3: LLM for 1604 ambiguous records...
+2026-04-21 23:36:17 [INFO] classification: ── Classification Routing ───────────────────────────
+2026-04-21 23:36:17 [INFO] classification:   embedding_outlier               1  (  0.0%)
+2026-04-21 23:36:17 [INFO] classification:   stage1                       15242  ( 26.6%)
+2026-04-21 23:36:17 [INFO] classification:   stage2_high                  40492  ( 70.6%)
+2026-04-21 23:36:17 [INFO] classification:   stage3                       1604  (  2.8%)
+2026-04-21 23:36:17 [INFO] classification:   Deterministic rate: 97.2%  |  LLM rate: 2.8%
+2026-04-21 23:36:17 [INFO] classification: Feedback loop: updating centroids from high-confidence results...
+2026-04-21 23:36:17 [INFO] classification:   High-confidence records: 52266 / 57339
+2026-04-21 23:39:52 [INFO] classification: === Classification Agent complete ===
+2026-04-21 23:39:52 [INFO] classification: Deterministic: 97.2% | LLM: 2.8% | Outliers: 1

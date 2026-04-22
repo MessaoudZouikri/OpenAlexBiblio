@@ -476,7 +476,18 @@ class OllamaEmbeddingBackend:
         return None
 
     def embed_batch(self, texts: List[str]) -> np.ndarray:
-        dim = self._dim or 768
+        # Resolve the true embedding dimension before processing any texts so
+        # that zero-fill fallbacks always match successful vectors in shape.
+        dim = self._dim
+        if dim is None:
+            for text in texts:
+                probe = self._embed_one(text)
+                if probe is not None:
+                    dim = len(probe)
+                    self._dim = dim
+                    break
+        dim = dim or 768
+
         results = []
         for i, text in enumerate(texts):
             vec = self._embed_one(text)
@@ -485,8 +496,6 @@ class OllamaEmbeddingBackend:
                     "Ollama embed failed for text %d/%d — zero vector", i + 1, len(texts)
                 )
                 vec = np.zeros(dim, dtype=np.float32)
-            else:
-                dim = len(vec)
             results.append(vec)
         return _l2_normalise(np.stack(results))
 
@@ -575,7 +584,11 @@ class TFIDFFallbackBackend:
                 n_samples,
                 n_features,
             )
-            self._n_components = safe_n
+            # Use local variable — do NOT mutate self._n_components so repeated
+            # fit() calls with larger corpora still start from the original value.
+            effective_n = safe_n
+        else:
+            effective_n = self._n_components
 
         # Rebuild pipeline with correct parameters (avoids sklearn in-place mutation issues)
         self._pipeline = Pipeline(
@@ -590,7 +603,7 @@ class TFIDFFallbackBackend:
                         strip_accents="unicode",
                     ),
                 ),
-                ("svd", TruncatedSVD(n_components=self._n_components, random_state=42)),
+                ("svd", TruncatedSVD(n_components=effective_n, random_state=42)),
             ]
         )
         self._pipeline.fit(truncated)

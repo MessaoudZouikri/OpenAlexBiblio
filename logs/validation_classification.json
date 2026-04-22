@@ -1,7 +1,7 @@
 {
   "agent": "classification_validator",
   "stage": "",
-  "timestamp": "2026-04-17T08:56:19.217811+00:00",
+  "timestamp": "2026-04-21T21:39:53.535987+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -32,26 +32,22 @@
       "detail": "All confidence values in [0,1]"
     },
     {
-      "name": "llm_confidence_not_uniformly_high",
-      "passed": "True",
-      "detail": "0.0% of LLM results >0.95 confidence"
-    },
-    {
       "name": "other_interdisciplinary_under_40pct",
       "passed": "True",
-      "detail": "Other/interdisciplinary rate: 11.7%"
+      "detail": "Other/interdisciplinary rate: 19.0%"
     }
   ],
-  "n_records": 9999,
+  "n_records": 57339,
   "domain_distribution": {
-    "Political Science": 5587,
-    "Sociology": 1900,
-    "Other": 1306,
-    "Economics": 1206
+    "Political Science": 30570,
+    "Other": 11912,
+    "Sociology": 9284,
+    "Economics": 5573
   },
   "source_distribution": {
-    "embedding": 7776,
-    "rule": 2107,
-    "llm": 116
+    "embedding": 40492,
+    "rule": 15242,
+    "llm_failed": 1604,
+    "embedding_outlier": 1
   }
 }

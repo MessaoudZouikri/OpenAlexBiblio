@@ -37,89 +37,11 @@ from src.utils.io_utils import (
     save_parquet,
 )
 from src.utils.logging_utils import setup_logger
-
-# ═══════════════════════════════════════════════════════════════════════════
-# Domain / Subcategory Taxonomy
-# ═══════════════════════════════════════════════════════════════════════════
-
-DOMAIN_CONCEPT_FRAGMENTS: Dict[str, List[str]] = {
-    "Political Science": [
-        "political science",
-        "politics",
-        "democracy",
-        "populism",
-        "government",
-        "voting",
-        "electoral",
-        "party",
-        "parliament",
-    ],
-    "Economics": [
-        "economics",
-        "economy",
-        "political economy",
-        "macroeconomics",
-        "inequality",
-        "redistribution",
-        "trade",
-    ],
-    "Sociology": [
-        "sociology",
-        "social science",
-        "social movement",
-        "identity",
-        "media",
-        "communication",
-        "culture",
-    ],
-}
-
-SUBCATEGORY_KEYWORD_MAP: Dict[str, List[str]] = {
-    "comparative_politics": ["comparative", "cross-national"],
-    "political_theory": ["theory", "theoretical", "conceptual", "normative", "definition"],
-    "electoral_politics": ["election", "electoral", "voting", "vote", "ballot"],
-    "democratic_theory": ["democracy", "democratic", "backsliding", "illiberal", "autocratization"],
-    "radical_right": ["far-right", "radical right", "extreme right", "right-wing extremi"],
-    "latin_american_politics": [
-        "latin america",
-        "brazil",
-        "venezuela",
-        "argentina",
-        "mexico",
-        "peru",
-    ],
-    "european_politics": ["europe", "european union", "france", "germany", "italy", "spain"],
-    "political_economy": ["political economy", "macroeconomic", "fiscal policy"],
-    "redistribution": ["redistribution", "welfare", "social protection", "inequality"],
-    "trade_globalization": ["globalization", "trade", "import", "export", "protectionism"],
-    "financial_crisis": ["crisis", "recession", "austerity", "financial crash"],
-    "social_movements": ["social movement", "mobilization", "protest", "civil society"],
-    "identity_politics": ["identity", "ethnic", "nationalism", "religion", "nativism"],
-    "media_communication": [
-        "media",
-        "communication",
-        "framing",
-        "social media",
-        "twitter",
-        "facebook",
-    ],
-    "culture_values": ["culture", "values", "post-material", "cultural backlash", "resentment"],
-}
-
-DOMAIN_SUBCATEGORY: Dict[str, List[str]] = {
-    "Political Science": [
-        "comparative_politics",
-        "political_theory",
-        "electoral_politics",
-        "democratic_theory",
-        "radical_right",
-        "latin_american_politics",
-        "european_politics",
-    ],
-    "Economics": ["political_economy", "redistribution", "trade_globalization", "financial_crisis"],
-    "Sociology": ["social_movements", "identity_politics", "media_communication", "culture_values"],
-    "Other": ["international_relations", "history", "psychology", "geography", "interdisciplinary"],
-}
+from src.utils.taxonomy import (
+    DOMAIN_CONCEPT_FRAGMENTS,
+    DOMAIN_SUBCATEGORY,
+    SUBCATEGORY_KEYWORDS as SUBCATEGORY_KEYWORD_MAP,
+)
 
 # Columns expected by downstream pipeline, with safe defaults
 EXPECTED_COLUMNS: Dict[str, Any] = {
@@ -133,7 +55,8 @@ EXPECTED_COLUMNS: Dict[str, Any] = {
     "is_open_access": False,
     "concepts": None,  # list
     "authors": None,  # list
-    "institutions": None,  # list
+    "institutions": None,  # list (flat, all institutions)
+    "author_institutions": None,  # list of {author_id, institution_ids}
     "references": None,  # list
     "mesh_terms": None,  # list
     "keywords_matched": None,  # list
@@ -442,12 +365,12 @@ def clean_dataframe(
     n_before = len(df)
     df = df.dropna(subset=["year"])
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
-    df = df[df["year"].between(min_year, current_year + 1)]
+    df = df[df["year"].between(min_year, current_year)]
     df = df.dropna(subset=["year"])
     dropped = n_before - len(df)
     logger.info("Dropped %d records with invalid year", dropped)
     report["operations"].append(
-        {"op": "filter_year", "dropped": int(dropped), "range": f"{min_year}-{current_year + 1}"}
+        {"op": "filter_year", "dropped": int(dropped), "range": f"{min_year}-{current_year}"}
     )
     df["year"] = df["year"].astype(int)
 
@@ -496,7 +419,7 @@ def clean_dataframe(
     # Expose `institution` (singular) as an alias to `institutions` for tests
     # and downstream code that uses either spelling. Both point to the same
     # underlying list data — no duplication of storage.
-    df["institution"] = df["institutions"]
+    df["institution"] = df["institutions"].copy()
 
     df["institution_count"] = df["institutions"].apply(
         lambda insts: len({i.get("id", "") for i in insts if isinstance(i, dict) and i.get("id")})
@@ -614,7 +537,7 @@ def clean_bibliometric_data(
         df[col] = df[col].apply(_as_list)
 
     # Alias for test compatibility
-    df["institution"] = df["institutions"]
+    df["institution"] = df["institutions"].copy()
 
     # Derived fields (safe for missing values)
     df["has_abstract"] = df["abstract"].str.len() > 20
@@ -688,6 +611,9 @@ def detect_exact_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+_NEAR_DUP_MAX_ROWS = 5_000
+
+
 def detect_near_duplicates(
     df,
     threshold: float = 0.85,
@@ -697,9 +623,14 @@ def detect_near_duplicates(
 
     Accepts either a ``pd.DataFrame`` or a ``list[dict]``. Uses
     ``SequenceMatcher`` for character-level similarity (more forgiving than
-    the Jaccard token score). Runs in O(n²) — intended for small-to-medium
-    datasets or post-hoc QA, not for large corpora.
+    the Jaccard token score). Runs in O(n²) — capped at _NEAR_DUP_MAX_ROWS
+    rows; larger corpora are sampled to the first _NEAR_DUP_MAX_ROWS records
+    and the rest receive near_duplicate_of=None.
     """
+    import logging as _logging
+
+    _nd_logger = _logging.getLogger(__name__)
+
     # ── Coerce list-of-dicts input to DataFrame ─────────────────────────
     if isinstance(df, list):
         df = pd.DataFrame(df)
@@ -710,16 +641,28 @@ def detect_near_duplicates(
     if "title" not in result.columns or len(result) < 2:
         return result
 
-    titles = result["title"].fillna("").astype(str).tolist()
-    ids = result["id"].tolist() if "id" in result.columns else list(range(len(result)))
+    if len(result) > _NEAR_DUP_MAX_ROWS:
+        _nd_logger.warning(
+            "detect_near_duplicates: corpus has %d rows — O(n²) check capped at first %d rows. "
+            "Remaining rows receive near_duplicate_of=None.",
+            len(result),
+            _NEAR_DUP_MAX_ROWS,
+        )
+        check_df = result.iloc[:_NEAR_DUP_MAX_ROWS]
+    else:
+        check_df = result
 
+    titles = check_df["title"].fillna("").astype(str).tolist()
+    ids = check_df["id"].tolist() if "id" in check_df.columns else list(range(len(check_df)))
+
+    check_index = check_df.index.tolist()
     for i in range(len(titles)):
         for j in range(i + 1, len(titles)):
             if not titles[i] or not titles[j]:
                 continue
             sim = SequenceMatcher(None, titles[i].lower(), titles[j].lower()).ratio()
             if sim >= threshold:
-                result.at[result.index[j], "near_duplicate_of"] = ids[i]
+                result.at[check_index[j], "near_duplicate_of"] = ids[i]
 
     return result
 

@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-04-16T22:26:28.951711+00:00",
+  "timestamp": "2026-04-21T08:02:42.891890+00:00",
   "mode": "full",
-  "total_records": 10000,
-  "output_file": "data/raw/openalex_raw_20260416_222628.parquet",
+  "total_records": 57448,
+  "output_file": "data/raw/openalex_raw_20260421_080241.parquet",
   "query_stats": [
     {
       "term": "populism OR populist OR populists",
       "field": "title_and_abstract.search",
-      "new_records": 10000,
-      "elapsed_s": 76.18
+      "new_records": 57448,
+      "elapsed_s": 573.49
     }
   ],
   "api_parameters": {
@@ -19,7 +19,7 @@
       "from_publication_date": "1980-01-01"
     },
     "sort": "cited_by_count:desc",
-    "max_records_per_query": 10000
+    "max_records_per_query": Infinity
   },
   "columns": [
     "id",
@@ -41,6 +41,6 @@
     "keywords_matched",
     "query_batch"
   ],
-  "abstract_coverage": 8658,
-  "concept_coverage": 10000
+  "abstract_coverage": 45706,
+  "concept_coverage": 57279
 }

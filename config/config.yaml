@@ -21,7 +21,7 @@ paths:
 pipeline:
   mode: "full"          # "test" | "full"
   test_max_records: 200  # Records per query in test mode
-  full_max_records: 10000  # null = unlimited, or set to a number for safety (e.g. 10000 for a scoped run)
+  full_max_records: null  # null = unlimited, or set to a number for safety (e.g. 10000 for a scoped run)
   random_seed: 42
   min_year: 1980        # Earliest publication year to retain (must match from_publication_date in openalex.yaml)
 

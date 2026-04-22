@@ -11,6 +11,8 @@ from typing import Any, Dict, Optional, Tuple
 
 import requests
 
+from src.utils.taxonomy import VALID_DOMAINS, VALID_SUBCATEGORIES
+
 logger = logging.getLogger("llm_client")
 
 
@@ -177,39 +179,7 @@ class OllamaClient:
 
 
 # ── Validation Helpers ─────────────────────────────────────────────────────
-
-VALID_DOMAINS = {"Political Science", "Economics", "Sociology", "Other"}
-
-VALID_SUBCATEGORIES = {
-    "Political Science": {
-        "comparative_politics",
-        "political_theory",
-        "electoral_politics",
-        "democratic_theory",
-        "radical_right",
-        "latin_american_politics",
-        "european_politics",
-    },
-    "Economics": {
-        "political_economy",
-        "redistribution",
-        "trade_globalization",
-        "financial_crisis",
-    },
-    "Sociology": {
-        "social_movements",
-        "identity_politics",
-        "media_communication",
-        "culture_values",
-    },
-    "Other": {
-        "international_relations",
-        "history",
-        "psychology",
-        "geography",
-        "interdisciplinary",
-    },
-}
+# VALID_DOMAINS and VALID_SUBCATEGORIES are imported from taxonomy.py at the top.
 
 
 def validate_classification_response(response: Dict) -> Tuple[bool, str]:

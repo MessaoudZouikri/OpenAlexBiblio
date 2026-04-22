@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-04-16T22:30:02.937375+00:00",
-  "n_records": 9999,
+  "timestamp": "2026-04-21T17:16:51.224641+00:00",
+  "n_records": 57339,
   "year_range": [
     1980,
     2026
   ],
-  "total_citations": 497208,
-  "h_index_corpus": 254,
-  "g_index_corpus": 406,
-  "unique_authors": 11304,
-  "unique_journals": 2460,
-  "unique_institutions": 2556,
+  "total_citations": 542782,
+  "h_index": 254,
+  "g_index": 406,
+  "unique_authors": 53866,
+  "unique_journals": 9972,
+  "unique_institutions": 6792,
   "domain_distribution": {
-    "Political Science": 7251,
-    "Economics": 1541,
-    "Sociology": 946,
-    "Other": 261
+    "Political Science": 42554,
+    "Sociology": 5960,
+    "Economics": 4475,
+    "Other": 4350
   }
 }

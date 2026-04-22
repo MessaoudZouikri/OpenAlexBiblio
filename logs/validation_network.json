@@ -1,7 +1,7 @@
 {
   "agent": "network_validator",
   "stage": "",
-  "timestamp": "2026-04-17T08:56:28.436219+00:00",
+  "timestamp": "2026-04-22T00:06:43.548003+00:00",
   "status": "PASS",
   "errors": [],
   "warnings": [],
@@ -14,7 +14,7 @@
     {
       "name": "parseable_bibcoupling",
       "passed": true,
-      "detail": "5612 nodes"
+      "detail": "5840 nodes"
     },
     {
       "name": "no_self_loops_bibcoupling",
@@ -29,7 +29,7 @@
     {
       "name": "parseable_cocitation",
       "passed": true,
-      "detail": "12307 nodes"
+      "detail": "4658 nodes"
     },
     {
       "name": "no_self_loops_cocitation",
@@ -44,7 +44,7 @@
     {
       "name": "parseable_coauthorship",
       "passed": true,
-      "detail": "2301 nodes"
+      "detail": "5000 nodes"
     },
     {
       "name": "no_self_loops_coauthorship",

@@ -1,14 +1,36 @@
 [
   {
-    "work_id": "https://openalex.org/W2768119100",
-    "domain": "Other",
+    "work_id": "https://openalex.org/W3026185547",
+    "domain": "Political Science",
     "bridge_domains": [
       "Economics",
-      "Political Science",
+      "Other",
       "Sociology"
     ],
-    "betweenness_centrality": 0.12513,
-    "degree": 1280
+    "betweenness_centrality": 0.194127,
+    "degree": 1125
+  },
+  {
+    "work_id": "https://openalex.org/W4211120662",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.092343,
+    "degree": 1117
+  },
+  {
+    "work_id": "https://openalex.org/W4293063618",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.060453,
+    "degree": 502
   },
   {
     "work_id": "https://openalex.org/W2910690727",
@@ -18,349 +40,85 @@
       "Other",
       "Sociology"
     ],
-    "betweenness_centrality": 0.10972,
-    "degree": 1167
+    "betweenness_centrality": 0.056917,
+    "degree": 343
   },
   {
-    "work_id": "https://openalex.org/W4386064606",
+    "work_id": "https://openalex.org/W2942952529",
     "domain": "Other",
     "bridge_domains": [
       "Economics",
       "Political Science",
       "Sociology"
     ],
-    "betweenness_centrality": 0.081316,
-    "degree": 1225
+    "betweenness_centrality": 0.04939,
+    "degree": 116
   },
   {
-    "work_id": "https://openalex.org/W3094344666",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.064573,
-    "degree": 1233
-  },
-  {
-    "work_id": "https://openalex.org/W2883678596",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.047434,
-    "degree": 1207
-  },
-  {
-    "work_id": "https://openalex.org/W3091624740",
+    "work_id": "https://openalex.org/W1452854368",
     "domain": "Political Science",
     "bridge_domains": [
       "Economics",
       "Other",
       "Sociology"
     ],
-    "betweenness_centrality": 0.04248,
-    "degree": 1035
+    "betweenness_centrality": 0.046742,
+    "degree": 155
   },
   {
-    "work_id": "https://openalex.org/W2792340102",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.041872,
-    "degree": 1169
-  },
-  {
-    "work_id": "https://openalex.org/W3177318723",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.040142,
-    "degree": 1118
-  },
-  {
-    "work_id": "https://openalex.org/W2729079751",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.03083,
-    "degree": 1050
-  },
-  {
-    "work_id": "https://openalex.org/W2770008729",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.026437,
-    "degree": 1085
-  },
-  {
-    "work_id": "https://openalex.org/W2479540021",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.025663,
-    "degree": 1013
-  },
-  {
-    "work_id": "https://openalex.org/W3138221385",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.024643,
-    "degree": 1147
-  },
-  {
-    "work_id": "https://openalex.org/W2624561377",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.021986,
-    "degree": 1059
-  },
-  {
-    "work_id": "https://openalex.org/W3142568450",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.021971,
-    "degree": 1059
-  },
-  {
-    "work_id": "https://openalex.org/W1522331302",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.018604,
-    "degree": 1011
-  },
-  {
-    "work_id": "https://openalex.org/W2808542627",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.016627,
-    "degree": 1029
-  },
-  {
-    "work_id": "https://openalex.org/W2638401045",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.016426,
-    "degree": 1014
-  },
-  {
-    "work_id": "https://openalex.org/W3133494517",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.015982,
-    "degree": 1146
-  },
-  {
-    "work_id": "https://openalex.org/W2991748310",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.01573,
-    "degree": 1101
-  },
-  {
-    "work_id": "https://openalex.org/W3035031599",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.015548,
-    "degree": 1079
-  },
-  {
-    "work_id": "https://openalex.org/W4210962663",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.015519,
-    "degree": 1060
-  },
-  {
-    "work_id": "https://openalex.org/W2903664754",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.015057,
-    "degree": 1109
-  },
-  {
-    "work_id": "https://openalex.org/W3037995184",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.014918,
-    "degree": 1111
-  },
-  {
-    "work_id": "https://openalex.org/W2899624027",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.014686,
-    "degree": 1079
-  },
-  {
-    "work_id": "https://openalex.org/W2980139187",
-    "domain": "Economics",
-    "bridge_domains": [
-      "Other",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.014452,
-    "degree": 983
-  },
-  {
-    "work_id": "https://openalex.org/W618261059",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.013788,
-    "degree": 914
-  },
-  {
-    "work_id": "https://openalex.org/W4285802764",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.011567,
-    "degree": 785
-  },
-  {
-    "work_id": "https://openalex.org/W4224282318",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.011226,
-    "degree": 817
-  },
-  {
-    "work_id": "https://openalex.org/W2996397755",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.01105,
-    "degree": 1032
-  },
-  {
-    "work_id": "https://openalex.org/W3033026873",
+    "work_id": "https://openalex.org/W3000434933",
     "domain": "Sociology",
     "bridge_domains": [
       "Economics",
       "Other",
       "Political Science"
     ],
-    "betweenness_centrality": 0.010818,
-    "degree": 1037
+    "betweenness_centrality": 0.045981,
+    "degree": 130
   },
   {
-    "work_id": "https://openalex.org/W3033956033",
-    "domain": "Political Science",
+    "work_id": "https://openalex.org/W2942048673",
+    "domain": "Other",
     "bridge_domains": [
       "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.010347,
-    "degree": 938
-  },
-  {
-    "work_id": "https://openalex.org/W2681272865",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.010136,
-    "degree": 159
-  },
-  {
-    "work_id": "https://openalex.org/W2945305967",
-    "domain": "Economics",
-    "bridge_domains": [
-      "Other",
       "Political Science",
       "Sociology"
     ],
-    "betweenness_centrality": 0.009686,
-    "degree": 981
+    "betweenness_centrality": 0.035774,
+    "degree": 120
+  },
+  {
+    "work_id": "https://openalex.org/W2768119100",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.027286,
+    "degree": 335
+  },
+  {
+    "work_id": "https://openalex.org/W3015835251",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.025544,
+    "degree": 1124
+  },
+  {
+    "work_id": "https://openalex.org/W3045281098",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.01957,
+    "degree": 135
   },
   {
     "work_id": "https://openalex.org/W67332667",
@@ -370,183 +128,421 @@
       "Other",
       "Sociology"
     ],
-    "betweenness_centrality": 0.009651,
-    "degree": 782
+    "betweenness_centrality": 0.019266,
+    "degree": 218
   },
   {
-    "work_id": "https://openalex.org/W3171204163",
+    "work_id": "https://openalex.org/W3094344666",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.018137,
+    "degree": 334
+  },
+  {
+    "work_id": "https://openalex.org/W2792340102",
     "domain": "Political Science",
     "bridge_domains": [
       "Economics",
       "Other",
       "Sociology"
     ],
-    "betweenness_centrality": 0.009268,
-    "degree": 1057
+    "betweenness_centrality": 0.017754,
+    "degree": 206
   },
   {
-    "work_id": "https://openalex.org/W2591010216",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.00856,
-    "degree": 939
-  },
-  {
-    "work_id": "https://openalex.org/W2973101242",
+    "work_id": "https://openalex.org/W2980139187",
     "domain": "Economics",
     "bridge_domains": [
       "Other",
       "Political Science",
       "Sociology"
     ],
-    "betweenness_centrality": 0.008392,
+    "betweenness_centrality": 0.016584,
+    "degree": 162
+  },
+  {
+    "work_id": "https://openalex.org/W4306163994",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.016042,
+    "degree": 243
+  },
+  {
+    "work_id": "https://openalex.org/W3091624740",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014702,
+    "degree": 107
+  },
+  {
+    "work_id": "https://openalex.org/W4406776457",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014378,
+    "degree": 390
+  },
+  {
+    "work_id": "https://openalex.org/W4406776453",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014378,
+    "degree": 390
+  },
+  {
+    "work_id": "https://openalex.org/W4406776434",
+    "domain": "Economics",
+    "bridge_domains": [
+      "Other",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014378,
+    "degree": 390
+  },
+  {
+    "work_id": "https://openalex.org/W4406776425",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014378,
+    "degree": 390
+  },
+  {
+    "work_id": "https://openalex.org/W4406776415",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014378,
+    "degree": 390
+  },
+  {
+    "work_id": "https://openalex.org/W4406776412",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.014378,
+    "degree": 390
+  },
+  {
+    "work_id": "https://openalex.org/W3084327443",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.012327,
+    "degree": 182
+  },
+  {
+    "work_id": "https://openalex.org/W4386549086",
+    "domain": "Other",
+    "bridge_domains": [
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.011577,
+    "degree": 32
+  },
+  {
+    "work_id": "https://openalex.org/W4214892722",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.010749,
     "degree": 88
   },
   {
-    "work_id": "https://openalex.org/W2910985232",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.008265,
-    "degree": 1167
-  },
-  {
-    "work_id": "https://openalex.org/W3156022915",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.008045,
-    "degree": 976
-  },
-  {
-    "work_id": "https://openalex.org/W2994264175",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.007969,
-    "degree": 847
-  },
-  {
-    "work_id": "https://openalex.org/W4310035733",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.007874,
-    "degree": 756
-  },
-  {
-    "work_id": "https://openalex.org/W2155340754",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.007856,
-    "degree": 942
-  },
-  {
-    "work_id": "https://openalex.org/W2529947790",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.007522,
-    "degree": 983
-  },
-  {
-    "work_id": "https://openalex.org/W3178019837",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.006997,
-    "degree": 124
-  },
-  {
-    "work_id": "https://openalex.org/W4285793812",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.006981,
-    "degree": 907
-  },
-  {
-    "work_id": "https://openalex.org/W2910884191",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.006973,
-    "degree": 1066
-  },
-  {
-    "work_id": "https://openalex.org/W3155448345",
-    "domain": "Political Science",
-    "bridge_domains": [
-      "Economics",
-      "Other",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.006867,
-    "degree": 1019
-  },
-  {
-    "work_id": "https://openalex.org/W3179832075",
-    "domain": "Other",
-    "bridge_domains": [
-      "Economics",
-      "Political Science",
-      "Sociology"
-    ],
-    "betweenness_centrality": 0.006729,
-    "degree": 1048
-  },
-  {
-    "work_id": "https://openalex.org/W3210276275",
+    "work_id": "https://openalex.org/W4393375568",
     "domain": "Economics",
     "bridge_domains": [
       "Other",
       "Political Science",
       "Sociology"
     ],
-    "betweenness_centrality": 0.00652,
-    "degree": 934
+    "betweenness_centrality": 0.009463,
+    "degree": 235
   },
   {
-    "work_id": "https://openalex.org/W2729446304",
+    "work_id": "https://openalex.org/W4248024854",
     "domain": "Political Science",
     "bridge_domains": [
       "Economics",
       "Other",
       "Sociology"
     ],
-    "betweenness_centrality": 0.006394,
-    "degree": 969
+    "betweenness_centrality": 0.009074,
+    "degree": 265
+  },
+  {
+    "work_id": "https://openalex.org/W3122961667",
+    "domain": "Economics",
+    "bridge_domains": [
+      "Other",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.009068,
+    "degree": 124
+  },
+  {
+    "work_id": "https://openalex.org/W2617346885",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.008627,
+    "degree": 172
+  },
+  {
+    "work_id": "https://openalex.org/W2808542627",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.00734,
+    "degree": 146
+  },
+  {
+    "work_id": "https://openalex.org/W3167084351",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.00726,
+    "degree": 111
+  },
+  {
+    "work_id": "https://openalex.org/W3142568450",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007254,
+    "degree": 121
+  },
+  {
+    "work_id": "https://openalex.org/W4386064606",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064773",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064663",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064551",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064560",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064592",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064763",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064700",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064666",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064622",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W4386064593",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.007017,
+    "degree": 336
+  },
+  {
+    "work_id": "https://openalex.org/W3159963981",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.006988,
+    "degree": 12
+  },
+  {
+    "work_id": "https://openalex.org/W2968304670",
+    "domain": "Sociology",
+    "bridge_domains": [
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.006773,
+    "degree": 109
+  },
+  {
+    "work_id": "https://openalex.org/W3114470867",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.006765,
+    "degree": 113
+  },
+  {
+    "work_id": "https://openalex.org/W3104995281",
+    "domain": "Economics",
+    "bridge_domains": [
+      "Other",
+      "Political Science"
+    ],
+    "betweenness_centrality": 0.006536,
+    "degree": 44
+  },
+  {
+    "work_id": "https://openalex.org/W3162484772",
+    "domain": "Other",
+    "bridge_domains": [
+      "Economics",
+      "Political Science",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.00637,
+    "degree": 189
+  },
+  {
+    "work_id": "https://openalex.org/W4389749556",
+    "domain": "Political Science",
+    "bridge_domains": [
+      "Economics",
+      "Other",
+      "Sociology"
+    ],
+    "betweenness_centrality": 0.006261,
+    "degree": 106
   }
 ]

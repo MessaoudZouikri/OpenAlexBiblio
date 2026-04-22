@@ -15,6 +15,7 @@ Standalone:
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 import time
 from datetime import datetime, timezone
@@ -220,6 +221,8 @@ def collect_openalex_data(
     (timeout, rate limit, non-iterable mock responses, etc.) rather than
     raising — this mirrors graceful-degradation expectations in tests.
     """
+    _logger = logging.getLogger(__name__)
+
     try:
         client = OpenAlexClient(
             email=polite_email,
@@ -229,7 +232,8 @@ def collect_openalex_data(
             retry_backoff=2.0,
             timeout=30,
         )
-    except Exception:
+    except Exception as exc:
+        _logger.error("collect_openalex_data: client init failed for %r: %s", search_term, exc)
         return pd.DataFrame()
 
     records: List[dict] = []
@@ -245,6 +249,9 @@ def collect_openalex_data(
         try:
             iterator = iter(pages)
         except TypeError:
+            _logger.error(
+                "collect_openalex_data: paginate_works returned non-iterable for %r", search_term
+            )
             return pd.DataFrame()
 
         for raw in iterator:
@@ -252,8 +259,14 @@ def collect_openalex_data(
                 records.append(
                     OpenAlexClient.normalize_work(raw, search_term, f"query_{search_term}")
                 )
-    except Exception:
-        # Timeout, HTTPError, ConnectionError — all return empty gracefully
+    except Exception as exc:
+        _logger.error(
+            "collect_openalex_data: pagination failed for %r after %d records: %s",
+            search_term,
+            len(records),
+            exc,
+            exc_info=True,
+        )
         return pd.DataFrame()
 
     return pd.DataFrame(records)

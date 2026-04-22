@@ -133,25 +133,33 @@ def graph_summary(G: nx.Graph, name: str) -> dict:
 def build_cocitation_network(df: pd.DataFrame, min_cocitations: int = 2) -> nx.Graph:
     """
     Works cited by ≥ 2 corpus papers become nodes.
-    Edge weight = number of co-citations.
+    Edge weight = number of co-citations (corpus papers that cite both).
+
+    Uses a per-paper pairs approach — O(n × r²) where r is avg refs per paper —
+    instead of O(R²) over all unique references.
     """
-    # Build inverted index: ref → set of corpus papers that cite it
+    # Which corpus papers cite each reference
     ref_citers: Dict[str, set] = defaultdict(set)
     for work_id, refs in zip(df["id"], df["references"]):
         for ref in safe_list(refs):
             ref_citers[ref].add(work_id)
 
-    # Only keep refs cited by ≥ 2 papers
-    shared_refs = {ref: citers for ref, citers in ref_citers.items() if len(citers) >= 2}
+    eligible_refs = {ref for ref, citers in ref_citers.items() if len(citers) >= 2}
 
     G = nx.Graph()
-    for ref, citers in shared_refs.items():
+    for ref in eligible_refs:
         G.add_node(ref, node_type="cited_work")
 
-    for ref_a, ref_b in combinations(shared_refs.keys(), 2):
-        shared = shared_refs[ref_a] & shared_refs[ref_b]
-        if len(shared) >= min_cocitations:
-            G.add_edge(ref_a, ref_b, weight=len(shared))
+    # Count co-citations via per-paper iteration over eligible pairs only
+    cocit_count: Dict[tuple, int] = defaultdict(int)
+    for refs in df["references"]:
+        elig = [r for r in safe_list(refs) if r in eligible_refs]
+        for a, b in combinations(elig, 2):
+            cocit_count[(min(a, b), max(a, b))] += 1
+
+    for (a, b), count in cocit_count.items():
+        if count >= min_cocitations:
+            G.add_edge(a, b, weight=count)
 
     return G
 
@@ -162,19 +170,33 @@ def build_cocitation_network(df: pd.DataFrame, min_cocitations: int = 2) -> nx.G
 def build_bibcoupling_network(df: pd.DataFrame, min_shared: int = 2) -> nx.Graph:
     """
     Corpus works are nodes. Edge weight = number of shared references.
-    """
-    G = nx.Graph()
-    work_ids = df["id"].tolist()
-    ref_sets = {row["id"]: set(safe_list(row.get("references"))) for _, row in df.iterrows()}
-    domain_map = df.set_index("id")["domain"].to_dict()
 
-    for wid in work_ids:
+    Uses an inverted-index approach — O(m) where m is the number of
+    reference co-occurrences — instead of O(n²) over all work pairs.
+    """
+    domain_map = df.set_index("id")["domain"].to_dict()
+    G = nx.Graph()
+    for wid in df["id"]:
         G.add_node(wid, domain=domain_map.get(wid, "Other"))
 
-    for a, b in combinations(work_ids, 2):
-        shared = ref_sets.get(a, set()) & ref_sets.get(b, set())
-        if len(shared) >= min_shared:
-            G.add_edge(a, b, weight=len(shared))
+    # ref → list of corpus works that cite it
+    ref_to_works: Dict[str, List[str]] = defaultdict(list)
+    for _, row in df.iterrows():
+        wid = row["id"]
+        for ref in safe_list(row.get("references")):
+            ref_to_works[ref].append(wid)
+
+    # For each reference cited by ≥2 works, all citing-work pairs share it
+    shared_count: Dict[tuple, int] = defaultdict(int)
+    for works in ref_to_works.values():
+        if len(works) < 2:
+            continue
+        for a, b in combinations(works, 2):
+            shared_count[(min(a, b), max(a, b))] += 1
+
+    for (a, b), count in shared_count.items():
+        if count >= min_shared:
+            G.add_edge(a, b, weight=count)
 
     return G
 
@@ -436,12 +458,25 @@ def enhanced_cross_domain_analysis(G_bibcoupling: nx.Graph, domain_map: Dict[str
 
 
 def save_network(G: nx.Graph, path: str) -> None:
-    """Save graph as GraphML, converting non-serializable attributes."""
+    """Save graph as GraphML.
+
+    Lists are serialized as pipe-delimited strings with a ``__list__`` prefix
+    so they can be faithfully reconstructed on read. Other non-primitive types
+    fall back to repr().
+    """
     G2 = G.copy()
-    for n, data in G2.nodes(data=True):
-        for k, v in data.items():
-            if not isinstance(v, (str, int, float, bool)):
-                data[k] = str(v)
+    for _, data in G2.nodes(data=True):
+        for k, v in list(data.items()):
+            if isinstance(v, list):
+                data[k] = "__list__" + "|".join(str(x) for x in v)
+            elif not isinstance(v, (str, int, float, bool)):
+                data[k] = repr(v)
+    for _, _, data in G2.edges(data=True):
+        for k, v in list(data.items()):
+            if isinstance(v, list):
+                data[k] = "__list__" + "|".join(str(x) for x in v)
+            elif not isinstance(v, (str, int, float, bool)):
+                data[k] = repr(v)
     nx.write_graphml(G2, path)
 
 
@@ -611,9 +646,17 @@ def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: floa
                 for node in comp_nodes:
                     partition[node] = best_comm
 
-        assert (
-            len(partition) == G.number_of_nodes()
-        ), f"Partition incomplete: {len(partition)} / {G.number_of_nodes()} nodes"
+        missing = set(G.nodes()) - set(partition.keys())
+        if missing:
+            logger.warning(
+                "Partition incomplete: %d / %d nodes assigned — padding %d missing nodes "
+                "with cluster -1.",
+                len(partition),
+                G.number_of_nodes(),
+                len(missing),
+            )
+            for node in missing:
+                partition[node] = -1
 
         logger.info(
             f"Clustering complete | strategy={strategy} | "

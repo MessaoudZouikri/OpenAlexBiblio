@@ -51,7 +51,8 @@ class OpenAlexClient:
         delay = self.rate_limit_delay
         for attempt in range(1, self.max_retries + 1):
             try:
-                time.sleep(delay if attempt > 1 else self.rate_limit_delay)
+                if attempt > 1:
+                    time.sleep(delay)
                 resp = self.session.get(url, params=params, timeout=self.timeout)
                 if resp.status_code == 429:
                     wait = int(resp.headers.get("Retry-After", 60))
@@ -204,7 +205,12 @@ class OpenAlexClient:
             "publication_date": raw.get("publication_date", ""),
             "cited_by_count": raw.get("cited_by_count", 0) or 0,
             "authors": authors,
+            # Flat list for quick filtering; author_institutions preserves the mapping.
             "institutions": [inst for a in authors for inst in a["institutions"]],
+            "author_institutions": [
+                {"author_id": a["id"], "institution_ids": [i["id"] for i in a["institutions"]]}
+                for a in authors
+            ],
             "concepts": concepts,
             "journal": source_info.get("display_name", ""),
             "journal_id": source_info.get("id", ""),
