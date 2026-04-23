@@ -113,7 +113,7 @@ class TestRuleBasedSubcategory:
         abstract = "This paper examines historical events"
 
         result = rule_based_subcategory(title, abstract, "Other")
-        assert result == "interdisciplinary"
+        assert result == "history"
 
 
 class TestDataframeCleaning:

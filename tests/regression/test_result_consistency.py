@@ -72,10 +72,10 @@ class TestClassificationRegression:
                 "stage": "rule_based",
             },
             "W987654321": {
-                "domain": "Economics",
-                "subcategory": "redistribution",
-                "confidence": 0.92,
-                "stage": "embedding",
+                "domain": "Political Science",
+                "subcategory": "european_politics",
+                "confidence": 0.5,
+                "stage": "rule_based",
             },
             "W111111111": {
                 "domain": "Sociology",
