@@ -4,8 +4,6 @@ Tests focus on pure logic (get_start_index, step definitions) and
 dry-run / mocked-subprocess execution paths.
 """
 
-import sys
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -16,7 +14,6 @@ from src.agents.orchestrator import (
     get_start_index,
     run_step,
 )
-
 
 # ── ALL_STEP_NAMES / STEP_DEFINITIONS ────────────────────────────────────────
 

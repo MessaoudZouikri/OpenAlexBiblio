@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 
 import networkx as nx
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -19,7 +18,6 @@ from src.agents.validation.validators import (
     validate_network,
     validate_statistical,
 )
-
 
 # ── Config helper ─────────────────────────────────────────────────────────────
 

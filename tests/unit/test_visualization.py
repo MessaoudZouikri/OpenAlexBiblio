@@ -25,7 +25,6 @@ from src.agents.visualization import (
     generate_markdown_report,
 )
 
-
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
 

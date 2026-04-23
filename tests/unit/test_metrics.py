@@ -3,18 +3,17 @@ Unit tests for src/utils/metrics.py
 All tests operate on in-memory NetworkX graphs — no file I/O, no external APIs.
 """
 
-import pytest
 import networkx as nx
+import pytest
 
 from src.utils.metrics import (
     compute_association_strength,
     compute_coupling_strength_index,
-    compute_jaccard_similarity,
-    compute_inter_domain_coupling_ratio,
     compute_domain_reach,
+    compute_inter_domain_coupling_ratio,
+    compute_jaccard_similarity,
     enhanced_cross_domain_analysis,
 )
-
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 

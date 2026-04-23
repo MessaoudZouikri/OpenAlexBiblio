@@ -3,9 +3,6 @@ Unit tests for src/utils/validation_utils.py
 Pure pandas operations — no file I/O for SchemaValidator tests.
 """
 
-import tempfile
-from pathlib import Path
-
 import pandas as pd
 import pytest
 
@@ -15,7 +12,6 @@ from src.utils.validation_utils import (
     require_schema,
     validate_parquet_file,
 )
-
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 
