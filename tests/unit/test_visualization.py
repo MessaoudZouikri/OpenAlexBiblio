@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import pandas as pd
 import pytest
@@ -120,11 +121,7 @@ def domain_df():
 
 @pytest.fixture
 def concepts_data():
-    return {
-        "top_50_concepts": [
-            {"concept": f"Concept {i}", "count": 100 - i} for i in range(30)
-        ]
-    }
+    return {"top_50_concepts": [{"concept": f"Concept {i}", "count": 100 - i} for i in range(30)]}
 
 
 @pytest.fixture
@@ -273,9 +270,7 @@ def test_fig_cross_domain_heatmap_enhanced_creates_both_pngs(fig_dir):
 
 @pytest.mark.unit
 def test_generate_html_report_creates_file(fig_dir, minimal_config, tmp_path):
-    fig_publication_trends(
-        {"annual": [{"year": 2020, "count": 50}]}, fig_dir
-    )
+    fig_publication_trends({"annual": [{"year": 2020, "count": 50}]}, fig_dir)
     generate_html_report(fig_dir, minimal_config)
     report_path = Path(minimal_config["paths"]["outputs"]) / "reports" / "report.html"
     assert report_path.exists()
@@ -327,9 +322,7 @@ def test_build_figure_summaries_missing_files_returns_empty_strings(proc_dir):
 
 @pytest.mark.unit
 def test_build_figure_summaries_with_trends_json(proc_dir):
-    data = {
-        "annual": [{"year": 2020, "count": 100}, {"year": 2021, "count": 120}]
-    }
+    data = {"annual": [{"year": 2020, "count": 100}, {"year": 2021, "count": 120}]}
     (Path(proc_dir) / "publication_trends.json").write_text(json.dumps(data))
     result = _build_figure_summaries(proc_dir)
     assert "220" in result["publication_trends"]
@@ -356,6 +349,7 @@ def test_build_figure_summaries_with_citation_json(proc_dir):
 @pytest.mark.unit
 def test_llm_interpret_returns_empty_on_failure():
     from unittest.mock import Mock
+
     client = Mock()
     client.generate.return_value = ("", False)
     result = _llm_interpret(client, "publication_trends", "some data")
@@ -365,6 +359,7 @@ def test_llm_interpret_returns_empty_on_failure():
 @pytest.mark.unit
 def test_llm_interpret_returns_text_on_success():
     from unittest.mock import Mock
+
     client = Mock()
     client.generate.return_value = ("This is an interpretation.", True)
     result = _llm_interpret(client, "publication_trends", "some data")

@@ -223,9 +223,7 @@ def test_validate_statistical_with_valid_files(cfg):
     (proc / "publication_trends.json").write_text(
         json.dumps({"annual": [{"year": 2020, "count": 100, "yoy_growth_pct": 10}]})
     )
-    (proc / "top_authors.json").write_text(
-        json.dumps({"lotka_alpha": 2.1, "lotka_r2": 0.85})
-    )
+    (proc / "top_authors.json").write_text(json.dumps({"lotka_alpha": 2.1, "lotka_r2": 0.85}))
     report = validate_statistical(cfg)
     assert report["status"] == "PASS"
     assert all(c["passed"] for c in report["checks"] if "file_exists" in c["name"])
