@@ -15,7 +15,8 @@ Before running:
 | Python 3.10+ virtual environment activated | `python --version` |
 | Dependencies installed | `pip install -r requirements.txt` |
 | Internet access to OpenAlex | `curl -s https://api.openalex.org/works?per-page=1` |
-| Ollama running (optional, for LLM classification) | `ollama list` |
+| SPECTER2 weights (auto-downloaded on first run, ~440 MB) | `python scripts/check_setup.py` |
+| Ollama running (optional — Stage 3 LLM disambiguation only) | `ollama list` |
 
 **Verify your environment in one command:**
 
@@ -57,8 +58,9 @@ your download time at no cost. The email is only used in the HTTP `User-Agent` h
 
 ## Step 3 — (Optional) Verify Ollama
 
-The classification agent uses a local LLM for ambiguous papers. It falls back gracefully to
-embedding-only if Ollama is unavailable, so this step is optional.
+The classification agent uses a local LLM **only for Stage 3** — papers where SPECTER2 embedding
+confidence falls in the ambiguous 0.60–0.82 range, typically 10–30% of the corpus. If Ollama is
+unavailable, those papers fall back to the best embedding result; the pipeline never halts.
 
 ```bash
 ollama list        # confirm your model is present (e.g. qwen2.5:7b)
@@ -127,12 +129,13 @@ These are approximate wall-clock times on a standard laptop with `full_max_recor
 |------|-------|
 | data_collection | 15–25 min (API rate limits) |
 | data_cleaning + bibliometric_analysis | < 2 min |
-| classification (SPECTER2 embeddings) | 5–15 min |
+| classification (SPECTER2 + selective LLM) | 15–30 min |
 | network_analysis | 2–5 min |
 | visualization + validators | < 2 min |
-| **Total (10K records)** | **~30–45 min** |
+| **Total (10K records)** | **~1 hour** |
 
-For the full corpus (~57K records): allow 4–5 hours total.
+For the full corpus (~57K records): allow ~3–4 hours for data collection, then ~2 hours for
+processing (classification and network analysis dominate). Total wall-clock ~5–6 hours.
 
 ---
 
@@ -142,7 +145,7 @@ For the full corpus (~57K records): allow 4–5 hours total.
 |--|-----------|-----------------|-----------------|
 | Records | ~200 (synthetic) | ~10,000 (real) | ~57,000 (real) |
 | API calls | None (offline) | ~50 pages | ~285 pages |
-| Runtime | ~5 min | ~40 min | ~5 hrs |
+| Runtime | ~5 min | ~1 hr | ~5–6 hrs |
 | Network edges | A few hundred | Tens of thousands | Hundreds of thousands |
 | Output quality | For validation only | Publication-ready | Publication-ready |
 

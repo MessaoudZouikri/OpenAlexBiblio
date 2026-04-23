@@ -48,10 +48,21 @@ embeddings:
   # backend: "ollama"           # force Ollama
   # backend: "tfidf"            # force TF-IDF (testing only)
 
-  # SPECTER2 settings
-  specter2_device: null         # null = auto-detect (mps on M4, cuda on GPU, cpu otherwise)
-  specter2_batch: 64            # Batch size — increase for M4 Max/Ultra (more memory bandwidth)
-                                # Recommended: 32 (M4), 64 (M4 Pro), 128 (M4 Max/Ultra)
+  # SPECTER2 device selection
+  # null = auto (sentence-transformers picks the best available):
+  #   - "cuda"  → Windows/Linux with NVIDIA GPU (torch.cuda.is_available())
+  #   - "mps"   → Mac with Apple Silicon M-series (torch.backends.mps.is_available())
+  #   - "cpu"   → CPU-only fallback (all platforms)
+  # Override only if auto-detection picks the wrong device.
+  specter2_device: null
+  # specter2_device: "cuda"     # force NVIDIA GPU
+  # specter2_device: "mps"      # force Apple Silicon GPU
+  # specter2_device: "cpu"      # force CPU (debugging / CPU-only machines)
+
+  specter2_batch: 64            # Batch size — tune to available memory:
+                                # 32 → safe default / CPU / base M-series
+                                # 64 → M-series Pro or mid-range NVIDIA GPU
+                                # 128 → M-series Max/Ultra or high-VRAM GPU
 
   # Ollama fallback settings
   ollama_model: "nomic-embed-text"

@@ -29,7 +29,7 @@ jump directly to the [Step-by-Step Function Guide](#step-by-step-function-guide)
 
 ## Introduction
 
-Welcome to the **A Bibliometric Analysis Pipeline Using OpenAlex Data**! This tutorial will guide you through understanding how this automated system collects, processes, and analyzes academic research on populism using the OpenAlex database.
+Welcome to **A Bibliometric Analysis Pipeline Using OpenAlex Data**! This tutorial will guide you through understanding how this automated system collects, processes, and analyzes academic research on populism using the OpenAlex database.
 
 ### What is Bibliometric Analysis?
 Bibliometric analysis studies patterns in academic literature through quantitative methods. For populism research, this means:
@@ -57,9 +57,9 @@ By the end of this tutorial, you'll understand:
 
 ## Pipeline Architecture Overview
 
-The pipeline is organized as a **modular workflow** with 8 main steps, each handled by specialized "agents" (Python programs). Think of it as an assembly line where each station adds value to the data.
+The pipeline is organized as a **modular workflow** with 11 execution steps — 6 processing agents and 5 validation checkpoints — each handled by specialized Python programs. Think of it as an assembly line where each station adds value to the data.
 
-### The 8-Step Process
+### The 11-Step Process
 
 ```
 1. Data Collection → 2. Raw Data Validation → 3. Data Cleaning → 4. Clean Data Validation
@@ -211,13 +211,15 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
   > A paper about "populism and economic redistribution" will land closer to economics papers than
   > a keyword-match alone would predict.
   >
-  > If SPECTER2 is unavailable, the pipeline falls back to **TF-IDF + LSA** (a classical,
-  > dictionary-based method), which is always available and still reliable.
+  > If SPECTER2 is unavailable, the pipeline tries **Ollama embeddings** next (e.g.
+  > `nomic-embed-text`, if Ollama is running), then falls back to **TF-IDF + LSA** (a classical,
+  > always-available fallback). All three produce compatible vector representations; only the
+  > semantic quality differs. The active backend is logged at startup.
 
 **Stage 3 - LLM Classification** (when needed):
 - **What it does**: Uses an AI language model (running locally via Ollama) for complex cases
-- **When triggered**: When confidence from both rule-based and embedding stages is below 0.6
-- **What it produces**: A JSON response with domain, subcategory, confidence, and reasoning
+- **When triggered**: When SPECTER2 embedding confidence falls in the ambiguous [0.60–0.82] band — roughly 10–30% of the corpus. Papers above 0.82 are accepted by Stage 2; papers below 0.60 are flagged as low-signal and assigned to `Other`.
+- **What it produces**: A structured JSON response with domain, subcategory, and confidence
 - **Validation**: Every LLM response is checked against the official taxonomy before acceptance;
   invalid or hallucinated labels are rejected and fall back to `Other/interdisciplinary`
 
@@ -226,7 +228,7 @@ The pipeline is organized as a **modular workflow** with 8 main steps, each hand
 
 **`EmbeddingClient`** (from `embedding_client.py`):
 - **What it does**: Generates numerical representations of paper content
-- **Models used**: SPECTER2 (preferred) → TF-IDF/LSA (fallback)
+- **Backend priority**: SPECTER2 (preferred, ~440 MB, downloads once) → Ollama `nomic-embed-text` (if Ollama is running) → TF-IDF + LSA (always available)
 - **For users**: Enables intelligent grouping of similar research without manual labeling
 
 ### 6. Network Analysis Agent (`network_analysis.py`)
