@@ -1,3 +1,6 @@
+# Claude Code
+.claude/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -164,6 +167,12 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# R history
+.Rhistory
+
+# Stray local directories
+J--AI-Projets-Bibliometrics-econoPoPop/
 
 # LLM model files (if downloaded locally)
 models/

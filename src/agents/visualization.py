@@ -468,15 +468,13 @@ def _build_figure_summaries(proc_dir: str) -> dict:
         df = load_parquet(f"{proc_dir}/classified_works.parquet")
         counts = df["domain"].value_counts()
         total_w = len(df)
-        breakdown = "; ".join(
-            f"{d}: {c} ({100 * c / total_w:.1f}%)" for d, c in counts.items()
-        )
+        breakdown = "; ".join(f"{d}: {c} ({100 * c / total_w:.1f}%)" for d, c in counts.items())
         stage_str = ""
         if "domain_source" in df.columns:
             stages = df["domain_source"].value_counts().to_dict()
-            stage_str = " Classification stages: " + ", ".join(
-                f"{k}={v}" for k, v in stages.items()
-            ) + "."
+            stage_str = (
+                " Classification stages: " + ", ".join(f"{k}={v}" for k, v in stages.items()) + "."
+            )
         s["domain_distribution"] = f"{total_w:,} works. {breakdown}.{stage_str}"
     except Exception:
         s["domain_distribution"] = ""
