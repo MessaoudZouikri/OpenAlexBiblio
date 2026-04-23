@@ -107,23 +107,22 @@ class TestClassificationRegression:
             },
         ]
 
-        for work in test_works:
-            result = classify_work(work)
-            work_id = work["id"]
-            reference = reference_classification_results.get(work_id)
+        results = {work["id"]: classify_work(work) for work in test_works}
 
-            if reference:
-                # Check that results are reasonably similar
-                assert result["domain"] == reference["domain"], f"Domain changed for {work_id}"
-                assert (
-                    result["subcategory"] == reference["subcategory"]
-                ), f"Subcategory changed for {work_id}"
+        for work_id, result in results.items():
+            if work_id not in reference_classification_results:
+                continue
+            reference = reference_classification_results[work_id]
 
-                # Allow some tolerance for confidence scores
-                confidence_diff = abs(result["confidence"] - reference["confidence"])
-                assert (
-                    confidence_diff < 0.2
-                ), f"Confidence changed significantly for {work_id}: {confidence_diff}"
+            assert result["domain"] == reference["domain"], f"Domain changed for {work_id}"
+            assert (
+                result["subcategory"] == reference["subcategory"]
+            ), f"Subcategory changed for {work_id}"
+
+            confidence_diff = abs(result["confidence"] - reference["confidence"])
+            assert (
+                confidence_diff < 0.2
+            ), f"Confidence changed significantly for {work_id}: {confidence_diff}"
 
     def test_classification_distribution_stability(self):
         """Test that classification distributions remain stable."""
