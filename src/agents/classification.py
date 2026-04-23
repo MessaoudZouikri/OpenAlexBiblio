@@ -35,7 +35,7 @@ import hashlib
 import logging
 import sys
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -56,7 +56,6 @@ from src.utils.taxonomy import (
     SUBCATEGORY_KEYWORDS,
     VALID_DOMAINS,
 )
-
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Stage 1 — Rule-Based

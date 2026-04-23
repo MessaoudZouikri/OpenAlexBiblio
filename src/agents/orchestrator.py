@@ -133,7 +133,7 @@ def run_step(
             if result.stderr:
                 # Echo last 20 lines of stderr directly into the orchestrator log
                 tail = result.stderr.strip().splitlines()[-20:]
-                logger.error("  stderr tail:\n%s", "\n".join(f"    {l}" for l in tail))
+                logger.error("  stderr tail:\n%s", "\n".join(f"    {line}" for line in tail))
         return success, duration
 
     except FileNotFoundError as exc:
