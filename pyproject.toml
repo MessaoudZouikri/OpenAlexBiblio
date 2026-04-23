@@ -1,7 +1,7 @@
 [project]
 name = "bibliometric-pipeline"
 version = "1.1.0"
-description = "Modular, reproducible multi-agent bibliometric pipeline for populism research using OpenAlex"
+description = "A Bibliometric Analysis Pipeline Using OpenAlex Data"
 readme = "README.md"
 license = { text = "GPL-3.0" }
 authors = [
@@ -56,10 +56,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/MessaoudZouikri/econoPoPop"
-Repository = "https://github.com/MessaoudZouikri/econoPoPop"
-Issues = "https://github.com/MessaoudZouikri/econoPoPop/issues"
-Documentation = "https://github.com/MessaoudZouikri/econoPoPop/blob/main/docs/INDEX.md"
+Homepage = "https://github.com/MessaoudZouikri/OpenAlexBiblio"
+Repository = "https://github.com/MessaoudZouikri/OpenAlexBiblio"
+Issues = "https://github.com/MessaoudZouikri/OpenAlexBiblio/issues"
+Documentation = "https://github.com/MessaoudZouikri/OpenAlexBiblio/blob/main/docs/INDEX.md"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]

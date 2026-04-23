@@ -79,7 +79,7 @@ Open **[INDEX.md](./INDEX.md)** for the complete navigation hub with:
 
 - **Maintainer**: Messaoud Zouikri
 - **Email**: econoPoPop@proton.me
-- **GitHub**: https://github.com/MessaoudZouikri/econoPoPop
+- **GitHub**: https://github.com/MessaoudZouikri/OpenAlexBiblio
 
 ---
 

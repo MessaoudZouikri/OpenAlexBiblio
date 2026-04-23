@@ -29,7 +29,7 @@ jump directly to the [Step-by-Step Function Guide](#step-by-step-function-guide)
 
 ## Introduction
 
-Welcome to the **Bibliometric Pipeline for Populism Studies**! This tutorial will guide you through understanding how this automated system collects, processes, and analyzes academic research on populism using the OpenAlex database.
+Welcome to the **A Bibliometric Analysis Pipeline Using OpenAlex Data**! This tutorial will guide you through understanding how this automated system collects, processes, and analyzes academic research on populism using the OpenAlex database.
 
 ### What is Bibliometric Analysis?
 Bibliometric analysis studies patterns in academic literature through quantitative methods. For populism research, this means:

@@ -1,6 +1,6 @@
-# Bibliometric Pipeline — Populism Studies
+# A Bibliometric Analysis Pipeline Using OpenAlex Data
 
-[![Tests](https://github.com/MessaoudZouikri/econoPoPop/actions/workflows/tests.yml/badge.svg)](https://github.com/MessaoudZouikri/econoPoPop/actions/workflows/tests.yml)
+[![Tests](https://github.com/MessaoudZouikri/OpenAlexBiblio/actions/workflows/tests.yml/badge.svg)](https://github.com/MessaoudZouikri/OpenAlexBiblio/actions/workflows/tests.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](CITATION.cff)
@@ -358,17 +358,18 @@ If you use this pipeline in your research, please cite it:
 ```bibtex
 @software{zouikri2026bibliometric,
   author = {Zouikri, Messaoud},
-  title = {Bibliometric Pipeline: {P}opulism Studies},
+  title = {A Bibliometric Analysis Pipeline Using OpenAlex Data},
   year = {2026},
   month = {04},
   version = {1.1.0},
-  url = {https://github.com/MessaoudZouikri/econoPoPop},
+  url = {https://github.com/MessaoudZouikri/OpenAlexBiblio},
   contact = {econoPoPop@proton.me}
 }
 ```
 
 **APA:**  
-Zouikri, M. (2026). Bibliometric pipeline: Populism studies (Version 1.1.0) [Software]. Retrieved from https://github.com/MessaoudZouikri/econoPoPop
+Zouikri, M. (2026). A Bibliometric Analysis Pipeline Using OpenAlex Data (Version 1.1.0) [Software]. 
+Retrieved from https://github.com/MessaoudZouikri/OpenAlexBiblio
 
 **GitHub Citation Feature:**  
 Use the "Cite this repository" button on GitHub for additional citation formats.
@@ -381,7 +382,7 @@ See [**CITING.md**](CITING.md) for more citation options, specific component cit
 
 **Maintainer:** Messaoud Zouikri  
 **Email:** econoPoPop@proton.me  
-**Repository:** https://github.com/MessaoudZouikri/econoPoPop
+**Repository:** https://github.com/MessaoudZouikri/OpenAlexBiblio
 
 **Feedback, bug reports, or collaboration inquiries?** Reach out at **econoPoPop@proton.me**
 

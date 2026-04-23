@@ -300,7 +300,7 @@ Look for increasing AS values over time in specific domain pairs
 When using these metrics, cite:
 
 **Methodology**: VOSviewer-inspired association strength normalization
-**Application**: Bibliometric Pipeline for Populism Studies
+**Application**: A Bibliometric Analysis Pipeline Using OpenAlex Data
 
 Full citation: See `docs/metadata/CITATION.cff`
 

@@ -1,4 +1,4 @@
-# Contributing to the Bibliometric Pipeline
+# Contributing to OpenAlexBiblio
 
 Thank you for your interest in contributing! This guide explains how to report bugs, propose changes, and submit pull requests.
 
@@ -8,8 +8,8 @@ Thank you for your interest in contributing! This guide explains how to report b
 
 ```bash
 # 1. Fork the repository, then clone your fork
-git clone https://github.com/<your-username>/econoPoPop.git
-cd econoPoPop
+git clone https://github.com/<your-username>/OpenAlexBiblio.git
+cd OpenAlexBiblio
 
 # 2. Create a virtual environment and install all dependencies
 python -m venv .venv
@@ -37,7 +37,7 @@ git push origin feature/my-feature
 
 ### Bug Reports
 
-Open a [GitHub Issue](https://github.com/MessaoudZouikri/econoPoPop/issues) with:
+Open a [GitHub Issue](https://github.com/MessaoudZouikri/OpenAlexBiblio/issues) with:
 - Python version (`python --version`)
 - OS and hardware
 - Full traceback
@@ -136,7 +136,7 @@ Before opening a PR, ensure:
 
 Email: [econoPoPop@proton.me](mailto:econoPoPop@proton.me)
 
-GitHub Discussions: [github.com/MessaoudZouikri/econoPoPop/discussions](https://github.com/MessaoudZouikri/econoPoPop/discussions)
+GitHub Discussions: [github.com/MessaoudZouikri/OpenAlexBiblio/discussions](https://github.com/MessaoudZouikri/OpenAlexBiblio/discussions)
 
 ---
 

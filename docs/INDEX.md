@@ -119,7 +119,7 @@ Root-level (key entry points):
 
 1. **Troubleshooting**: Check `QUICKSTART.md` in the root directory
 2. **API Details**: See `agents/` folder specifications
-3. **Contributing**: See [CONTRIBUTING.md](../CONTRIBUTING.md) or open an issue on [GitHub](https://github.com/MessaoudZouikri/econoPoPop)
+3. **Contributing**: See [CONTRIBUTING.md](../CONTRIBUTING.md) or open an issue on [GitHub](https://github.com/MessaoudZouikri/OpenAlexBiblio)
 4. **Questions/Feedback**: Contact: **econoPoPop@proton.me**
 
 ---

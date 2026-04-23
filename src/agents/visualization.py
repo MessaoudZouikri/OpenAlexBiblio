@@ -385,7 +385,7 @@ def generate_html_report(fig_dir: str, config: dict) -> None:
         "img{max-width:100%;border:1px solid #ddd;margin:10px 0;border-radius:4px}",
         "h1{color:#2d6be4}h2{color:#444;border-bottom:1px solid #ddd}",
         "</style></head><body>",
-        "<h1>Bibliometric Pipeline — Populism Literature</h1>",
+        "<h1>A Bibliometric Analysis Pipeline Using OpenAlex Data</h1>",
         f"<p><em>Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}</em></p>",
         "<p>Mode: " + config["pipeline"]["mode"] + "</p>",
     ]
