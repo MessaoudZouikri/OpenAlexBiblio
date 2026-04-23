@@ -12,7 +12,7 @@ A: SUGGESTED at beginning. 3-stage classification uses rule+embedding+LLM.
 A: Curated from multiple scholarly sources. Reproducible in SEED_TEXTS.
 
 **Q: Can we submit updated taxonomy to researchers?**
-A: YES! Use TAXONOMY_UPDATE_TEMPLATE.md (CSV format)
+A: YES! See `src/utils/taxonomy.py` for the current structure, then run `python scripts/update_taxonomy.py --input feedback.csv --apply`
 
 **Q: Can we automate updates?**
 A: YES! Run: `python scripts/update_taxonomy.py --input feedback.csv --apply`
@@ -45,27 +45,6 @@ Each metric directly interpretable by researchers.
 
 ---
 
-### Files Created
-
-```
-✅ CODE_QUALITY_ANALYSIS.md          (comprehensive review)
-✅ TAXONOMY_UPDATE_TEMPLATE.md       (researcher CSV template)
-✅ IMPLEMENTATION_SUMMARY.md         (4-phase roadmap)
-✅ src/utils/taxonomy.py             (centralized taxonomy)
-✅ src/utils/metrics.py              (4 coupling metrics)
-✅ scripts/update_taxonomy.py        (automation script)
-```
-
----
-
-### Implementation Steps
-
-1. **Today**: Change imports to use centralized `taxonomy.py`
-2. **Week**: Integrate metrics + visualization
-3. **Ongoing**: Collect researcher feedback → apply → re-run
-
----
-
 ### Key Files to Know
 
 | File | Purpose | Lines |
@@ -73,7 +52,6 @@ Each metric directly interpretable by researchers.
 | `src/utils/taxonomy.py` | Single taxonomy source | 230 |
 | `src/utils/metrics.py` | Coupling analysis | 380 |
 | `scripts/update_taxonomy.py` | Apply researcher feedback | 350 |
-| `TAXONOMY_UPDATE_TEMPLATE.md` | CSV template for researchers | 200+ |
 
 ---
 

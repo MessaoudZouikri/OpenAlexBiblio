@@ -167,3 +167,6 @@ Thumbs.db
 
 # LLM model files (if downloaded locally)
 models/
+
+# Ruff linter cache
+.ruff_cache/

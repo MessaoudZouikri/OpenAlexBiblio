@@ -9,7 +9,7 @@ Files Modified: 2
 
 ## What Was Implemented
 
-Section 3 of CODE_QUALITY_ANALYSIS.md proposed 4 new interpretable metrics for cross-domain bibliographic coupling. These have now been **fully integrated into the pipeline**.
+4 new interpretable metrics for cross-domain bibliographic coupling have been **fully integrated into the pipeline**.
 
 ### 1. ✅ Enhanced Metrics Function (network_analysis.py)
 
@@ -269,7 +269,7 @@ ls -lh data/outputs/figures/cross_domain_heatmap*.png
 ## Documentation
 
 The implementation follows guidelines from:
-- Section 3 of CODE_QUALITY_ANALYSIS.md (exact specifications)
+- See `docs/development/ENHANCED_METRICS.md` for full metric specifications
 - VOSviewer association strength normalization
 - Jaccard similarity in bibliometrics literature
 - Standard network analysis metrics

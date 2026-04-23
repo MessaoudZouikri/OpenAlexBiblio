@@ -23,6 +23,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.utils.io_utils import load_json, load_parquet, load_yaml
+from src.utils.llm_client import OllamaClient
 from src.utils.logging_utils import setup_logger
 
 STYLE = {
@@ -377,34 +378,259 @@ def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
     plt.close()
 
 
-def generate_html_report(fig_dir: str, config: dict) -> None:
-    figures = list(Path(fig_dir).glob("*.png"))
-    html = [
-        "<html><head><style>",
-        "body{font-family:Arial,sans-serif;max-width:1200px;margin:auto;padding:20px}",
-        "img{max-width:100%;border:1px solid #ddd;margin:10px 0;border-radius:4px}",
-        "h1{color:#2d6be4}h2{color:#444;border-bottom:1px solid #ddd}",
-        "</style></head><body>",
-        "<h1>A Bibliometric Analysis Pipeline Using OpenAlex Data</h1>",
-        f"<p><em>Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}</em></p>",
-        "<p>Mode: " + config["pipeline"]["mode"] + "</p>",
-    ]
+_HTML_CSS = """
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 20px;
+    color: #222;
+    background: #fafafa;
+}
+h1 { color: #2d6be4; border-bottom: 3px solid #2d6be4; padding-bottom: 8px; }
+h2 { color: #333; border-bottom: 1px solid #ddd; margin-top: 40px; }
+.meta { color: #666; font-size: 0.9em; margin-bottom: 30px; }
+.figure-block {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+img { max-width: 100%; border-radius: 4px; display: block; margin: 12px 0; }
+.data-summary {
+    background: #f0f4ff;
+    border-left: 4px solid #2d6be4;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 0.88em;
+    color: #444;
+}
+.interpretation { background: #f6fff6; border-left: 4px solid #27ae60; padding: 10px 14px; margin: 10px 0; }
+.interp-label { font-size: 0.78em; color: #888; font-style: italic; margin-bottom: 4px; }
+"""
+
+
+def _build_figure_summaries(proc_dir: str) -> dict:
+    """Load processed JSON/Parquet files and return per-figure text summaries."""
+    s: dict = {}
+
+    try:
+        trends = load_json(f"{proc_dir}/publication_trends.json")
+        annual = trends.get("annual", [])
+        total = sum(r["count"] for r in annual)
+        years = [r["year"] for r in annual]
+        year_range = f"{min(years)}–{max(years)}" if years else "unknown"
+        dom_str = ""
+        domain_annual = trends.get("domain_annual", [])
+        if domain_annual:
+            domains = [k for k in domain_annual[0] if k != "year"]
+            totals = {d: sum(r.get(d, 0) for r in domain_annual) for d in domains}
+            lead = max(totals, key=lambda d: totals[d])
+            dom_str = f" Leading domain: {lead}."
+        s["publication_trends"] = (
+            f"{total:,} records spanning {year_range} ({len(annual)} annual data points).{dom_str}"
+        )
+    except Exception:
+        s["publication_trends"] = ""
+
+    try:
+        cit = load_json(f"{proc_dir}/citation_stats.json")
+        mean_val = cit.get("mean")
+        mean_str = f"{mean_val:.1f}" if isinstance(mean_val, (int, float)) else "N/A"
+        zero_rate = cit.get("zero_citation_rate", 0)
+        zero_str = f"{zero_rate * 100:.1f}%" if isinstance(zero_rate, (int, float)) else "N/A"
+        s["citation_distribution"] = (
+            f"Total citations: {cit.get('total', 'N/A'):,}. "
+            f"h-index: {cit.get('h_index_corpus', 'N/A')}, "
+            f"g-index: {cit.get('g_index_corpus', 'N/A')}. "
+            f"Mean: {mean_str} citations/paper. "
+            f"Zero-citation rate: {zero_str}."
+        )
+    except Exception:
+        s["citation_distribution"] = ""
+
+    try:
+        authors = load_json(f"{proc_dir}/top_authors.json")
+        top = authors.get("top_by_output", [{}])
+        lotka = authors.get("lotka_exponent", "N/A")
+        lotka_str = f"{lotka:.2f}" if isinstance(lotka, float) else str(lotka)
+        s["top_authors"] = (
+            f"Unique authors: {authors.get('total_unique_authors', 'N/A'):,}. "
+            f"Most prolific: {top[0].get('name','N/A')} ({top[0].get('paper_count','N/A')} papers). "
+            f"Lotka exponent: {lotka_str}."
+        )
+    except Exception:
+        s["top_authors"] = ""
+
+    try:
+        df = load_parquet(f"{proc_dir}/classified_works.parquet")
+        counts = df["domain"].value_counts()
+        total_w = len(df)
+        breakdown = "; ".join(
+            f"{d}: {c} ({100 * c / total_w:.1f}%)" for d, c in counts.items()
+        )
+        stage_str = ""
+        if "domain_source" in df.columns:
+            stages = df["domain_source"].value_counts().to_dict()
+            stage_str = " Classification stages: " + ", ".join(
+                f"{k}={v}" for k, v in stages.items()
+            ) + "."
+        s["domain_distribution"] = f"{total_w:,} works. {breakdown}.{stage_str}"
+    except Exception:
+        s["domain_distribution"] = ""
+
+    try:
+        concepts = load_json(f"{proc_dir}/concept_landscape.json")
+        top5 = [c["concept"] for c in concepts.get("top_50_concepts", [])[:5]]
+        s["concept_landscape"] = f"Top concepts: {', '.join(top5)}." if top5 else ""
+    except Exception:
+        s["concept_landscape"] = ""
+
+    try:
+        metrics = load_json(f"{proc_dir}/network_metrics.json")
+        enhanced = metrics.get("enhanced_cross_domain_metrics", {})
+        idcr = enhanced.get("inter_domain_ratio", "N/A")
+        meta = enhanced.get("metadata", {})
+        idcr_str = f"{idcr * 100:.1f}%" if isinstance(idcr, float) else str(idcr)
+        hmap = (
+            f"Inter-domain coupling ratio (IDCR): {idcr_str}. "
+            f"Cross-domain edges: {meta.get('n_inter_domain_edges','N/A')}, "
+            f"intra-domain: {meta.get('n_intra_domain_edges','N/A')}. "
+            f"Total coupling strength: {meta.get('total_coupling_strength','N/A')}."
+        )
+        s["cross_domain_heatmap"] = hmap
+        s["cross_domain_heatmap_enhanced"] = hmap
+    except Exception:
+        s["cross_domain_heatmap"] = ""
+        s["cross_domain_heatmap_enhanced"] = ""
+
+    return s
+
+
+def _llm_interpret(client: OllamaClient, figure_stem: str, data_summary: str) -> str:
+    """Generate a 2-3 sentence bibliometric interpretation via Ollama. Returns '' on failure."""
+    system_prompt = (
+        "You are a bibliometrics expert writing concise analytical interpretations "
+        "for peer-reviewed academic reports on populism research. "
+        "Write exactly 2-3 sentences interpreting the significance of the data. "
+        "Use bibliometric terminology. Do not restate raw numbers — interpret their meaning."
+    )
+    title = figure_stem.replace("_", " ").title()
+    text, ok = client.generate(
+        system_prompt,
+        f"Write a 2-3 sentence interpretation for the '{title}' figure.\n\nKey data: {data_summary}",
+    )
+    return text.strip() if ok and text else ""
+
+
+def generate_html_report(
+    fig_dir: str,
+    config: dict,
+    proc_dir: str = None,
+    llm_client: OllamaClient = None,
+) -> None:
+    figures = sorted(Path(fig_dir).glob("*.png"))
+    summaries = _build_figure_summaries(proc_dir) if proc_dir else {}
+    now = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
+    mode = config["pipeline"]["mode"]
+
     report_path = Path(f"{config['paths']['outputs']}/reports/report.html")
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_dir = report_path.parent
-    for fig in sorted(figures):
-        title = fig.stem.replace("_", " ").title()
+
+    lines = [
+        "<!DOCTYPE html><html lang='en'><head>",
+        "<meta charset='utf-8'>",
+        "<meta name='viewport' content='width=device-width, initial-scale=1'>",
+        "<title>Bibliometric Analysis Report</title>",
+        f"<style>{_HTML_CSS}</style>",
+        "</head><body>",
+        "<h1>A Bibliometric Analysis Pipeline Using OpenAlex Data</h1>",
+        f"<p class='meta'>Generated: {now} &nbsp;|&nbsp; Mode: {mode}</p>",
+    ]
+
+    for fig in figures:
+        stem = fig.stem
+        title = stem.replace("_", " ").title()
         img_src = Path(os.path.relpath(fig, report_dir)).as_posix()
-        html.append(f"<h2>{title}</h2>")
-        html.append(f"<img src='{img_src}' alt='{title}'>")
-    html.append("</body></html>")
-    with open(report_path, "w") as f:
-        f.write("\n".join(html))
+        summary = summaries.get(stem, "")
+        interpretation = ""
+        if llm_client and summary:
+            interpretation = _llm_interpret(llm_client, stem, summary)
+
+        lines.append("<div class='figure-block'>")
+        lines.append(f"<h2>{title}</h2>")
+        lines.append(f"<img src='{img_src}' alt='{title}'>")
+        if summary:
+            lines.append(f"<div class='data-summary'>{summary}</div>")
+        if interpretation:
+            lines.append("<div class='interpretation'>")
+            lines.append("<div class='interp-label'>Auto-generated interpretation (Ollama)</div>")
+            lines.append(f"<p>{interpretation}</p>")
+            lines.append("</div>")
+        lines.append("</div>")
+
+    lines.append("</body></html>")
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+
+def generate_markdown_report(
+    fig_dir: str,
+    config: dict,
+    proc_dir: str = None,
+    llm_client: OllamaClient = None,
+) -> None:
+    figures = sorted(Path(fig_dir).glob("*.png"))
+    summaries = _build_figure_summaries(proc_dir) if proc_dir else {}
+    now = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")
+    mode = config["pipeline"]["mode"]
+
+    report_path = Path(f"{config['paths']['outputs']}/reports/report.md")
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_dir = report_path.parent
+
+    lines = [
+        "# A Bibliometric Analysis Pipeline Using OpenAlex Data",
+        "",
+        f"*Generated: {now} | Mode: {mode}*",
+        "",
+        "---",
+        "",
+    ]
+
+    for fig in figures:
+        stem = fig.stem
+        title = stem.replace("_", " ").title()
+        img_src = Path(os.path.relpath(fig, report_dir)).as_posix()
+        summary = summaries.get(stem, "")
+        interpretation = ""
+        if llm_client and summary:
+            interpretation = _llm_interpret(llm_client, stem, summary)
+
+        lines.append(f"## {title}")
+        lines.append("")
+        lines.append(f"![{title}]({img_src})")
+        lines.append("")
+        if summary:
+            lines.append(f"> **Data:** {summary}")
+            lines.append("")
+        if interpretation:
+            lines.append(f"> **Interpretation** *(auto-generated via Ollama)*: {interpretation}")
+            lines.append("")
+        lines.append("---")
+        lines.append("")
+
+    with open(report_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
 
 
 def main():
     parser = argparse.ArgumentParser(description="Visualization Agent")
     parser.add_argument("--config", default="config/config.yaml")
+    parser.add_argument("--llm-config", default="config/llm.yaml")
     args = parser.parse_args()
 
     config = load_yaml(args.config)
@@ -415,7 +641,7 @@ def main():
     fig_dir = config["paths"]["outputs"] + "/figures"
     Path(fig_dir).mkdir(parents=True, exist_ok=True)
 
-    # Load available data
+    # Load available data and generate figures
     try:
         trends = load_json(f"{proc_dir}/publication_trends.json")
         fig_publication_trends(trends, fig_dir)
@@ -458,11 +684,37 @@ def main():
     except Exception as e:
         logger.warning("cross_domain_heatmap: %s", e)
 
+    # Set up LLM client for report interpretations (temperature=0 for determinism)
+    llm_client = None
     try:
-        generate_html_report(fig_dir, config)
-        logger.info("Generated: HTML report")
+        llm_cfg = load_yaml(args.llm_config)
+        llm_client = OllamaClient(
+            endpoint=llm_cfg.get("endpoint", "http://localhost:11434"),
+            model=llm_cfg.get("model", "qwen2.5:7b"),
+            temperature=0.0,
+            max_tokens=400,
+            fallback_models=llm_cfg.get("fallback_models", []),
+        )
+        if not llm_client.is_available():
+            logger.info("Ollama unavailable — reports will use data summaries only")
+            llm_client = None
+        else:
+            logger.info("Ollama available — generating LLM interpretations for reports")
+    except Exception as exc:
+        logger.warning("LLM client init failed: %s", exc)
+        llm_client = None
+
+    try:
+        generate_html_report(fig_dir, config, proc_dir, llm_client)
+        logger.info("Generated: report.html")
     except Exception as e:
         logger.warning("HTML report: %s", e)
+
+    try:
+        generate_markdown_report(fig_dir, config, proc_dir, llm_client)
+        logger.info("Generated: report.md")
+    except Exception as e:
+        logger.warning("Markdown report: %s", e)
 
     logger.info("=== Visualization Agent complete ===")
 

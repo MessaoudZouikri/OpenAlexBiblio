@@ -54,33 +54,33 @@ steps:
     script: "src/agents/data_collection.py"
   - name: validate_raw
     enabled: true
-    script: "src/agents/validation/data_validator.py"
+    script: "src/agents/validation/validators.py"
     stage: "D1"
   - name: data_cleaning
     enabled: true
     script: "src/agents/data_cleaning.py"
   - name: validate_clean
     enabled: true
-    script: "src/agents/validation/data_validator.py"
+    script: "src/agents/validation/validators.py"
     stage: "D2"
   - name: bibliometric_analysis
     enabled: true
     script: "src/agents/bibliometric_analysis.py"
   - name: validate_statistical
     enabled: true
-    script: "src/agents/validation/statistical_validator.py"
+    script: "src/agents/validation/validators.py"
   - name: classification
     enabled: true
     script: "src/agents/classification.py"
   - name: validate_classification
     enabled: true
-    script: "src/agents/validation/classification_validator.py"
+    script: "src/agents/validation/validators.py"
   - name: network_analysis
     enabled: true
     script: "src/agents/network_analysis.py"
   - name: validate_network
     enabled: true
-    script: "src/agents/validation/network_validator.py"
+    script: "src/agents/validation/validators.py"
   - name: visualization
     enabled: true
     script: "src/agents/visualization.py"

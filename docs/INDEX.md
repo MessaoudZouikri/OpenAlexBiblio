@@ -23,17 +23,12 @@ Want to understand the codebase, improve code quality, or contribute to developm
 
 Want to contribute to or modify the domain taxonomy? Need to enrich subcategories?
 
-| Document | Purpose | Read Time |
+| Resource | Purpose | Read Time |
 |----------|---------|-----------|
-| [`research/TAXONOMY_UPDATE_TEMPLATE.md`](./research/TAXONOMY_UPDATE_TEMPLATE.md) | Current taxonomy overview with CSV template, examples, and submission process | 10 min |
+| [`src/utils/taxonomy.py`](../src/utils/taxonomy.py) | Single source of truth for all 4 domains, 21 subcategories, keywords, and seed texts | 10 min |
+| [`scripts/update_taxonomy.py`](../scripts/update_taxonomy.py) | Automates applying taxonomy changes from a CSV feedback file | 5 min |
 
-**Key Module**: `src/utils/taxonomy.py` — Contains the taxonomy definitions and seed texts.
-
-**What You'll Learn**:
-- Current 4 domains × 21 subcategories structure
-- How to propose new subcategories
-- How to modify existing classifications
-- Submission format and quality checklist
+**To propose changes**: Open an issue or PR with a CSV in the format: `Action, Domain, Subcategory, Keywords, Seed Texts, Rationale`.
 
 ---
 
@@ -58,7 +53,6 @@ Want to understand the metrics, run the pipeline, or analyze results?
 | Document | Purpose |
 |----------|---------|
 | [`../CITATION.cff`](../CITATION.cff) | Citation metadata in standard CFF format (GitHub auto-detects this) |
-| [`../CITING.md`](../CITING.md) | How to cite this package in your work |
 
 ---
 
@@ -68,16 +62,14 @@ Want to understand the metrics, run the pipeline, or analyze results?
 docs/
 ├── INDEX.md                           ← You are here!
 ├── getting-started/
-│   ├── QUICK_REFERENCE.md             For users asking common questions
+│   ├── QUICK_REFERENCE.md             Common questions and metrics reference
 │   └── VISUALIZATION_GUIDE.md         How to create and interpret visualizations
-├── development/
-│   └── (architecture notes)
-└── research/
-    └── TAXONOMY_UPDATE_TEMPLATE.md    For researchers enriching the taxonomy
+└── development/
+    ├── ENHANCED_METRICS.md            4 cross-domain coupling metrics explained
+    └── IMPLEMENTATION_ENHANCED_METRICS.md  Implementation details
 
 Root-level (key entry points):
 ├── CITATION.cff                       CFF citation metadata (parsed by GitHub)
-├── CITING.md                          How to cite this package
 ├── CONTRIBUTING.md                    How to contribute code or taxonomy proposals
 └── TESTING_STRATEGY.md                Test suite design and coverage targets
 ```
@@ -91,21 +83,20 @@ Root-level (key entry points):
 - **Current Structure**: 4 domains, 21 subcategories (hand-curated, not from OpenAlex)
 - **Classification Method**: 3-stage (Rule-based → Embedding → Selective LLM)
 - **Source Documents**:
-  - [`research/TAXONOMY_UPDATE_TEMPLATE.md`](./research/TAXONOMY_UPDATE_TEMPLATE.md) — For proposals
-  - `src/utils/taxonomy.py` — Implementation details
+  - `src/utils/taxonomy.py` — Single source of truth for all domains, subcategories, keywords, and seed texts
 
 ### Code Quality & Architecture
 
 - **Architecture Rating**: 9/10 (Excellent)
 - **Key Strengths**: Agent-based design, stateless processing, comprehensive logging
 - **Areas for Improvement**: Edge case handling, test coverage
-- **Full Analysis**: [`development/CODE_QUALITY_ANALYSIS.md`](./development/CODE_QUALITY_ANALYSIS.md)
+- **Source**: All agents in `src/agents/`, utilities in `src/utils/`
 
 ### Enhanced Metrics & Indicators
 
 - **New Metrics**: 4 interpretable coupling matrices with direct meaning
 - **Comparison Framework**: Cross-domain bibliographic coupling with statistical validity
-- **Details**: See IMPLEMENTATION_SUMMARY.md metrics section
+- **Details**: [`development/ENHANCED_METRICS.md`](./development/ENHANCED_METRICS.md)
 
 ### Installation & Usage
 
@@ -130,8 +121,7 @@ Root-level (key entry points):
 |----------|-------|----------|---------|
 | **Getting Started** | 2 | Users, Analysts | Quick reference and visualization guides |
 | **Development** | 2 | Developers, Maintainers | Contributing guide and testing strategy |
-| **Research** | 1 | Researchers, Domain Experts | Taxonomy enrichment and contribution guidelines |
-| **Citation** | 2 | All | CITATION.cff and citation instructions |
+| **Citation** | 1 | All | CITATION.cff (in root) |
 
 ---
 

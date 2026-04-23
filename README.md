@@ -1,6 +1,7 @@
 # A Bibliometric Analysis Pipeline Using OpenAlex Data
 
 [![Tests](https://github.com/MessaoudZouikri/OpenAlexBiblio/actions/workflows/tests.yml/badge.svg)](https://github.com/MessaoudZouikri/OpenAlexBiblio/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/MessaoudZouikri/OpenAlexBiblio/branch/master/graph/badge.svg)](https://codecov.io/gh/MessaoudZouikri/OpenAlexBiblio)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](CITATION.cff)
@@ -283,7 +284,7 @@ Classification uses a **three-stage hybrid approach**, designed to minimise LLM 
 2. **Stage 2 — SPECTER2 embedding** (fast, local): Paper content is encoded into a 768-dimensional vector and compared to per-subcategory centroids built from the taxonomy seed texts. Confidence ≥ 0.82 → final; confidence < 0.60 → low-signal, assigned to `Other`.
 3. **Stage 3 — LLM** (selective): Triggered only for papers where embedding confidence falls in the ambiguous [0.60–0.82] band — roughly 10–30% of the corpus. Uses a local Ollama model. All outputs are validated against the taxonomy before acceptance; invalid or hallucinated labels fall back to `Other/interdisciplinary`.
 
-This design means the LLM is never called for clear-cut cases, which reduced total classification time from ~7 hours to under 1 hour for a 10,000-paper corpus.
+This design means the LLM is never called for clear-cut cases, which reduced total classification time from ~7 hours to under 1 hour for a 54,000-paper corpus.
 
 ---
 
@@ -315,7 +316,7 @@ See [QUICKSTART.md](QUICKSTART.md) for the complete step-by-step production chec
 ```yaml
 pipeline:
   mode: "full"
-  full_max_records: 10000   # Start here; set null for all ~57,000 records
+  full_max_records:10000   # Start here; set null for all ~57,000 records
   min_year: 1980
 ```
 
@@ -379,8 +380,6 @@ Retrieved from https://github.com/MessaoudZouikri/OpenAlexBiblio
 
 **GitHub Citation Feature:**  
 Use the "Cite this repository" button on GitHub for additional citation formats.
-
-See [**CITING.md**](CITING.md) for more citation options, specific component citations, and acknowledgment language.
 
 ---
 

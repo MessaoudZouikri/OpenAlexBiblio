@@ -328,7 +328,6 @@ A: Yes! They're based on standard bibliometric literature and VOSviewer methodol
 ## 📞 Questions?
 
 See: `IMPLEMENTATION_ENHANCED_METRICS.md` for technical details
-See: `CODE_QUALITY_ANALYSIS.md` section 3 for theoretical background
 
 ---
 

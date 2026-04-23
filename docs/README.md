@@ -1,87 +1,60 @@
-# 📚 Documentation Hub — Start Here
+# Documentation Hub — Start Here
 
-Welcome to the Bibliometric Pipeline documentation! This folder contains comprehensive guides organized by audience and topic.
+Welcome to the Bibliometric Pipeline documentation. This folder contains guides organized by audience and topic.
 
-## 🎯 Quick Start (Choose Your Path)
+## Quick Start (Choose Your Path)
 
-### 👥 **I'm a new user or analyst**
+### New user or analyst
 → Start with [Getting Started Guides](./getting-started/)
-- Quick reference for common questions
-- Visualization guides
-- Usage examples
+- [QUICK_REFERENCE.md](./getting-started/QUICK_REFERENCE.md) — Common questions answered
+- [VISUALIZATION_GUIDE.md](./getting-started/VISUALIZATION_GUIDE.md) — How to generate and interpret figures
 
-### 👨‍💻 **I'm a developer or contributor**
+### Developer or contributor
 → Start with [Development Guides](./development/)
-- Code quality analysis
-- Implementation roadmap
-- Architecture review
+- [ENHANCED_METRICS.md](./development/ENHANCED_METRICS.md) — Cross-domain coupling metrics explained
+- [IMPLEMENTATION_ENHANCED_METRICS.md](./development/IMPLEMENTATION_ENHANCED_METRICS.md) — Implementation details
 
-### 🔬 **I'm a researcher or domain expert**
-→ Start with [Research Guides](./research/)
-- Taxonomy enrichment template
-- Contribution guidelines
-- Domain structure overview
-
-### 📧 **I want to cite this work**
-→ Check [Citation & Attribution](./metadata/)
-- Citation in CFF format
-- How to cite instructions
-- Maintainer information
+### All audiences
+→ See [INDEX.md](./INDEX.md) for the complete navigation hub
 
 ---
 
-## 📂 Folder Structure
+## Folder Structure
 
 ```
 docs/
-├── INDEX.md                     ← Full navigation hub (start here for detailed guide)
+├── INDEX.md                              ← Full navigation hub
 ├── getting-started/
-│   ├── QUICK_REFERENCE.md       For users with questions
-│   └── VISUALIZATION_GUIDE.md   Creating visualizations
-├── development/
-│   ├── CODE_QUALITY_ANALYSIS.md Code review & architecture
-│   └── IMPLEMENTATION_SUMMARY.md Implementation roadmap
-├── research/
-│   └── TAXONOMY_UPDATE_TEMPLATE.md Taxonomy enrichment
-└── metadata/
-    ├── CITATION.cff             Citation metadata
-    └── CITING.md                How to cite
+│   ├── QUICK_REFERENCE.md                Common questions and metrics reference
+│   └── VISUALIZATION_GUIDE.md            Figure generation and interpretation
+└── development/
+    ├── ENHANCED_METRICS.md               4 cross-domain coupling metrics
+    └── IMPLEMENTATION_ENHANCED_METRICS.md Implementation details
+
+Root-level (key entry points):
+├── CITATION.cff                          CFF citation metadata (parsed by GitHub)
+├── CONTRIBUTING.md                       How to contribute code or taxonomy proposals
+└── TESTING_STRATEGY.md                   Test suite design and coverage targets
 ```
 
 ---
 
-## 📖 Full Documentation Index
-
-Open **[INDEX.md](./INDEX.md)** for the complete navigation hub with:
-- Detailed audience sections
-- Reading time estimates
-- Topic-based index
-- Troubleshooting FAQ
-
----
-
-## 🔗 Quick Links
+## Quick Links
 
 | Need | Link | Time |
 |------|------|------|
-| Overview | [Main README](../README.md) | 10 min |
+| Overview | [README.md](../README.md) | 10 min |
 | Setup | [QUICKSTART.md](../QUICKSTART.md) | 5 min |
-| Tutorial | [TUTORIAL.md](../BIBLIOMETRIC_PIPELINE_TUTORIAL.md) | 45 min |
+| Tutorial | [BIBLIOMETRIC_PIPELINE_TUTORIAL.md](../BIBLIOMETRIC_PIPELINE_TUTORIAL.md) | 45 min |
 | Full Docs | [INDEX.md](./INDEX.md) | Varies |
-| Code Issues | [CODE_QUALITY_ANALYSIS.md](./development/CODE_QUALITY_ANALYSIS.md) | 20 min |
-| Roadmap | [IMPLEMENTATION_SUMMARY.md](./development/IMPLEMENTATION_SUMMARY.md) | 10 min |
-| Taxonomy | [TAXONOMY_UPDATE_TEMPLATE.md](./research/TAXONOMY_UPDATE_TEMPLATE.md) | 10 min |
-| Cite Us | [CITING.md](./metadata/CITING.md) | 5 min |
+| Metrics Reference | [ENHANCED_METRICS.md](./development/ENHANCED_METRICS.md) | 10 min |
+| Common Questions | [QUICK_REFERENCE.md](./getting-started/QUICK_REFERENCE.md) | 5 min |
+| Cite Us | [CITATION.cff](../CITATION.cff) | 2 min |
 
 ---
 
-## 💬 Contact
+## Contact
 
 - **Maintainer**: Messaoud Zouikri
 - **Email**: econoPoPop@proton.me
 - **GitHub**: https://github.com/MessaoudZouikri/OpenAlexBiblio
-
----
-
-**Ready? Start with [INDEX.md](./INDEX.md) for comprehensive navigation!** 📚
-
