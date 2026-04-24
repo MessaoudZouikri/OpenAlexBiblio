@@ -34,11 +34,12 @@ jobs:
       - name: Run tests
         run: pytest -q
 
-      - name: Upload coverage report
+      - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         if: matrix.python-version == '3.11'
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          slug: MessaoudZouikri/OpenAlexBiblio
           files: coverage.xml
           fail_ci_if_error: false
 
