@@ -1,7 +1,7 @@
 # A Bibliometric Analysis Pipeline Using OpenAlex Data
 
 [![Tests](https://github.com/MessaoudZouikri/OpenAlexBiblio/actions/workflows/tests.yml/badge.svg)](https://github.com/MessaoudZouikri/OpenAlexBiblio/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/MessaoudZouikri/OpenAlexBiblio/branch/master/graph/badge.svg)](https://codecov.io/gh/MessaoudZouikri/OpenAlexBiblio)
+[![codecov](https://codecov.io/gh/MessaoudZouikri/OpenAlexBiblio/graph/badge.svg)](https://codecov.io/gh/MessaoudZouikri/OpenAlexBiblio)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.1.0-green.svg)](CITATION.cff)
