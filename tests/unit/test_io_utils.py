@@ -3,7 +3,6 @@ Unit tests for src/utils/io_utils.py
 Uses tmp_path fixtures — no pipeline files touched.
 """
 
-import json
 import os
 import time
 

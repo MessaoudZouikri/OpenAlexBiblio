@@ -3,8 +3,6 @@ Unit tests for src/utils/taxonomy.py
 Pure data lookups — no I/O, no mocking needed.
 """
 
-import pytest
-
 from src.utils.taxonomy import (
     DOMAIN_SUBCATEGORY,
     TAXONOMY_METADATA,

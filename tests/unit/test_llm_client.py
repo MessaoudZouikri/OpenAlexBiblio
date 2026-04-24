@@ -3,8 +3,9 @@ Unit tests for src/utils/llm_client.py
 All HTTP calls are mocked — no real Ollama server required.
 """
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from src.utils.llm_client import OllamaClient, validate_classification_response
 
