@@ -20,7 +20,9 @@ from src.agents.visualization import (
     fig_cross_domain_heatmap,
     fig_domain_distribution,
     fig_publication_trends,
+    fig_publication_types,
     fig_top_authors,
+    fig_type_by_domain,
     generate_html_report,
     generate_markdown_report,
 )
@@ -340,6 +342,120 @@ def test_build_figure_summaries_with_citation_json(proc_dir):
     (Path(proc_dir) / "citation_stats.json").write_text(json.dumps(data))
     result = _build_figure_summaries(proc_dir)
     assert "h-index: 18" in result["citation_distribution"]
+
+
+# ── fig_publication_types ─────────────────────────────────────────────────────
+
+
+@pytest.fixture
+def type_stats_data():
+    return {
+        "types": [
+            {
+                "type": "article",
+                "frequency": 400,
+                "percentage": 66.7,
+                "cumulative_percentage": 66.7,
+            },
+            {
+                "type": "book-chapter",
+                "frequency": 150,
+                "percentage": 25.0,
+                "cumulative_percentage": 91.7,
+            },
+            {
+                "type": "preprint",
+                "frequency": 50,
+                "percentage": 8.3,
+                "cumulative_percentage": 100.0,
+            },
+        ],
+        "total": 600,
+    }
+
+
+@pytest.mark.unit
+def test_fig_publication_types_creates_png(fig_dir, type_stats_data):
+    fig_publication_types(type_stats_data, fig_dir)
+    assert (Path(fig_dir) / "publication_types.png").exists()
+
+
+@pytest.mark.unit
+def test_fig_publication_types_file_nonzero(fig_dir, type_stats_data):
+    fig_publication_types(type_stats_data, fig_dir)
+    assert (Path(fig_dir) / "publication_types.png").stat().st_size > 1000
+
+
+@pytest.mark.unit
+def test_fig_publication_types_empty_no_crash(fig_dir):
+    fig_publication_types({"types": [], "total": 0}, fig_dir)
+    assert not (Path(fig_dir) / "publication_types.png").exists()
+
+
+@pytest.mark.unit
+def test_fig_publication_types_single_type(fig_dir):
+    data = {
+        "types": [
+            {
+                "type": "article",
+                "frequency": 100,
+                "percentage": 100.0,
+                "cumulative_percentage": 100.0,
+            }
+        ],
+        "total": 100,
+    }
+    fig_publication_types(data, fig_dir)
+    assert (Path(fig_dir) / "publication_types.png").exists()
+
+
+# ── fig_type_by_domain ────────────────────────────────────────────────────────
+
+
+@pytest.fixture
+def classified_df():
+    types = ["article", "book-chapter", "dissertation", "preprint"]
+    domains = ["Political Science", "Economics", "Sociology", "Other"]
+    rows = []
+    for i, t in enumerate(types):
+        for j, d in enumerate(domains):
+            rows.extend([{"type": t, "domain": d}] * ((i + 1) * (j + 1) * 5))
+    return pd.DataFrame(rows)
+
+
+@pytest.mark.unit
+def test_fig_type_by_domain_creates_png(fig_dir, classified_df):
+    fig_type_by_domain(classified_df, fig_dir)
+    assert (Path(fig_dir) / "publication_types_by_domain.png").exists()
+
+
+@pytest.mark.unit
+def test_fig_type_by_domain_file_nonzero(fig_dir, classified_df):
+    fig_type_by_domain(classified_df, fig_dir)
+    assert (Path(fig_dir) / "publication_types_by_domain.png").stat().st_size > 1000
+
+
+@pytest.mark.unit
+def test_fig_type_by_domain_empty_df_no_crash(fig_dir):
+    fig_type_by_domain(pd.DataFrame(), fig_dir)
+    assert not (Path(fig_dir) / "publication_types_by_domain.png").exists()
+
+
+@pytest.mark.unit
+def test_fig_type_by_domain_missing_columns_no_crash(fig_dir):
+    df = pd.DataFrame({"title": ["a", "b"]})
+    fig_type_by_domain(df, fig_dir)
+    assert not (Path(fig_dir) / "publication_types_by_domain.png").exists()
+
+
+@pytest.mark.unit
+def test_fig_type_by_domain_unknown_values_excluded(fig_dir):
+    df = pd.DataFrame(
+        {"type": ["article", "unknown_type"], "domain": ["Political Science", "UnknownDomain"]}
+    )
+    fig_type_by_domain(df, fig_dir)
+    # Only the one valid row remains — still creates a figure (single bar)
+    assert (Path(fig_dir) / "publication_types_by_domain.png").exists()
 
 
 # ── _llm_interpret ────────────────────────────────────────────────────────────
