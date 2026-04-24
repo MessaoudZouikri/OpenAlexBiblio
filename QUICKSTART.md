@@ -125,41 +125,49 @@ logs/                                  ← Per-agent logs for debugging
 
 ## Expected runtimes
 
-Runtimes depend heavily on your hardware — specifically whether SPECTER2 runs on a GPU
-(CUDA or Apple MPS) or falls back to CPU. The figures below come from a real pipeline run
-on an Apple Silicon Mac (CPU-only inference, `full_max_records: 10000`).
+Runtime is driven by three hardware tiers. On Apple Silicon, the 128 GB unified memory is
+shared between CPU and GPU cores — PyTorch accesses the GPU via the **MPS backend**, which
+is faster than CPU but slower than a dedicated NVIDIA CUDA card.
 
-| Step | Measured (CPU) | With GPU |
-|------|---------------|----------|
-| data_collection | ~7 min (API rate limits) | same |
-| data_cleaning + bibliometric_analysis | < 1 min | same |
-| classification (SPECTER2 + selective LLM) | ~2h 20min | ~15–30 min |
-| network_analysis | ~20 min | ~5–10 min |
-| visualization + validators | < 2 min | same |
-| **Total (10K records)** | **~3 hours** | **~1 hour** |
+The figures below are **measured** on a real full-corpus run (57,422 records) on an
+Apple Mac Pro with Apple Silicon (128 GB unified memory, MPS active).
 
-> **Hardware note.** Classification is dominated by SPECTER2 embedding inference, which is
-> 5–10× faster on a GPU. If `check_setup.py` reports GPU detected (CUDA or MPS), expect the
-> "~1 hour" figure. On CPU-only hardware (no discrete GPU, or GPU not detected), expect
-> **2–3 hours** for 10K records. RAM also matters for network analysis: 8 GB is the minimum,
-> 16 GB recommended for corpora above 20K records.
+| Step | CPU only | **Apple Silicon MPS (measured)** | NVIDIA CUDA (estimated) |
+|------|----------|----------------------------------|-------------------------|
+| data_collection | ~7 min | ~7 min | ~7 min |
+| data_cleaning + bibliometric_analysis | < 1 min | < 1 min | < 1 min |
+| classification (SPECTER2 + selective LLM) | ~6–8 hours | **~2h 20min** | ~20–30 min |
+| network_analysis | ~30 min | **~20 min** | ~10 min |
+| visualization + validators | < 2 min | < 2 min | < 2 min |
+| **Total (~57K records)** | **~7–9 hours** | **~3 hours** | **~1 hour** |
 
-For the full corpus (~57K records): allow ~3–4 hours for data collection, then scale the
-processing times above proportionally. On CPU-only hardware, budget a full day; with a GPU,
-~5–7 hours total.
+> **Your results will vary.** Three factors dominate wall-clock time:
+>
+> - **GPU backend** — SPECTER2 embedding (Stage 2 of classification) is the single biggest
+>   cost. Apple Silicon MPS gives a ~3× speedup over CPU; a dedicated NVIDIA CUDA GPU gives
+>   ~5–10×. Run `python scripts/check_setup.py` to confirm which backend PyTorch will use
+>   on your machine.
+> - **Unified vs dedicated memory** — On Apple Silicon, the CPU and GPU share the same
+>   physical memory pool (unified memory). There is no separate VRAM limit: the full capacity
+>   (e.g. 128 GB) is available to both. On NVIDIA cards, VRAM is separate and limited
+>   (typically 8–24 GB); models that exceed VRAM spill to system RAM and slow down sharply.
+> - **Internet connection** — data collection fetches from the OpenAlex API and is not
+>   affected by GPU or RAM. The 7-minute figure assumes a fast, stable connection; API
+>   rate-limit throttling can extend this step.
 
 ---
 
 ## Test vs. full mode at a glance
 
-| | Test mode | Full mode (10K) | Full mode (all) |
-|--|-----------|-----------------|-----------------|
-| Records | ~200 (synthetic) | ~10,000 (real) | ~57,000 (real) |
-| API calls | None (offline) | ~50 pages | ~285 pages |
-| Runtime (CPU) | ~5 min | ~3 hrs | ~1 day |
-| Runtime (GPU) | ~5 min | ~1 hr | ~5–7 hrs |
-| Network edges | A few hundred | Tens of thousands | Hundreds of thousands |
-| Output quality | For validation only | Publication-ready | Publication-ready |
+| | Test mode | Full mode (~57K) |
+|--|-----------|-----------------|
+| Records | ~200 (synthetic) | ~57,000 (real) |
+| API calls | None (offline) | ~285 pages |
+| Runtime — CPU only | ~5 min | ~7–9 hours |
+| Runtime — Apple Silicon MPS | ~5 min | **~3 hours** *(measured)* |
+| Runtime — NVIDIA CUDA GPU | ~5 min | ~1 hour *(estimated)* |
+| Network edges | A few hundred | Hundreds of thousands |
+| Output quality | For validation only | Publication-ready |
 
 ---
 
