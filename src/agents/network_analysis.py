@@ -376,13 +376,21 @@ def enhanced_cross_domain_analysis(G_bibcoupling: nx.Graph, domain_map: Dict[str
         db = domain_map.get(b, "Other")
         w = _coerce_edge_weight(data)
         raw_matrix[da][db] = raw_matrix[da].get(db, 0) + w
+        if da != db:
+            raw_matrix[db][da] = raw_matrix[db].get(da, 0) + w
         domain_refs[da].add(a)
         domain_refs[db].add(b)
         domain_coupled[da].add(b)
         domain_coupled[db].add(a)
 
-    # Calculate degree sums for each domain
-    domain_degrees = {d: sum(raw_matrix[d].values()) for d in domains}
+    # Degree = total coupling weight incident to each domain (both endpoints counted)
+    domain_degrees = {d: 0.0 for d in domains}
+    for a, b, data in G_bibcoupling.edges(data=True):
+        da = domain_map.get(a, "Other")
+        db = domain_map.get(b, "Other")
+        w = _coerce_edge_weight(data)
+        domain_degrees[da] += w
+        domain_degrees[db] += w
     total_weight = sum(domain_degrees.values())
 
     # Compute normalized metrics

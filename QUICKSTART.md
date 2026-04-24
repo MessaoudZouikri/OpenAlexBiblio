@@ -125,19 +125,28 @@ logs/                                  ← Per-agent logs for debugging
 
 ## Expected runtimes
 
-These are approximate wall-clock times on a standard laptop with `full_max_records: 10000`.
+Runtimes depend heavily on your hardware — specifically whether SPECTER2 runs on a GPU
+(CUDA or Apple MPS) or falls back to CPU. The figures below come from a real pipeline run
+on an Apple Silicon Mac (CPU-only inference, `full_max_records: 10000`).
 
-| Step | ~Time |
-|------|-------|
-| data_collection | 15–25 min (API rate limits) |
-| data_cleaning + bibliometric_analysis | < 2 min |
-| classification (SPECTER2 + selective LLM) | 15–30 min |
-| network_analysis | 2–5 min |
-| visualization + validators | < 2 min |
-| **Total (10K records)** | **~1 hour** |
+| Step | Measured (CPU) | With GPU |
+|------|---------------|----------|
+| data_collection | ~7 min (API rate limits) | same |
+| data_cleaning + bibliometric_analysis | < 1 min | same |
+| classification (SPECTER2 + selective LLM) | ~2h 20min | ~15–30 min |
+| network_analysis | ~20 min | ~5–10 min |
+| visualization + validators | < 2 min | same |
+| **Total (10K records)** | **~3 hours** | **~1 hour** |
 
-For the full corpus (~57K records): allow ~3–4 hours for data collection, then ~2 hours for
-processing (classification and network analysis dominate). Total wall-clock ~5–6 hours.
+> **Hardware note.** Classification is dominated by SPECTER2 embedding inference, which is
+> 5–10× faster on a GPU. If `check_setup.py` reports GPU detected (CUDA or MPS), expect the
+> "~1 hour" figure. On CPU-only hardware (no discrete GPU, or GPU not detected), expect
+> **2–3 hours** for 10K records. RAM also matters for network analysis: 8 GB is the minimum,
+> 16 GB recommended for corpora above 20K records.
+
+For the full corpus (~57K records): allow ~3–4 hours for data collection, then scale the
+processing times above proportionally. On CPU-only hardware, budget a full day; with a GPU,
+~5–7 hours total.
 
 ---
 
@@ -147,7 +156,8 @@ processing (classification and network analysis dominate). Total wall-clock ~5�
 |--|-----------|-----------------|-----------------|
 | Records | ~200 (synthetic) | ~10,000 (real) | ~57,000 (real) |
 | API calls | None (offline) | ~50 pages | ~285 pages |
-| Runtime | ~5 min | ~1 hr | ~5–6 hrs |
+| Runtime (CPU) | ~5 min | ~3 hrs | ~1 day |
+| Runtime (GPU) | ~5 min | ~1 hr | ~5–7 hrs |
 | Network edges | A few hundred | Tens of thousands | Hundreds of thousands |
 | Output quality | For validation only | Publication-ready | Publication-ready |
 

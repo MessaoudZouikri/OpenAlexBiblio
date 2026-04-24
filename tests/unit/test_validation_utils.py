@@ -56,9 +56,9 @@ def classified_df():
             "title": ["Title A", "Title B", "Title C"],
             "domain": ["Political Science", "Economics", "Sociology"],
             "subcategory": ["radical_right", "political_economy", "social_movements"],
-            "confidence": [0.85, 0.92, 0.78],
-            "classification_stage": ["llm", "embedding", "rule_based"],
-            "classification_method": ["qwen", "sentence-transformer", "keyword"],
+            "domain_confidence": [0.85, 0.92, 0.78],
+            "domain_source": ["llm", "embedding", "rule"],
+            "classification_notes": ["note a", "note b", "note c"],
         }
     )
 
@@ -216,7 +216,7 @@ def test_validate_classified_data_happy_path(classified_df):
 @pytest.mark.unit
 def test_validate_classified_data_confidence_out_of_range(classified_df):
     df = classified_df.copy()
-    df.loc[0, "confidence"] = 1.5
+    df.loc[0, "domain_confidence"] = 1.5
     with pytest.raises(DataValidationError, match="Confidence"):
         SchemaValidator.validate_classified_data(df)
 

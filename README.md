@@ -284,7 +284,9 @@ Classification uses a **three-stage hybrid approach**, designed to minimise LLM 
 2. **Stage 2 — SPECTER2 embedding** (fast, local): Paper content is encoded into a 768-dimensional vector and compared to per-subcategory centroids built from the taxonomy seed texts. Confidence ≥ 0.82 → final; confidence < 0.60 → low-signal, assigned to `Other`.
 3. **Stage 3 — LLM** (selective): Triggered only for papers where embedding confidence falls in the ambiguous [0.60–0.82] band — roughly 10–30% of the corpus. Uses a local Ollama model. All outputs are validated against the taxonomy before acceptance; invalid or hallucinated labels fall back to `Other/interdisciplinary`.
 
-Calling an LLM on all 54,000 papers would take ~7 hours. By reserving Stage 3 for only the ambiguous 10–30% that rules and embeddings could not confidently classify, total classification time drops to under 1 hour — with no loss of accuracy on the clear cases.
+Calling an LLM on all 54,000 papers would take many hours of wall-clock time. By reserving Stage 3 for only the ambiguous 10–30% that rules and embeddings could not confidently classify, total classification time is reduced significantly — roughly **15–30 minutes on GPU hardware** (CUDA or Apple MPS) or **2–3 hours on CPU-only** for a 10,000-paper corpus — with no loss of accuracy on the clear cases.
+
+> **Runtime depends on your hardware.** SPECTER2 embedding inference (Stage 2) is the dominant cost and runs 5–10× faster on a GPU. See [QUICKSTART.md](QUICKSTART.md#expected-runtimes) for measured per-step timings.
 
 ---
 

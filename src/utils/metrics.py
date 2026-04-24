@@ -43,7 +43,10 @@ def compute_association_strength(
         w = float(data.get("weight", 1))
 
         observed[da][db] += w
+        if da != db:
+            observed[db][da] += w
         degrees[da] += w
+        degrees[db] += w
 
     total_weight = sum(degrees.values())
     if total_weight == 0:
@@ -93,7 +96,10 @@ def compute_coupling_strength_index(
         w = int(data.get("weight", 1))
 
         observed[da][db] += w
+        if da != db:
+            observed[db][da] += w
         degrees[da] += w
+        degrees[db] += w
 
     csi_matrix = {}
     for d1 in domains:

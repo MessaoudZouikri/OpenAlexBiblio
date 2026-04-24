@@ -40,9 +40,9 @@ class SchemaValidator:
         "title",
         "domain",
         "subcategory",
-        "confidence",
-        "classification_stage",
-        "classification_method",
+        "domain_confidence",
+        "domain_source",
+        "classification_notes",
     ]
 
     @staticmethod
@@ -145,14 +145,14 @@ class SchemaValidator:
         )
 
         # Validate confidence scores
-        if (df["confidence"] < 0).any() or (df["confidence"] > 1).any():
+        if (df["domain_confidence"] < 0).any() or (df["domain_confidence"] > 1).any():
             raise DataValidationError("Confidence scores out of range [0-1]")
 
         return {
             "n_rows": len(df),
             "n_domains": df["domain"].nunique(),
             "n_subcategories": df["subcategory"].nunique(),
-            "avg_confidence": round(df["confidence"].mean(), 3),
+            "avg_confidence": round(df["domain_confidence"].mean(), 3),
             "status": "✓ Valid",
         }
 

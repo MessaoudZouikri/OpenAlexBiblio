@@ -79,11 +79,12 @@ def fig_citation_distribution(cit_stats: dict, fig_dir: str) -> None:
     axes[0].barh(labels, values, color="#e84343", alpha=0.8)
     axes[0].set_title("Citation Percentiles")
     axes[0].set_xlabel("Citations")
+    mean_val = cit_stats.get("mean_citations", 0)
     axes[0].axvline(
-        cit_stats.get("mean", 0),
+        mean_val,
         color="navy",
         linestyle="--",
-        label=f"Mean={cit_stats.get('mean'):.1f}",
+        label=f"Mean={mean_val:.1f}",
     )
     axes[0].legend(fontsize=9)
 
@@ -139,6 +140,9 @@ def fig_top_authors(authors: dict, fig_dir: str) -> None:
 
 
 def fig_domain_distribution(df: pd.DataFrame, fig_dir: str) -> None:
+    if df.empty or "domain" not in df.columns or "subcategory" not in df.columns:
+        return
+
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
     domain_counts = df["domain"].value_counts()
@@ -627,12 +631,14 @@ def _build_figure_summaries(proc_dir: str) -> dict:
 
     try:
         cit = load_json(f"{proc_dir}/citation_stats.json")
-        mean_val = cit.get("mean")
+        mean_val = cit.get("mean_citations")
         mean_str = f"{mean_val:.1f}" if isinstance(mean_val, (int, float)) else "N/A"
         zero_rate = cit.get("zero_citation_rate", 0)
         zero_str = f"{zero_rate * 100:.1f}%" if isinstance(zero_rate, (int, float)) else "N/A"
+        total_cit = cit.get("total_citations", 0)
+        total_str = f"{total_cit:,}" if isinstance(total_cit, int) else str(total_cit)
         s["citation_distribution"] = (
-            f"Total citations: {cit.get('total', 'N/A'):,}. "
+            f"Total citations: {total_str}. "
             f"h-index: {cit.get('h_index_corpus', 'N/A')}, "
             f"g-index: {cit.get('g_index_corpus', 'N/A')}. "
             f"Mean: {mean_str} citations/paper. "
@@ -644,10 +650,12 @@ def _build_figure_summaries(proc_dir: str) -> dict:
     try:
         authors = load_json(f"{proc_dir}/top_authors.json")
         top = authors.get("top_by_output", [{}])
-        lotka = authors.get("lotka_exponent", "N/A")
-        lotka_str = f"{lotka:.2f}" if isinstance(lotka, float) else str(lotka)
+        lotka = authors.get("lotka_alpha")
+        lotka_str = f"{lotka:.2f}" if isinstance(lotka, float) else "N/A"
+        n_authors = authors.get("unique_authors", "N/A")
+        n_authors_str = f"{n_authors:,}" if isinstance(n_authors, int) else str(n_authors)
         s["top_authors"] = (
-            f"Unique authors: {authors.get('total_unique_authors', 'N/A'):,}. "
+            f"Unique authors: {n_authors_str}. "
             f"Most prolific: {top[0].get('name','N/A')} ({top[0].get('paper_count','N/A')} papers). "
             f"Lotka exponent: {lotka_str}."
         )

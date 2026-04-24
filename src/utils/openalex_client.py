@@ -214,7 +214,7 @@ class OpenAlexClient:
             "concepts": concepts,
             "journal": source_info.get("display_name", ""),
             "journal_id": source_info.get("id", ""),
-            "open_access": oa.get("is_oa", False),
+            "is_open_access": oa.get("is_oa", False),
             "type": raw.get("type", ""),
             "references": raw.get("referenced_works", []) or [],
             "mesh_terms": [m.get("descriptor_name", "") for m in raw.get("mesh", [])],
@@ -235,7 +235,7 @@ WORK_SELECT_FIELDS = [
     "authorships",
     "concepts",
     "primary_location",
-    "open_access",
+    "open_access",  # OpenAlex API field name (normalized to is_open_access on ingest)
     "type",
     "referenced_works",
     "mesh",
