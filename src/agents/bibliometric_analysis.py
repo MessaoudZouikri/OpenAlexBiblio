@@ -428,6 +428,34 @@ def concept_landscape(df: pd.DataFrame) -> Dict[str, Any]:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+# Publication Type Statistics
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def publication_type_stats(df: pd.DataFrame) -> Dict[str, Any]:
+    """Frequency table for publication types: count, %, cumulated %."""
+    if "type" not in df.columns or df.empty:
+        return {"types": [], "total": 0}
+
+    counts = df["type"].value_counts()
+    total = int(counts.sum())
+    rows = []
+    cumulative = 0.0
+    for type_name, freq in counts.items():
+        pct = round(freq / total * 100, 2)
+        cumulative = round(cumulative + pct, 2)
+        rows.append(
+            {
+                "type": str(type_name),
+                "frequency": int(freq),
+                "percentage": pct,
+                "cumulative_percentage": cumulative,
+            }
+        )
+    return {"types": rows, "total": total}
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 # CLI Entry Point
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -472,6 +500,10 @@ def main() -> None:
     concepts = concept_landscape(df)
     save_json(concepts, f"{proc_dir}/concept_landscape.json")
 
+    logger.info("Computing publication type statistics...")
+    type_stats = publication_type_stats(df)
+    save_json(type_stats, f"{proc_dir}/publication_types.json")
+
     summary = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "n_records": len(df),
@@ -487,6 +519,9 @@ def main() -> None:
             if "domain_preliminary" in df.columns
             else {}
         ),
+        "publication_type_distribution": {
+            r["type"]: r["frequency"] for r in type_stats["types"]
+        },
     }
     save_json(summary, f"{proc_dir}/bibliometric_summary.json")
 

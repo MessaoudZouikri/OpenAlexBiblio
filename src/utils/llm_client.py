@@ -52,7 +52,7 @@ class OllamaClient:
             if resp.status_code != 200:
                 return False
             models = [m["name"] for m in resp.json().get("models", [])]
-            available = any(self.model.split(":")[0] in m for m in models)
+            available = self.model in models
             if not available:
                 logger.warning("Model %s not found in Ollama. Available: %s", self.model, models)
             return available

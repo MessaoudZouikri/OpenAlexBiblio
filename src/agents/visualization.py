@@ -187,6 +187,181 @@ def fig_concept_landscape(concepts: dict, fig_dir: str) -> None:
     plt.close()
 
 
+def fig_publication_types(type_stats: dict, fig_dir: str) -> None:
+    rows = type_stats.get("types", [])
+    if not rows:
+        return
+
+    labels = [r["type"].replace("-", "-\n") for r in rows]
+    freqs  = [r["frequency"] for r in rows]
+    pcts   = [r["percentage"] for r in rows]
+    cumuls = [r["cumulative_percentage"] for r in rows]
+    total  = type_stats.get("total", sum(freqs))
+
+    colors = ["#2d6be4", "#27ae60", "#f39c12", "#9b59b6", "#e84343"][:len(rows)]
+    x = np.arange(len(rows))
+
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+    # ── Left: Pareto chart (bars + cumulative % line) ──────────────────────
+    ax1 = axes[0]
+    bars = ax1.bar(x, freqs, color=colors, alpha=0.85, width=0.55, zorder=2)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(labels, fontsize=10)
+    ax1.set_ylabel("Number of records")
+    ax1.set_title("Publication Types — Pareto Chart")
+    ax1.grid(axis="y", linestyle="--", alpha=0.4, zorder=1)
+
+    for bar, pct in zip(bars, pcts):
+        ax1.text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + total * 0.005,
+            f"{pct:.1f}%",
+            ha="center", va="bottom", fontsize=9, fontweight="bold",
+        )
+
+    ax2 = ax1.twinx()
+    ax2.plot(x, cumuls, color="#e84343", marker="o", linewidth=2,
+             markersize=6, label="Cumulative %", zorder=3)
+    ax2.set_ylim(0, 110)
+    ax2.set_ylabel("Cumulative %", color="#e84343")
+    ax2.tick_params(axis="y", labelcolor="#e84343")
+    ax2.axhline(80, color="#e84343", linestyle=":", alpha=0.5)
+    ax2.spines["right"].set_visible(True)
+
+    # ── Right: descriptive statistics table ───────────────────────────────
+    ax3 = axes[1]
+    ax3.axis("off")
+
+    col_labels = ["Type", "Frequency", "%", "Cumul. %"]
+    table_data = [
+        [r["type"], f"{r['frequency']:,}", f"{r['percentage']:.1f}", f"{r['cumulative_percentage']:.1f}"]
+        for r in rows
+    ]
+    table_data.append(["Total", f"{total:,}", "100.0", ""])
+
+    tbl = ax3.table(
+        cellText=table_data,
+        colLabels=col_labels,
+        cellLoc="center",
+        loc="center",
+        bbox=[0.0, 0.1, 1.0, 0.85],
+    )
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(10)
+
+    for (row_idx, col_idx), cell in tbl.get_celld().items():
+        cell.set_edgecolor("#cccccc")
+        if row_idx == 0:
+            cell.set_facecolor("#2d6be4")
+            cell.set_text_props(color="white", fontweight="bold")
+        elif row_idx == len(table_data):
+            cell.set_facecolor("#f0f0f0")
+            cell.set_text_props(fontweight="bold")
+        else:
+            cell.set_facecolor("white" if row_idx % 2 == 1 else "#f8f8f8")
+
+    ax3.set_title("Frequency Table", pad=12)
+
+    plt.tight_layout()
+    plt.savefig(f"{fig_dir}/publication_types.png", dpi=150, bbox_inches="tight")
+    plt.close()
+
+
+def fig_type_by_domain(df: pd.DataFrame, fig_dir: str) -> None:
+    if "type" not in df.columns or "domain" not in df.columns or df.empty:
+        return
+
+    domain_order = ["Political Science", "Economics", "Sociology", "Other"]
+    type_order = ["article", "book-chapter", "dissertation", "preprint"]
+    type_colors = ["#2d6be4", "#27ae60", "#f39c12", "#9b59b6"]
+
+    df_f = df[df["domain"].isin(domain_order) & df["type"].isin(type_order)].copy()
+    if df_f.empty:
+        return
+
+    ct = pd.crosstab(df_f["type"], df_f["domain"])
+    ct = ct.reindex(index=type_order, columns=domain_order, fill_value=0)
+
+    domain_totals = ct.sum(axis=0)
+    type_totals = ct.sum(axis=1)
+    grand_total = int(ct.values.sum())
+
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+
+    # ── Left: grouped bar chart (no cumulative line) ───────────────────────
+    ax = axes[0]
+    n_types = len(type_order)
+    bar_width = 0.18
+    x = np.arange(len(domain_order))
+
+    for i, (pub_type, color) in enumerate(zip(type_order, type_colors)):
+        offsets = x + (i - n_types / 2 + 0.5) * bar_width
+        vals = [int(ct.loc[pub_type, domain]) for domain in domain_order]
+        ax.bar(offsets, vals, width=bar_width, color=color, alpha=0.85,
+               label=pub_type, zorder=2)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([d.replace(" ", "\n") for d in domain_order], fontsize=10)
+    ax.set_ylabel("Number of records")
+    ax.set_title("Publication Types by Domain")
+    ax.legend(title="Type", fontsize=8, title_fontsize=9, loc="upper right")
+    ax.grid(axis="y", linestyle="--", alpha=0.4, zorder=1)
+
+    # ── Right: cross-tab table (n, % within domain) ────────────────────────
+    ax2 = axes[1]
+    ax2.axis("off")
+
+    domain_short = ["Pol. Science", "Economics", "Sociology", "Other"]
+    col_labels = ["Type"] + domain_short + ["Total"]
+
+    table_data = []
+    for pub_type in type_order:
+        row = [pub_type]
+        for domain in domain_order:
+            n = int(ct.loc[pub_type, domain])
+            pct = n / domain_totals[domain] * 100 if domain_totals[domain] > 0 else 0.0
+            row.append(f"{n:,} ({pct:.1f}%)")
+        total_n = int(type_totals[pub_type])
+        total_pct = total_n / grand_total * 100 if grand_total > 0 else 0.0
+        row.append(f"{total_n:,} ({total_pct:.1f}%)")
+        table_data.append(row)
+
+    total_row = ["Total"]
+    for domain in domain_order:
+        total_row.append(f"{int(domain_totals[domain]):,} (100%)")
+    total_row.append(f"{grand_total:,} (100%)")
+    table_data.append(total_row)
+
+    n_data_rows = len(table_data)
+    tbl = ax2.table(
+        cellText=table_data,
+        colLabels=col_labels,
+        cellLoc="center",
+        loc="center",
+        bbox=[0.0, 0.05, 1.0, 0.88],
+    )
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(8.5)
+
+    for (row_idx, col_idx), cell in tbl.get_celld().items():
+        cell.set_edgecolor("#cccccc")
+        if row_idx == 0:
+            cell.set_facecolor("#2d6be4")
+            cell.set_text_props(color="white", fontweight="bold")
+        elif row_idx == n_data_rows:
+            cell.set_facecolor("#f0f0f0")
+            cell.set_text_props(fontweight="bold")
+        else:
+            cell.set_facecolor("white" if row_idx % 2 == 1 else "#f8f8f8")
+
+    ax2.set_title("Cross-tabulation: n (% within domain)", pad=12)
+
+    plt.tight_layout()
+    plt.savefig(f"{fig_dir}/publication_types_by_domain.png", dpi=150, bbox_inches="tight")
+    plt.close()
+
+
 def fig_cross_domain_heatmap(metrics: dict, fig_dir: str) -> None:
     """
     Generate 4-panel heatmap visualization for cross-domain coupling metrics.
@@ -487,6 +662,37 @@ def _build_figure_summaries(proc_dir: str) -> dict:
         s["concept_landscape"] = ""
 
     try:
+        type_stats = load_json(f"{proc_dir}/publication_types.json")
+        rows = type_stats.get("types", [])
+        total = type_stats.get("total", 0)
+        breakdown = "; ".join(
+            f"{r['type']}: {r['frequency']:,} ({r['percentage']:.1f}%)" for r in rows
+        )
+        s["publication_types"] = f"{total:,} works. {breakdown}."
+    except Exception:
+        s["publication_types"] = ""
+
+    try:
+        df_cls = load_parquet(f"{proc_dir}/classified_works.parquet")
+        domain_order = ["Political Science", "Economics", "Sociology", "Other"]
+        type_order = ["article", "book-chapter", "dissertation", "preprint"]
+        df_f = df_cls[df_cls["domain"].isin(domain_order) & df_cls["type"].isin(type_order)]
+        if not df_f.empty:
+            ct = pd.crosstab(df_f["type"], df_f["domain"])
+            ct = ct.reindex(index=type_order, columns=domain_order, fill_value=0)
+            lead_type = ct.sum(axis=1).idxmax()
+            lead_domain = ct.sum(axis=0).idxmax()
+            s["publication_types_by_domain"] = (
+                f"Dominant type overall: {lead_type}. "
+                f"Largest domain: {lead_domain} ({int(ct.sum(axis=0)[lead_domain]):,} works). "
+                f"Cross-tabulation of {len(type_order)} publication types × {len(domain_order)} domains."
+            )
+        else:
+            s["publication_types_by_domain"] = ""
+    except Exception:
+        s["publication_types_by_domain"] = ""
+
+    try:
         metrics = load_json(f"{proc_dir}/network_metrics.json")
         enhanced = metrics.get("enhanced_cross_domain_metrics", {})
         idcr = enhanced.get("inter_domain_ratio", "N/A")
@@ -661,12 +867,24 @@ def main():
     except Exception as e:
         logger.warning("top_authors: %s", e)
 
+    df_classified = None
     try:
-        df = load_parquet(f"{proc_dir}/classified_works.parquet")
-        fig_domain_distribution(df, fig_dir)
-        logger.info("Generated: domain_distribution.png")
+        df_classified = load_parquet(f"{proc_dir}/classified_works.parquet")
     except Exception as e:
-        logger.warning("domain_distribution: %s", e)
+        logger.warning("classified_works.parquet load failed: %s", e)
+
+    if df_classified is not None:
+        try:
+            fig_domain_distribution(df_classified, fig_dir)
+            logger.info("Generated: domain_distribution.png")
+        except Exception as e:
+            logger.warning("domain_distribution: %s", e)
+
+        try:
+            fig_type_by_domain(df_classified, fig_dir)
+            logger.info("Generated: publication_types_by_domain.png")
+        except Exception as e:
+            logger.warning("publication_types_by_domain: %s", e)
 
     try:
         concepts = load_json(f"{proc_dir}/concept_landscape.json")
@@ -674,6 +892,13 @@ def main():
         logger.info("Generated: concept_landscape.png")
     except Exception as e:
         logger.warning("concept_landscape: %s", e)
+
+    try:
+        type_stats = load_json(f"{proc_dir}/publication_types.json")
+        fig_publication_types(type_stats, fig_dir)
+        logger.info("Generated: publication_types.png")
+    except Exception as e:
+        logger.warning("publication_types: %s", e)
 
     try:
         metrics = load_json(f"{proc_dir}/network_metrics.json")
