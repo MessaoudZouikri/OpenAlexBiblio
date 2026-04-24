@@ -40,6 +40,7 @@ Want to understand the metrics, run the pipeline, or analyze results?
 |----------|---------|-----------|
 | [`getting-started/QUICK_REFERENCE.md`](./getting-started/QUICK_REFERENCE.md) | Common questions, metrics explanations, usage examples | 5-10 min |
 | [`getting-started/VISUALIZATION_GUIDE.md`](./getting-started/VISUALIZATION_GUIDE.md) | How to generate and interpret visualizations | 10 min |
+| [`getting-started/CLI_REFERENCE.md`](./getting-started/CLI_REFERENCE.md) | All command-line flags for every script and agent | 5 min |
 
 **Root Level** (Quick Start):
 - 📖 [`README.md`](../README.md) — Project overview and quick facts
@@ -62,6 +63,7 @@ Want to understand the metrics, run the pipeline, or analyze results?
 docs/
 ├── INDEX.md                           ← You are here!
 ├── getting-started/
+│   ├── CLI_REFERENCE.md               All CLI flags for every script and agent
 │   ├── QUICK_REFERENCE.md             Common questions and metrics reference
 │   └── VISUALIZATION_GUIDE.md         How to create and interpret visualizations
 └── development/
@@ -103,6 +105,7 @@ Root-level (key entry points):
 - **Quick Setup**: [`QUICKSTART.md`](../QUICKSTART.md) (root level)
 - **Full Tutorial**: [`BIBLIOMETRIC_PIPELINE_TUTORIAL.md`](../BIBLIOMETRIC_PIPELINE_TUTORIAL.md) (root level)
 - **Common Questions**: [`getting-started/QUICK_REFERENCE.md`](./getting-started/QUICK_REFERENCE.md)
+- **All CLI Options**: [`getting-started/CLI_REFERENCE.md`](./getting-started/CLI_REFERENCE.md)
 
 ---
 

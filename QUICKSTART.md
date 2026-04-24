@@ -26,6 +26,8 @@ python scripts/check_setup.py --verbose
 
 This checks Python version, all dependencies, SPECTER2 embedding model availability, Ollama connectivity, and config file validity. Fix any reported issues before proceeding.
 
+For a complete list of every CLI flag accepted by each script and agent, see [docs/getting-started/CLI_REFERENCE.md](docs/getting-started/CLI_REFERENCE.md).
+
 ---
 
 ## Step 1 — Switch `config/config.yaml` to full mode
@@ -148,6 +150,48 @@ processing (classification and network analysis dominate). Total wall-clock ~5�
 | Runtime | ~5 min | ~1 hr | ~5–6 hrs |
 | Network edges | A few hundred | Tens of thousands | Hundreds of thousands |
 | Output quality | For validation only | Publication-ready | Publication-ready |
+
+---
+
+## Setup Troubleshooting
+
+### SPECTER2: `adapters` library required for full quality
+
+SPECTER2 (`allenai/specter2`) uses the **AdapterHub** format, not PEFT/LoRA.
+If `check_setup.py` reports the proximity adapter as NOT loaded, install the correct library:
+
+```bash
+pip install adapters
+```
+
+`peft` alone is not sufficient — it is only used as a last-resort fallback.
+Without `adapters`, SPECTER2 runs in degraded mode (base model only), reducing subcategory
+accuracy by ~5–8 F1 points and raising the outlier rate from ~5% to ~20–30%.
+
+---
+
+### macOS + external drive: `UnicodeDecodeError` on import
+
+If you store the project on an **external drive** (e.g. exFAT or NTFS volume) and run on
+**macOS**, the OS silently creates hidden `._*.py` resource-fork files alongside every Python
+file. The `transformers` package reads all `.py` files in its `models/` directory at import
+time and chokes on these binary files:
+
+```
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xb0 ...
+```
+
+This does not happen on Windows or Linux, and does not happen when the project is on an
+internal APFS drive.
+
+**Fix — run once after any `pip install`:**
+
+```bash
+find .venv -name "._*.py" -delete
+```
+
+**Why it recurs:** every `pip install` unpacks a wheel and macOS immediately creates new
+resource-fork files. Running the command above after each install keeps the environment clean.
 
 ---
 

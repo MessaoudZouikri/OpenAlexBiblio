@@ -34,8 +34,8 @@ matplotlib>=3.7.0
 #
 sentence-transformers>=2.7.0
 torch>=2.2.0               # MPS backend included on Apple Silicon (no extras needed)
-peft>=0.10.0               # Required for SPECTER2 proximity adapter loading
-                           # Without this, SPECTER2 runs in degraded mode (base model only)
+adapters>=1.2.0            # Required for allenai/specter2 (AdapterHub format)
+peft>=0.10.0               # Fallback adapter loading for SPECTER2
 #
 # NVIDIA GPU alternative:
 # torch>=2.2.0+cu121  -- via: pip install torch --index-url https://download.pytorch.org/whl/cu121
