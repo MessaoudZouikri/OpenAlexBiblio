@@ -67,8 +67,7 @@ def test_raw(raw_dir: str, manifest_path: str):
         check(
             "Manifest output_file exists",
             False,
-            f"referenced file missing: {manifest_ref.name}"
-            " — re-run data_collection to restore",
+            f"referenced file missing: {manifest_ref.name}" " — re-run data_collection to restore",
         )
         return None, manifest
 
@@ -135,7 +134,9 @@ def test_clean(clean_path: str, df_raw, report_path: str):
     # (the root cause is already reported in Stage 1).
     if df_raw is not None:
         check(
-            "Clean <= Raw (no inflation)", len(df) <= len(df_raw), f"clean={len(df)}, raw={len(df_raw)}"
+            "Clean <= Raw (no inflation)",
+            len(df) <= len(df_raw),
+            f"clean={len(df)}, raw={len(df_raw)}",
         )
         check(
             "Retention >= 70%",

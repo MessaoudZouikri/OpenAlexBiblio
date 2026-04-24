@@ -519,9 +519,7 @@ def main() -> None:
             if "domain_preliminary" in df.columns
             else {}
         ),
-        "publication_type_distribution": {
-            r["type"]: r["frequency"] for r in type_stats["types"]
-        },
+        "publication_type_distribution": {r["type"]: r["frequency"] for r in type_stats["types"]},
     }
     save_json(summary, f"{proc_dir}/bibliometric_summary.json")
 

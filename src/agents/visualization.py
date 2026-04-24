@@ -193,12 +193,12 @@ def fig_publication_types(type_stats: dict, fig_dir: str) -> None:
         return
 
     labels = [r["type"].replace("-", "-\n") for r in rows]
-    freqs  = [r["frequency"] for r in rows]
-    pcts   = [r["percentage"] for r in rows]
+    freqs = [r["frequency"] for r in rows]
+    pcts = [r["percentage"] for r in rows]
     cumuls = [r["cumulative_percentage"] for r in rows]
-    total  = type_stats.get("total", sum(freqs))
+    total = type_stats.get("total", sum(freqs))
 
-    colors = ["#2d6be4", "#27ae60", "#f39c12", "#9b59b6", "#e84343"][:len(rows)]
+    colors = ["#2d6be4", "#27ae60", "#f39c12", "#9b59b6", "#e84343"][: len(rows)]
     x = np.arange(len(rows))
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -217,12 +217,23 @@ def fig_publication_types(type_stats: dict, fig_dir: str) -> None:
             bar.get_x() + bar.get_width() / 2,
             bar.get_height() + total * 0.005,
             f"{pct:.1f}%",
-            ha="center", va="bottom", fontsize=9, fontweight="bold",
+            ha="center",
+            va="bottom",
+            fontsize=9,
+            fontweight="bold",
         )
 
     ax2 = ax1.twinx()
-    ax2.plot(x, cumuls, color="#e84343", marker="o", linewidth=2,
-             markersize=6, label="Cumulative %", zorder=3)
+    ax2.plot(
+        x,
+        cumuls,
+        color="#e84343",
+        marker="o",
+        linewidth=2,
+        markersize=6,
+        label="Cumulative %",
+        zorder=3,
+    )
     ax2.set_ylim(0, 110)
     ax2.set_ylabel("Cumulative %", color="#e84343")
     ax2.tick_params(axis="y", labelcolor="#e84343")
@@ -235,7 +246,12 @@ def fig_publication_types(type_stats: dict, fig_dir: str) -> None:
 
     col_labels = ["Type", "Frequency", "%", "Cumul. %"]
     table_data = [
-        [r["type"], f"{r['frequency']:,}", f"{r['percentage']:.1f}", f"{r['cumulative_percentage']:.1f}"]
+        [
+            r["type"],
+            f"{r['frequency']:,}",
+            f"{r['percentage']:.1f}",
+            f"{r['cumulative_percentage']:.1f}",
+        ]
         for r in rows
     ]
     table_data.append(["Total", f"{total:,}", "100.0", ""])
@@ -298,8 +314,7 @@ def fig_type_by_domain(df: pd.DataFrame, fig_dir: str) -> None:
     for i, (pub_type, color) in enumerate(zip(type_order, type_colors)):
         offsets = x + (i - n_types / 2 + 0.5) * bar_width
         vals = [int(ct.loc[pub_type, domain]) for domain in domain_order]
-        ax.bar(offsets, vals, width=bar_width, color=color, alpha=0.85,
-               label=pub_type, zorder=2)
+        ax.bar(offsets, vals, width=bar_width, color=color, alpha=0.85, label=pub_type, zorder=2)
 
     ax.set_xticks(x)
     ax.set_xticklabels([d.replace(" ", "\n") for d in domain_order], fontsize=10)
