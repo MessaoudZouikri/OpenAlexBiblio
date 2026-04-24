@@ -16,7 +16,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from src.utils.io_utils import latest_file, load_yaml
+from src.utils.io_utils import load_yaml
 
 PASS = "\033[32m  PASS\033[0m"
 FAIL = "\033[31m  FAIL\033[0m"
