@@ -15,7 +15,6 @@ from src.utils.taxonomy import (
     is_valid_subcategory,
 )
 
-
 # ── Taxonomy structure ────────────────────────────────────────────────────────
 
 
