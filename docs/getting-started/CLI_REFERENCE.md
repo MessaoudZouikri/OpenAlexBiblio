@@ -5,6 +5,69 @@ For a narrative walkthrough, see [QUICKSTART.md](../../QUICKSTART.md).
 
 ---
 
+## How the checkpoint system works
+
+**This is the most important thing to understand before running the orchestrator.**
+
+Every time a pipeline step finishes successfully, its name is written to
+`checkpoints/pipeline_state.json`. The next time you run the orchestrator,
+it reads that file and **skips any step already listed there** — printing
+`[CACHED] step_name — already complete` in the log.
+
+This means:
+
+- Running `python src/agents/orchestrator.py` a second time **does nothing**
+  if all steps completed on the first run. No files are overwritten, no
+  figures are regenerated. The command exits cleanly in seconds.
+- If you add a new feature (e.g. a new figure in `visualization.py`) and
+  want to see it, you must explicitly tell the orchestrator to re-run that
+  step — it will not detect code changes on its own.
+
+### Choosing the right command
+
+| Situation | Command |
+|---|---|
+| First-ever run | `python src/agents/orchestrator.py` |
+| Re-run **visualization only** (fastest) | `python src/agents/visualization.py --config config/config.yaml` |
+| Re-run visualization via orchestrator | `python src/agents/orchestrator.py --from-step visualization` |
+| Re-run from network analysis onward | `python src/agents/orchestrator.py --from-step network_analysis` |
+| Re-run everything (full fresh run) | `python src/agents/orchestrator.py --force` |
+| Pipeline was interrupted mid-way | `python src/agents/orchestrator.py` (resumes automatically) |
+| See what would run without executing | `python src/agents/orchestrator.py --dry-run` |
+
+### `--from-step` vs `--force`
+
+- `--from-step STEP` — resets the checkpoint **from that step and all downstream
+  steps**, then runs from there. Steps before it are untouched and still cached.
+  Use this when you only changed or want to refresh a specific part of the pipeline.
+
+- `--force` — ignores the checkpoint entirely and re-runs **every** step from the
+  beginning. Use this only when you want a completely fresh pipeline run (e.g.
+  after a data update or a config change that affects early steps). Note that
+  `data_collection` re-fetches from the OpenAlex API and can take hours.
+
+### Running agents directly (bypass the orchestrator)
+
+Any agent can be run on its own without touching the checkpoint. This is the
+fastest way to regenerate a single output:
+
+```bash
+# Regenerate all figures and reports without touching the checkpoint
+python src/agents/visualization.py --config config/config.yaml
+
+# Recompute bibliometric stats only
+python src/agents/bibliometric_analysis.py --config config/config.yaml
+
+# Recompute network metrics only
+python src/agents/network_analysis.py --config config/config.yaml
+```
+
+Running an agent directly **does not update the checkpoint** — it only writes
+its output files. Use this for iteration and exploration; use the orchestrator
+for reproducible, audited runs.
+
+---
+
 ## Orchestrator — main entry point
 
 ```
