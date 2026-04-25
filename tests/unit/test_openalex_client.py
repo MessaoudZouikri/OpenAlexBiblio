@@ -78,12 +78,8 @@ class TestNormalizeWork:
                     ],
                 }
             ],
-            "concepts": [
-                {"id": "C001", "display_name": "Populism", "level": 1, "score": 0.9}
-            ],
-            "primary_location": {
-                "source": {"display_name": "Nature", "id": "S001"}
-            },
+            "concepts": [{"id": "C001", "display_name": "Populism", "level": 1, "score": 0.9}],
+            "primary_location": {"source": {"display_name": "Nature", "id": "S001"}},
             "open_access": {"is_oa": True},
             "type": "article",
             "referenced_works": ["W999"],

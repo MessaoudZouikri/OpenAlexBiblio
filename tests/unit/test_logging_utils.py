@@ -57,8 +57,11 @@ class TestSetupLogger:
     @pytest.mark.unit
     def test_console_false_no_stream_handler(self, tmp_path):
         logger = setup_logger("quiet_agent", log_dir=str(tmp_path), console=False)
-        stream_handlers = [h for h in logger.handlers if isinstance(h, logging.StreamHandler)
-                           and not isinstance(h, logging.FileHandler)]
+        stream_handlers = [
+            h
+            for h in logger.handlers
+            if isinstance(h, logging.StreamHandler) and not isinstance(h, logging.FileHandler)
+        ]
         assert len(stream_handlers) == 0
 
     @pytest.mark.unit

@@ -32,21 +32,25 @@ class TestMakeInputText:
 
     @pytest.mark.unit
     def test_abstract_included_when_present(self):
-        row = pd.Series({
-            "title": "Test",
-            "abstract": "This is a test abstract.",
-            "concepts": [],
-        })
+        row = pd.Series(
+            {
+                "title": "Test",
+                "abstract": "This is a test abstract.",
+                "concepts": [],
+            }
+        )
         result = make_input_text(row)
         assert "This is a test abstract." in result
 
     @pytest.mark.unit
     def test_abstract_truncated_at_600_chars(self):
-        row = pd.Series({
-            "title": "Test",
-            "abstract": "x" * 1000,
-            "concepts": [],
-        })
+        row = pd.Series(
+            {
+                "title": "Test",
+                "abstract": "x" * 1000,
+                "concepts": [],
+            }
+        )
         result = make_input_text(row)
         # After truncation the text should not contain more than 600 x's
         abstract_part = result.split(" | ")[1] if " | " in result else result
@@ -54,22 +58,26 @@ class TestMakeInputText:
 
     @pytest.mark.unit
     def test_concepts_included_as_topics(self):
-        row = pd.Series({
-            "title": "Test",
-            "abstract": "",
-            "concepts": [{"name": "Populism"}, {"name": "Democracy"}],
-        })
+        row = pd.Series(
+            {
+                "title": "Test",
+                "abstract": "",
+                "concepts": [{"name": "Populism"}, {"name": "Democracy"}],
+            }
+        )
         result = make_input_text(row)
         assert "Topics:" in result
         assert "Populism" in result
 
     @pytest.mark.unit
     def test_at_most_four_concepts_used(self):
-        row = pd.Series({
-            "title": "Test",
-            "abstract": "",
-            "concepts": [{"name": f"C{i}"} for i in range(10)],
-        })
+        row = pd.Series(
+            {
+                "title": "Test",
+                "abstract": "",
+                "concepts": [{"name": f"C{i}"} for i in range(10)],
+            }
+        )
         result = make_input_text(row)
         # C0-C3 should appear; C4+ should not influence the Topics line
         topics_line = [p for p in result.split(" | ") if "Topics:" in p]
@@ -80,11 +88,13 @@ class TestMakeInputText:
 
     @pytest.mark.unit
     def test_non_dict_concepts_skipped(self):
-        row = pd.Series({
-            "title": "Test",
-            "abstract": "",
-            "concepts": ["string_concept", 42, None],
-        })
+        row = pd.Series(
+            {
+                "title": "Test",
+                "abstract": "",
+                "concepts": ["string_concept", 42, None],
+            }
+        )
         result = make_input_text(row)
         # None of the bad items should appear; no Topics section added
         assert "Topics:" not in result
@@ -97,11 +107,13 @@ class TestMakeInputText:
 
     @pytest.mark.unit
     def test_parts_joined_by_pipe_separator(self):
-        row = pd.Series({
-            "title": "Title",
-            "abstract": "Abstract text",
-            "concepts": [{"name": "Populism"}],
-        })
+        row = pd.Series(
+            {
+                "title": "Title",
+                "abstract": "Abstract text",
+                "concepts": [{"name": "Populism"}],
+            }
+        )
         result = make_input_text(row)
         assert " | " in result
 
@@ -131,54 +143,64 @@ class TestStage1Rule:
 
     @pytest.mark.unit
     def test_political_science_keyword_detected(self):
-        row = pd.Series({
-            "title": "electoral politics and radical right populism",
-            "abstract": "",
-            "concepts": [],
-        })
+        row = pd.Series(
+            {
+                "title": "electoral politics and radical right populism",
+                "abstract": "",
+                "concepts": [],
+            }
+        )
         domain, subcat, conf = stage1_rule(row)
         assert domain == "Political Science"
         assert conf > 0.0
 
     @pytest.mark.unit
     def test_economics_keyword_detected(self):
-        row = pd.Series({
-            "title": "inequality redistribution and trade globalization",
-            "abstract": "",
-            "concepts": [],
-        })
+        row = pd.Series(
+            {
+                "title": "inequality redistribution and trade globalization",
+                "abstract": "",
+                "concepts": [],
+            }
+        )
         domain, subcat, conf = stage1_rule(row)
         assert domain == "Economics"
 
     @pytest.mark.unit
     def test_concept_signal_used(self):
-        row = pd.Series({
-            "title": "random title",
-            "abstract": "",
-            "concepts": [{"display_name": "Political Science", "score": 0.9}],
-        })
+        row = pd.Series(
+            {
+                "title": "random title",
+                "abstract": "",
+                "concepts": [{"display_name": "Political Science", "score": 0.9}],
+            }
+        )
         domain, _, conf = stage1_rule(row)
         assert domain == "Political Science"
         assert conf > 0.0
 
     @pytest.mark.unit
     def test_non_dict_concepts_ignored(self):
-        row = pd.Series({
-            "title": "quantum physics",
-            "abstract": "",
-            "concepts": ["not_a_dict", 42],
-        })
+        row = pd.Series(
+            {
+                "title": "quantum physics",
+                "abstract": "",
+                "concepts": ["not_a_dict", 42],
+            }
+        )
         domain, _, conf = stage1_rule(row)
         # Should not crash and no domain signal from bad concepts
         assert isinstance(domain, str)
 
     @pytest.mark.unit
     def test_subcategory_is_valid_string(self):
-        row = pd.Series({
-            "title": "radical right and populism",
-            "abstract": "",
-            "concepts": [],
-        })
+        row = pd.Series(
+            {
+                "title": "radical right and populism",
+                "abstract": "",
+                "concepts": [],
+            }
+        )
         _, subcat, _ = stage1_rule(row)
         assert isinstance(subcat, str)
         assert len(subcat) > 0
@@ -213,12 +235,14 @@ def _make_store(labels, dim=8):
 
 class TestHybridClassifier:
     def _make_df(self, n=3):
-        return pd.DataFrame({
-            "id": [f"W{i}" for i in range(n)],
-            "title": ["populism and democracy"] * n,
-            "abstract": ["Study of populist movements"] * n,
-            "concepts": [[]] * n,
-        })
+        return pd.DataFrame(
+            {
+                "id": [f"W{i}" for i in range(n)],
+                "title": ["populism and democracy"] * n,
+                "abstract": ["Study of populist movements"] * n,
+                "concepts": [[]] * n,
+            }
+        )
 
     @pytest.mark.unit
     def test_classify_dataframe_returns_dataframe(self):
@@ -237,7 +261,13 @@ class TestHybridClassifier:
         store = _make_store(["Political Science::radical_right"])
         clf = HybridClassifier(embed_client=Mock(), prototype_store=store, llm_client=None)
         result = clf.classify_dataframe(self._make_df())
-        for col in ["domain", "subcategory", "domain_confidence", "domain_source", "classification_notes"]:
+        for col in [
+            "domain",
+            "subcategory",
+            "domain_confidence",
+            "domain_source",
+            "classification_notes",
+        ]:
             assert col in result.columns
 
     @pytest.mark.unit
@@ -258,12 +288,14 @@ class TestHybridClassifier:
     @pytest.mark.unit
     def test_stage1_acceptance_when_high_confidence(self):
         """Stage 1 should accept rows that have unambiguous rule-based signals."""
-        df = pd.DataFrame({
-            "id": ["W1"],
-            "title": ["radical right populist party electoral authoritarian"],
-            "abstract": ["far-right nativist populism in European elections"],
-            "concepts": [[{"display_name": "Political Science", "score": 0.95}]],
-        })
+        df = pd.DataFrame(
+            {
+                "id": ["W1"],
+                "title": ["radical right populist party electoral authoritarian"],
+                "abstract": ["far-right nativist populism in European elections"],
+                "concepts": [[{"display_name": "Political Science", "score": 0.95}]],
+            }
+        )
         store = _make_store(["Political Science::radical_right"])
         clf = HybridClassifier(
             embed_client=Mock(),
@@ -292,7 +324,15 @@ class TestHybridClassifier:
 
         def classify_batch(texts, top_k=3):
             # Return mid-range confidence → would normally go to LLM
-            return [("Political Science", "radical_right", 0.65, [("Political Science::radical_right", 0.65)]) for _ in texts]
+            return [
+                (
+                    "Political Science",
+                    "radical_right",
+                    0.65,
+                    [("Political Science::radical_right", 0.65)],
+                )
+                for _ in texts
+            ]
 
         store.classify_batch.side_effect = classify_batch
         store.update_centroids_from_corpus.return_value = {}
@@ -304,16 +344,20 @@ class TestHybridClassifier:
             embed_high_threshold=0.80,
             embed_low_threshold=0.55,
         )
-        df = pd.DataFrame({
-            "id": ["W1"],
-            "title": ["something unrelated"],
-            "abstract": [""],
-            "concepts": [[]],
-        })
+        df = pd.DataFrame(
+            {
+                "id": ["W1"],
+                "title": ["something unrelated"],
+                "abstract": [""],
+                "concepts": [[]],
+            }
+        )
         result = clf.classify_dataframe(df)
         # Should not raise; domain source should not be "llm"
         assert result.iloc[0]["domain_source"] in (
-            "embedding", "embedding_ambiguous", "embedding_outlier"
+            "embedding",
+            "embedding_ambiguous",
+            "embedding_outlier",
         )
 
 
@@ -322,13 +366,15 @@ class TestHybridClassifier:
 
 class TestRunFeedbackLoop:
     def _classified_df(self, n=10):
-        return pd.DataFrame({
-            "id": [f"W{i}" for i in range(n)],
-            "domain": ["Political Science"] * n,
-            "subcategory": ["radical_right"] * n,
-            "domain_confidence": [0.90] * n,
-            "domain_source": ["rule"] * n,
-        })
+        return pd.DataFrame(
+            {
+                "id": [f"W{i}" for i in range(n)],
+                "domain": ["Political Science"] * n,
+                "subcategory": ["radical_right"] * n,
+                "domain_confidence": [0.90] * n,
+                "domain_source": ["rule"] * n,
+            }
+        )
 
     @pytest.mark.unit
     def test_returns_dict(self):
@@ -363,13 +409,15 @@ class TestRunFeedbackLoop:
         clf = Mock()
         clf.store = store
 
-        df = pd.DataFrame({
-            "id": ["W1"],
-            "domain": ["Political Science"],
-            "subcategory": ["radical_right"],
-            "domain_confidence": [0.50],  # Below 0.80 threshold
-            "domain_source": ["rule"],
-        })
+        df = pd.DataFrame(
+            {
+                "id": ["W1"],
+                "domain": ["Political Science"],
+                "subcategory": ["radical_right"],
+                "domain_confidence": [0.50],  # Below 0.80 threshold
+                "domain_source": ["rule"],
+            }
+        )
         texts = ["text"]
         result = run_feedback_loop(df, clf, texts, min_samples=5)
 
@@ -384,13 +432,15 @@ class TestRunFeedbackLoop:
         clf = Mock()
         clf.store = store
 
-        df = pd.DataFrame({
-            "id": [f"W{i}" for i in range(10)],
-            "domain": ["Political Science"] * 10,
-            "subcategory": ["radical_right"] * 10,
-            "domain_confidence": [0.90, 0.90, 0.90, 0.90, 0.90, 0.50, 0.50, 0.50, 0.50, 0.50],
-            "domain_source": ["rule"] * 10,
-        })
+        df = pd.DataFrame(
+            {
+                "id": [f"W{i}" for i in range(10)],
+                "domain": ["Political Science"] * 10,
+                "subcategory": ["radical_right"] * 10,
+                "domain_confidence": [0.90, 0.90, 0.90, 0.90, 0.90, 0.50, 0.50, 0.50, 0.50, 0.50],
+                "domain_source": ["rule"] * 10,
+            }
+        )
         texts = [f"text {i}" for i in range(10)]
         run_feedback_loop(df, clf, texts, min_samples=3)
 
