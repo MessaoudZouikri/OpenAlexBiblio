@@ -18,7 +18,7 @@ Metrics computed:
 Each metric has direct interpretation for researchers.
 """
 
-from typing import Dict, Set
+from typing import Dict
 
 import networkx as nx
 
