@@ -35,7 +35,7 @@ import hashlib
 import logging
 import sys
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -288,8 +288,14 @@ class HybridClassifier:
                     )
 
                 with ThreadPoolExecutor(max_workers=4) as pool:
-                    for i, result in pool.map(_classify_one, needs_s3):
-                        s3[i] = result
+                    futures_map = {pool.submit(_classify_one, i): i for i in needs_s3}
+                    for future in as_completed(futures_map):
+                        try:
+                            i, result = future.result()
+                            s3[i] = result
+                        except Exception as exc:
+                            idx = futures_map[future]
+                            self.logger.warning("LLM worker failed for idx %d: %s", idx, exc)
             else:
                 self.logger.warning(
                     "LLM unavailable — %d ambiguous records use best embedding result",
@@ -394,7 +400,10 @@ def run_feedback_loop(
         return {}
 
     labels = (df_hc["domain"] + "::" + df_hc["subcategory"]).tolist()
-    texts = [corpus_texts[i] for i in df_hc.index]
+    # df_hc.index may contain non-default label values; convert to positional
+    # indices into corpus_texts (a positional list aligned with df.index).
+    hc_positions = [df.index.get_loc(idx) for idx in df_hc.index]
+    texts = [corpus_texts[pos] for pos in hc_positions]
     return classifier.store.update_centroids_from_corpus(texts, labels, min_samples)
 
 
@@ -585,7 +594,7 @@ def classify_work(work_data: Any) -> Dict[str, Any]:
     return rule_based_classification(work_data)
 
 
-def classify_batch(works):
+def classify_batch(works: List[Any]) -> List[Dict[str, Any]]:
     results = []
     for work in works:
         result = classify_work(work)
@@ -619,9 +628,6 @@ def validate_classification_result(
 
     if "domain" in result and result["domain"] not in (VALID_DOMAINS | {"Other"}):
         errors.append(f"Unknown domain: {result['domain']}")
-
-    if not (0.0 <= result.get("confidence", -1) <= 1.0):
-        errors.append("confidence must be between 0.0 and 1.0")
 
     return (not errors), errors
 

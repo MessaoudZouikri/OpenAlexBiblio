@@ -45,6 +45,8 @@ from src.utils.taxonomy import (
     SUBCATEGORY_KEYWORDS as SUBCATEGORY_KEYWORD_MAP,
 )
 
+_nd_logger = logging.getLogger(__name__)
+
 # Columns expected by downstream pipeline, with safe defaults
 EXPECTED_COLUMNS: Dict[str, Any] = {
     "id": "",
@@ -586,7 +588,7 @@ def validate_cleaned_data(df: pd.DataFrame) -> Tuple[bool, List[str]]:
     if "year" in df.columns:
         try:
             years = pd.to_numeric(df["year"], errors="coerce")
-            if (years < 1900).any() or (years > 2030).any():
+            if (years < 1900).any() or (years > datetime.now(timezone.utc).year + 1).any():
                 errors.append("Out-of-range years detected")
         except Exception as exc:
             errors.append(f"Year validation failed: {exc}")
@@ -629,10 +631,6 @@ def detect_near_duplicates(
     rows; larger corpora are sampled to the first _NEAR_DUP_MAX_ROWS records
     and the rest receive near_duplicate_of=None.
     """
-    import logging as _logging
-
-    _nd_logger = _logging.getLogger(__name__)
-
     # ── Coerce list-of-dicts input to DataFrame ─────────────────────────
     if isinstance(df, list):
         df = pd.DataFrame(df)

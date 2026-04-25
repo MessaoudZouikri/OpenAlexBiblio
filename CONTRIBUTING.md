@@ -52,7 +52,7 @@ Open an issue describing:
 
 ### Domain Taxonomy Contributions
 
-The pipeline classifies papers into 4 domains and 21 subcategories. To propose new subcategories or modify keyword mappings:
+The pipeline classifies papers into 4 domains and 20 subcategories. To propose new subcategories or modify keyword mappings:
 
 1. Review the current taxonomy in [`src/utils/taxonomy.py`](src/utils/taxonomy.py) — this is the single source of truth for all domains, subcategories, keywords, and seed texts.
 2. Open an issue or pull request with your proposed changes and justification.

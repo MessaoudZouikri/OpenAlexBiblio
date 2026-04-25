@@ -4,9 +4,9 @@
 Central coordinator of the bibliometric pipeline. Manages execution order, inter-agent communication, partial reruns, and logging. Does NOT perform data processing itself.
 
 ## Inputs
-- `config/config.yaml` — Global pipeline configuration
+- `config/config.yaml` — Global pipeline configuration (including `pipeline.mode`)
 - `checkpoints/pipeline_state.json` — Current execution state (created/updated by this agent)
-- CLI arguments: `--mode [full|partial]`, `--from-step [step_name]`, `--dry-run`
+- CLI arguments: `--config PATH`, `--from-step STEP`, `--dry-run`, `--force`, `--list-steps`
 
 ## Outputs
 - `checkpoints/pipeline_state.json` — Updated state after each step
@@ -26,23 +26,23 @@ Central coordinator of the bibliometric pipeline. Manages execution order, inter
 ```
 data_collection
       │
-data_validation (D1)
+validate_raw  (D1 — raw data quality)
       │
 data_cleaning
       │
-data_validation (D2)
+validate_clean  (D2 — cleaned data quality)
       │
 bibliometric_analysis
       │
-statistical_validation
+validate_statistical
       │
 classification
       │
-classification_validation
+validate_classification
       │
 network_analysis
       │
-network_validation
+validate_network
       │
 visualization
 ```

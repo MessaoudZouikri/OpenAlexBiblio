@@ -8,12 +8,14 @@ Constructs and analyzes bibliometric networks: co-citation, bibliographic coupli
 - `config/config.yaml`
 
 ## Outputs
-- `data/outputs/networks/cocitation_network.graphml`
-- `data/outputs/networks/bibcoupling_network.graphml`
+- `data/outputs/networks/cocitation_network_raw.graphml` — All edges above minimum threshold
+- `data/outputs/networks/cocitation_network_vos.graphml` — Association-strength filtered (recommended)
+- `data/outputs/networks/bibcoupling_network_raw.graphml` — All edges above minimum threshold
+- `data/outputs/networks/bibcoupling_network_vos.graphml` — Association-strength filtered (recommended)
 - `data/outputs/networks/coauthorship_network.graphml`
-- `data/outputs/networks/keyword_cooccurrence_network.graphml`
-- `data/processed/network_metrics.json` — Node-level and graph-level metrics
-- `data/processed/cluster_assignments.parquet` — Work → cluster mapping
+- `data/outputs/networks/keyword_cooccurrence_network_vos.graphml`
+- `data/processed/network_metrics.json` — Graph-level metrics + enhanced cross-domain metrics
+- `data/processed/cluster_assignments.parquet` — Work → cluster mapping + node centralities
 - `data/processed/interdisciplinary_bridges.json` — Cross-domain bridge nodes
 - `logs/network_analysis.log`
 
@@ -27,9 +29,8 @@ Constructs and analyzes bibliometric networks: co-citation, bibliographic coupli
 
 ### 2. Bibliographic Coupling Network
 - Nodes: works in corpus
-- Edges: number of shared references
-- Normalization: cosine similarity on reference vectors
-- Minimum coupling strength: 0.1 (configurable)
+- Edges: number of shared references (raw count, then VOSviewer association-strength filtered)
+- Minimum shared references: auto-scaled by corpus size (see README threshold table); overridable via `config.yaml`
 - Analysis: Louvain clusters → map to domain alignment
 
 ### 3. Co-Authorship Network
@@ -76,11 +77,15 @@ Nodes are flagged as bridges if:
   }
   ```
 
-## Cross-Domain Co-Citation Analysis
-- Build domain×domain co-citation matrix
-- Cell [i,j] = number of cross-domain co-citation pairs
-- Visualized as heatmap (passed to Visualization agent)
-- Stored in `network_metrics.json` under `cross_domain_matrix`
+## Cross-Domain Coupling Analysis
+- Computes 5 complementary metrics on the bibliographic coupling network by domain pair:
+  - Raw coupling matrix (absolute shared-reference counts)
+  - Association Strength (AS): observed / expected coupling ratio
+  - Coupling Strength Index (CSI): shared refs / min(domain size)
+  - Jaccard Similarity: shared intellectual foundation (0–1)
+  - Inter-Domain Coupling Ratio (IDCR): fraction of coupling that crosses domain boundaries
+- Visualized as 4-panel heatmap (`cross_domain_heatmap_enhanced.png`) and simple heatmap (`cross_domain_heatmap.png`)
+- Stored in `network_metrics.json` under `enhanced_cross_domain_metrics`
 
 ## Tools & Capabilities
 - `networkx` for graph construction and metrics

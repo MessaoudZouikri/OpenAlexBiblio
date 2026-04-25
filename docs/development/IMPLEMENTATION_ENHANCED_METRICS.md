@@ -11,9 +11,18 @@ Files Modified: 2
 
 4 new interpretable metrics for cross-domain bibliographic coupling have been **fully integrated into the pipeline**.
 
-### 1. ✅ Enhanced Metrics Function (network_analysis.py)
+### 1. ✅ Enhanced Metrics Functions (two locations)
 
-**Added**: `enhanced_cross_domain_analysis()` function
+**`src/utils/metrics.py`** — canonical, independently-testable implementations of each metric
+function (`compute_association_strength`, `compute_coupling_strength_index`,
+`compute_jaccard_similarity`, `compute_inter_domain_coupling_ratio`, `compute_domain_reach`,
+`enhanced_cross_domain_analysis`). Used directly in unit tests.
+
+**`src/agents/network_analysis.py`** — production version of `enhanced_cross_domain_analysis()`
+that is called inside `main()` and writes results to `network_metrics.json`. Shares the same
+algorithms in a single-pass form for efficiency.
+
+**`enhanced_cross_domain_analysis()` computes:**
 
 This function computes:
 
@@ -66,7 +75,7 @@ Now generates **2 outputs**:
 
 **Modified**: Main pipeline to compute and save enhanced metrics
 
-- Line 726: Added call to `enhanced_cross_domain_analysis()`
+- Added call to `enhanced_cross_domain_analysis()` inside `main()`
 - Saves to: `metrics["enhanced_cross_domain_metrics"]`
 - Includes metadata about domains and coupling statistics
 - Provides interpretation guide with each metric
@@ -170,24 +179,21 @@ print(enhanced["metadata"])
 
 ## Files Modified
 
-### 1. src/agents/network_analysis.py
+### 1. src/utils/metrics.py
 
-**Added**: `enhanced_cross_domain_analysis()` function (lines 278-393)
-- 116 lines of production-ready code
-- Comprehensive docstring
-- Type hints throughout
-- Robust error handling
+**Added**: Standalone implementations of all 5 metric functions. Used by unit tests as the
+canonical reference; also callable independently of the pipeline.
 
-**Modified**: Line 726 in main()
-- Calls enhanced analysis function
-- Saves results to metrics dict
+### 2. src/agents/network_analysis.py
 
-### 2. src/agents/visualization.py
+**Added**: `enhanced_cross_domain_analysis()` — production version called in `main()` that
+writes results to `metrics["enhanced_cross_domain_metrics"]` in `network_metrics.json`.
 
-**Updated**: `fig_cross_domain_heatmap()` function (lines 167-264)
-- 98 lines of enhanced visualization code
+### 3. src/agents/visualization.py
+
+**Updated**: `fig_cross_domain_heatmap()` function
 - Handles both old and new metric formats
-- Generates 4-panel heatmap when enhanced metrics available
+- Generates 4-panel heatmap when enhanced metrics are present
 - Falls back to simple heatmap if not
 
 ---

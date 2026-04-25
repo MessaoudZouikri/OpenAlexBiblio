@@ -35,19 +35,32 @@ query_batch   : str   # Which query retrieved this record
 ```
 
 ## Query Strategy
-1. Query 1: title_and_abstract.search = "populism"
-2. Query 2: title_and_abstract.search = "populist"  
-3. Query 3: title_and_abstract.search = "populists"
-4. Merge results → deduplicate on OpenAlex work ID
-5. Filter: type = article (configurable)
-6. Sort: cited_by_count:desc (configurable)
+Fully config-driven — driven by `config/openalex.yaml` `queries.keywords` list.
+Each entry in the list is one API query; results are merged and deduplicated on OpenAlex work ID.
+
+Recommended configuration (single boolean query):
+```yaml
+queries:
+  keywords:
+    - term: "populism OR populist OR populists OR far-right"
+      field: "title_and_abstract.search"
+  filters:
+    type: "article OR book-chapter OR dissertation OR preprint"
+    from_publication_date: "1980-01-01"
+  sort:
+    field: cited_by_count
+    order: desc
+```
+
+Multiple separate terms are also supported (one list entry each); results are merged and
+deduplicated automatically. A single boolean query is more efficient for most use cases.
 
 ## Tools & Capabilities
-- `pyalex` library OR direct HTTP requests to `https://api.openalex.org`
-- Pagination handling (cursor-based, 200 records/page)
-- Rate limiting: respect 10 req/s polite limit (User-Agent + email header)
+- Direct HTTP requests to `https://api.openalex.org` via `requests`
+- Pagination handling (cursor-based, 200 records/page by default)
+- Rate limiting: respects polite pool (10 req/s) via email in User-Agent header
 - Abstract reconstruction from OpenAlex inverted index
-- Retry logic: 3 attempts with exponential backoff
+- Retry logic: configurable attempts with exponential backoff
 
 ## Interaction Protocol
 - Standalone execution: `python src/agents/data_collection.py --config config/config.yaml`
@@ -61,6 +74,6 @@ query_batch   : str   # Which query retrieved this record
 - Deterministic deduplication (sort by ID before dedup)
 
 ## Constraints
-- Max records per run: configurable (default: 500 for test, 50000 for full)
+- Max records per run: configurable (`test_max_records` default 200, `full_max_records` default null = unlimited)
 - Must not skip deduplication even in test mode
 - Must reconstruct abstracts (required for classification)

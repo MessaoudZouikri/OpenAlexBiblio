@@ -34,10 +34,10 @@ Raw Data Collection
     ↓ (HTTP API calls)
 Data Cleaning & Normalization
     ↓ (Text processing, deduplication)
+Bibliometric Analysis
+    ↓ (Statistical computations — h-index, trends, Bradford/Lotka)
 Domain Classification
     ↓ (Rule-based → Embedding → LLM fallback)
-Bibliometric Analysis
-    ↓ (Statistical computations)
 Network Analysis
     ↓ (Graph construction, community detection)
 Visualization & Reporting

@@ -34,7 +34,7 @@ def run_command(cmd, description):
     print(f"\n{'='*60}")
     print(f"Running: {description}")
     print(f"Command: {' '.join(cmd)}")
-    print('='*60)
+    print("=" * 60)
 
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, cwd=Path(__file__).parent)
@@ -63,7 +63,9 @@ def main():
     parser.add_argument("--integration", action="store_true", help="Run only integration tests")
     parser.add_argument("--robustness", action="store_true", help="Run only robustness tests")
     parser.add_argument("--regression", action="store_true", help="Run only regression tests")
-    parser.add_argument("--bibliometric", action="store_true", help="Run only bibliometric domain tests")
+    parser.add_argument(
+        "--bibliometric", action="store_true", help="Run only bibliometric domain tests"
+    )
     parser.add_argument("--coverage", action="store_true", help="Generate coverage report")
     parser.add_argument("--parallel", action="store_true", help="Run tests in parallel")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
@@ -92,13 +94,15 @@ def main():
         cmd.extend(["-m", markers])
 
     if args.coverage:
-        cmd.extend([
-            "--cov=src",
-            "--cov-report=html:htmlcov",
-            "--cov-report=term-missing",
-            "--cov-report=xml",
-            "--cov-fail-under=85"
-        ])
+        cmd.extend(
+            [
+                "--cov=src",
+                "--cov-report=html:htmlcov",
+                "--cov-report=term-missing",
+                "--cov-report=xml",
+                "--cov-fail-under=85",
+            ]
+        )
 
     if args.parallel:
         cmd.extend(["-n", "auto"])  # Use pytest-xdist for parallel execution
@@ -115,7 +119,7 @@ def main():
     if success:
         print(f"\n{'='*60}")
         print("🎉 ALL TESTS PASSED!")
-        print("="*60)
+        print("=" * 60)
 
         if args.coverage:
             print("\nCoverage report generated:")
@@ -132,7 +136,7 @@ def main():
     else:
         print(f"\n{'='*60}")
         print("❌ SOME TESTS FAILED!")
-        print("="*60)
+        print("=" * 60)
         print("Check the output above for details.")
         print("Common issues:")
         print("  - Missing dependencies: pip install -r requirements-test.txt")

@@ -17,12 +17,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from src.utils.io_utils import latest_file, load_json, load_parquet, load_yaml, save_json
-from src.utils.llm_client import VALID_DOMAINS, VALID_SUBCATEGORIES
 from src.utils.logging_utils import setup_logger
+from src.utils.taxonomy import VALID_DOMAINS, VALID_SUBCATEGORIES
 
 # ── Shared helpers ────────────────────────────────────────────────────────
 
@@ -148,12 +149,13 @@ def validate_data(config: dict, stage: str = "D1") -> dict:
                 is_error=(stage == "D2"),
             )
 
-        # Citation checks
+        # Citation checks — coerce first to handle mixed-type raw columns
+        cites = pd.to_numeric(df["cited_by_count"], errors="coerce")
         _check(
             report,
             "citations_non_negative",
-            (df["cited_by_count"] >= 0).all(),
-            f"{(df['cited_by_count'] < 0).sum()} negative values",
+            (cites.dropna() >= 0).all(),
+            f"{(cites.dropna() < 0).sum()} negative values",
         )
 
         # Completeness warnings

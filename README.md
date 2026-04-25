@@ -85,8 +85,12 @@ bibliometric_pipeline/
 │   │   └── validation/
 │   │       └── validators.py      ← 4 independent validators
 │   └── utils/
-│       ├── openalex_client.py     ← Paginated API client
-│       ├── llm_client.py          ← Ollama client + JSON validation
+│       ├── openalex_client.py     ← Paginated OpenAlex API client
+│       ├── embedding_client.py    ← SPECTER2 / Ollama / TF-IDF embedding backends
+│       ├── llm_client.py          ← Ollama LLM client + JSON validation
+│       ├── taxonomy.py            ← Single source of truth: domains, subcategories, keywords
+│       ├── metrics.py             ← Cross-domain coupling metrics (unit-testable reference)
+│       ├── prototype_store.py     ← Per-subcategory centroid vectors + feedback loop
 │       ├── io_utils.py            ← Checkpoints, parquet, safe_list helper
 │       └── logging_utils.py       ← Structured logging + audit trail
 ├── config/
@@ -323,7 +327,7 @@ See [QUICKSTART.md](QUICKSTART.md) for the complete step-by-step production chec
 ```yaml
 pipeline:
   mode: "full"
-  full_max_records:10000   # Start here; set null for all ~57,000 records
+  full_max_records: 10000  # Start here; set null for all ~57,000 records
   min_year: 1980
 ```
 

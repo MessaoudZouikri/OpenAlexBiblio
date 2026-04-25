@@ -1,7 +1,12 @@
 """
 Enhanced Cross-Domain Metrics
 =============================
-Produces interpretable coupling matrices with direct statistical meaning.
+Modular, independently-testable implementations of coupling metrics.
+
+These functions are the canonical reference implementations used in unit tests.
+The production pipeline (network_analysis.py) calls enhanced_cross_domain_analysis()
+which uses the same algorithms in a single-pass form for efficiency; this module
+provides the building blocks for testing and standalone use.
 
 Metrics computed:
 1. Association Strength (VOSviewer-style): Observed/Expected ratio
@@ -138,32 +143,33 @@ def compute_jaccard_similarity(
     """
     domains = sorted(set(domain_map.values()))
 
-    # Collect references by domain
-    domain_refs: Dict[str, Set[str]] = {d: set() for d in domains}
+    # Compute domain coupling weights and total degrees.
+    # Since nodes belong to exactly one domain, node-set intersection across
+    # domains is always empty — the coupling-weight formulation is used instead:
+    #   Jaccard(d1,d2) = shared_weight(d1,d2) / (degree(d1) + degree(d2) - shared_weight(d1,d2))
+    observed = {d: {d2: 0.0 for d2 in domains} for d in domains}
+    degrees = {d: 0.0 for d in domains}
 
-    for node in G.nodes():
-        domain = domain_map.get(node, "Other")
-        domain_refs[domain].add(node)
+    for a, b, data in G.edges(data=True):
+        da = domain_map.get(a, "Other")
+        db = domain_map.get(b, "Other")
+        w = float(data.get("weight", 1))
+        observed[da][db] += w
+        if da != db:
+            observed[db][da] += w
+        degrees[da] += w
+        degrees[db] += w
 
     jaccard_matrix = {}
     for d1 in domains:
         jaccard_matrix[d1] = {}
         for d2 in domains:
-            refs_1 = domain_refs[d1]
-            refs_2 = domain_refs[d2]
-
             if d1 == d2:
-                jaccard = 1.0
+                jaccard_matrix[d1][d2] = 1.0
             else:
-                intersection = len(refs_1 & refs_2)
-                union = len(refs_1 | refs_2)
-
-                if union > 0:
-                    jaccard = intersection / union
-                else:
-                    jaccard = 0.0
-
-            jaccard_matrix[d1][d2] = round(jaccard, 3)
+                shared = observed[d1][d2]
+                union = degrees[d1] + degrees[d2] - shared
+                jaccard_matrix[d1][d2] = round(shared / union, 3) if union > 0 else 0.0
 
     return jaccard_matrix
 
@@ -313,6 +319,8 @@ def _raw_coupling_matrix(
         db = domain_map.get(b, "Other")
         w = int(data.get("weight", 1))
         matrix[da][db] += w
+        if da != db:
+            matrix[db][da] += w
 
     return matrix
 

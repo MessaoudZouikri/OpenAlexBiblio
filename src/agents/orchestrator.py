@@ -35,6 +35,8 @@ from src.utils.io_utils import (
 )
 from src.utils.logging_utils import AuditTrail, setup_logger
 
+STEP_TIMEOUT_S = 3600  # max seconds per pipeline step before it is killed
+
 # ═══════════════════════════════════════════════════════════════════════════
 # Step Definitions
 # ═══════════════════════════════════════════════════════════════════════════
@@ -106,6 +108,7 @@ def run_step(
             capture_output=True,
             text=True,
             check=False,
+            timeout=STEP_TIMEOUT_S,
         )
         duration = time.time() - t0
         success = result.returncode == 0
@@ -139,6 +142,12 @@ def run_step(
     except FileNotFoundError as exc:
         duration = time.time() - t0
         logger.error("  ✗ Step [%s]: executable not found: %s", step_name, exc)
+        return False, duration
+    except subprocess.TimeoutExpired:
+        duration = time.time() - t0
+        logger.error(
+            "  ✗ Step [%s] TIMED OUT after %ds — see %s", step_name, STEP_TIMEOUT_S, subprocess_log
+        )
         return False, duration
     except Exception as exc:
         duration = time.time() - t0

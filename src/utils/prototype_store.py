@@ -20,7 +20,9 @@ Usage:
 
 from __future__ import annotations
 
+import json
 import logging
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -313,8 +315,6 @@ class PrototypeStore:
 
         Returns dict of {label: n_samples_used}.
         """
-        from collections import defaultdict
-
         vecs = self._client.embed_batch(texts)
         label_vecs: Dict[str, List[np.ndarray]] = defaultdict(list)
 
@@ -328,7 +328,7 @@ class PrototypeStore:
                     "Skipping centroid update for %s (only %d samples)", label, len(label_vec_list)
                 )
                 continue
-            centroid = np.stack(label_vecs[label]).mean(axis=0)
+            centroid = np.stack(label_vec_list).mean(axis=0)
             norm = np.linalg.norm(centroid)
             self._centroids[label] = centroid / norm if norm > 0 else centroid
             updated[label] = len(label_vec_list)
@@ -347,8 +347,6 @@ class PrototypeStore:
         np.savez_compressed(path, **arrays)
         meta_path = path.replace(".npz", "_metadata.json")
         with open(meta_path, "w") as f:
-            import json
-
             json.dump(self._metadata, f, indent=2)
         logger.info("Prototype store saved to %s", path)
 
@@ -358,8 +356,6 @@ class PrototypeStore:
         self._centroids = {k.replace("__", "::"): data[k].astype(np.float32) for k in data.files}
         meta_path = path.replace(".npz", "_metadata.json")
         if Path(meta_path).exists():
-            import json
-
             with open(meta_path) as f:
                 self._metadata = json.load(f)
         logger.info("Prototype store loaded: %d centroids from %s", len(self._centroids), path)

@@ -5,6 +5,7 @@ Provides structured, file-per-agent logging with JSON audit trail support.
 
 import json
 import logging
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -100,10 +101,13 @@ class AuditTrail:
             "run_id": self.run_id,
             "started_at": self._start_time,
             "updated_at": datetime.now(timezone.utc).isoformat(),
+            "overall_status": "running",
             "entries": self.entries,
         }
-        with open(self.trail_path, "w", encoding="utf-8") as f:
+        tmp = str(self.trail_path) + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2, ensure_ascii=False)
+        os.replace(tmp, self.trail_path)
 
     def finalize(self, overall_status: str) -> None:
         payload = {

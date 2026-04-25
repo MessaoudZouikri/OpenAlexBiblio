@@ -32,8 +32,12 @@ def load_checkpoint(path: str = CHECKPOINT_FILE) -> Dict[str, Any]:
         except OSError:
             pass
     if Path(path).exists():
-        with open(path, "r") as f:
-            return json.load(f)
+        try:
+            with open(path, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            # Corrupt or unreadable checkpoint — treat as fresh state
+            return {"completed_steps": [], "run_id": None, "last_updated": None}
     return {"completed_steps": [], "run_id": None, "last_updated": None}
 
 

@@ -269,7 +269,8 @@ class TestNetworkAnalysisRegression:
             for key in required_keys:
                 assert key in results, f"Missing result key: {key}"
 
-            # Check that matrices have expected domains
+            # Check that matrices contain all declared domains.
+            # "Other" is always added as a fallback key, so use subset check.
             domains = set(domain_map.values())
             for matrix_name in [
                 "raw_coupling_matrix",
@@ -278,7 +279,7 @@ class TestNetworkAnalysisRegression:
                 "jaccard_similarity",
             ]:
                 matrix = results[matrix_name]
-                assert set(matrix.keys()) == domains, f"Matrix {matrix_name} missing domains"
+                assert domains <= set(matrix.keys()), f"Matrix {matrix_name} missing domains"
 
     def test_network_metrics_consistency(self):
         """Test that network metrics calculations are stable."""

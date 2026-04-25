@@ -302,7 +302,7 @@ When using these metrics, cite:
 **Methodology**: VOSviewer-inspired association strength normalization
 **Application**: A Bibliometric Analysis Pipeline Using OpenAlex Data
 
-Full citation: See `docs/metadata/CITATION.cff`
+Full citation: See `CITATION.cff` (project root)
 
 ---
 

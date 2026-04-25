@@ -146,9 +146,22 @@ def test_jaccard_diagonal_is_one(simple_graph):
 
 
 @pytest.mark.unit
-def test_jaccard_cross_domain_zero_no_shared_nodes(simple_graph):
-    """PS and Econ share no nodes, so Jaccard = 0."""
+def test_jaccard_cross_domain_nonzero_when_coupled(simple_graph):
+    """Cross-domain Jaccard is non-zero when edges exist between the two domains."""
     G, dm = simple_graph
+    result = compute_jaccard_similarity(G, dm)
+    # simple_graph has cross-domain edges, so coupling-weight Jaccard > 0
+    assert result["PS"]["Econ"] > 0.0
+    assert result["Econ"]["PS"] > 0.0
+
+
+@pytest.mark.unit
+def test_jaccard_cross_domain_zero_no_cross_edges():
+    """Jaccard is 0 when there are no edges between the two domains."""
+    G = nx.Graph()
+    G.add_edge("a", "b", weight=2)  # both PS
+    G.add_edge("c", "d", weight=3)  # both Econ
+    dm = {"a": "PS", "b": "PS", "c": "Econ", "d": "Econ"}
     result = compute_jaccard_similarity(G, dm)
     assert result["PS"]["Econ"] == 0.0
     assert result["Econ"]["PS"] == 0.0

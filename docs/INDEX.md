@@ -25,7 +25,7 @@ Want to contribute to or modify the domain taxonomy? Need to enrich subcategorie
 
 | Resource | Purpose | Read Time |
 |----------|---------|-----------|
-| [`src/utils/taxonomy.py`](../src/utils/taxonomy.py) | Single source of truth for all 4 domains, 21 subcategories, keywords, and seed texts | 10 min |
+| [`src/utils/taxonomy.py`](../src/utils/taxonomy.py) | Single source of truth for all 4 domains, 20 subcategories, keywords, and seed texts | 10 min |
 | [`scripts/update_taxonomy.py`](../scripts/update_taxonomy.py) | Automates applying taxonomy changes from a CSV feedback file | 5 min |
 
 **To propose changes**: Open an issue or PR with a CSV in the format: `Action, Domain, Subcategory, Keywords, Seed Texts, Rationale`.
@@ -82,7 +82,7 @@ Root-level (key entry points):
 
 ### Domain Taxonomy & Classification
 
-- **Current Structure**: 4 domains, 21 subcategories (hand-curated, not from OpenAlex)
+- **Current Structure**: 4 domains, 20 subcategories (hand-curated, not from OpenAlex)
 - **Classification Method**: 3-stage (Rule-based → Embedding → Selective LLM)
 - **Source Documents**:
   - `src/utils/taxonomy.py` — Single source of truth for all domains, subcategories, keywords, and seed texts

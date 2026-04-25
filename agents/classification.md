@@ -3,7 +3,7 @@
 ## Role
 Assigns each work to a primary academic domain AND subcategory using a three-stage
 hybrid pipeline that maximises determinism, scalability, and scientific reproducibility
-while reserving expensive LLM calls for genuinely ambiguous papers (~10–20% of corpus).
+while reserving expensive LLM calls for genuinely ambiguous papers (~10–30% of corpus).
 
 ---
 
@@ -28,7 +28,7 @@ while reserving expensive LLM calls for genuinely ambiguous papers (~10–20% of
 │  cosine < embed_low_threshold (0.60) → OUTLIER FLAG                 │
 │  Expected coverage: ~40–50% of corpus                               │
 └───────────────────────────────┬─────────────────────────────────────┘
-                                │ ambiguous ~10–20%
+                                │ ambiguous ~10–30%
 ┌───────────────────────────────▼─────────────────────────────────────┐
 │ Stage 3 — LLM Disambiguation              SELECTIVE | CONTROLLED    │
 │  Model: qwen2.5:72b (recommended for M4 128 GB)                     │
@@ -63,7 +63,7 @@ Bridge node detection is structurally aligned with co-citation networks.
 
 ## Prototype Embeddings
 
-Each of the 19 subcategories has 2 curated seed texts → averaged into a centroid vector.
+Each of the 20 subcategories has 2 curated seed texts → averaged into a centroid vector.
 Seed texts are purpose-built canonical descriptions capturing each subfield's identity.
 Stored in `data/processed/prototypes.npz` for reproducibility and reuse.
 

@@ -64,7 +64,7 @@ class OllamaClient:
         """Return the first available model from primary + fallback list."""
         candidates = [self.model] + self.fallback_models
         for model in candidates:
-            client = OllamaClient(self.endpoint, model)
+            client = OllamaClient(self.endpoint, model, timeout=self.timeout, max_retries=self.max_retries)
             if client.is_available():
                 if model != self.model:
                     logger.info("Using fallback model: %s", model)

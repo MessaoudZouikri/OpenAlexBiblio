@@ -55,8 +55,6 @@ def compute_gindex(citations: Iterable[int]) -> int:
         cumsum += c
         if cumsum >= i * i:
             g = i
-        else:
-            break
     return g
 
 
@@ -109,7 +107,10 @@ def publication_trends(df: pd.DataFrame) -> Dict[str, Any]:
         "decadal": decadal.to_dict(orient="records") if not decadal.empty else [],
         "domain_annual": domain_annual.to_dict(orient="records") if not domain_annual.empty else [],
         "total_records": len(df),
-        "year_range": [int(df["year"].min()), int(df["year"].max())],
+        "year_range": [
+            int(df["year"].min()) if df["year"].notna().any() else None,
+            int(df["year"].max()) if df["year"].notna().any() else None,
+        ],
     }
 
 

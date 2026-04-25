@@ -20,7 +20,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from itertools import combinations
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import networkx as nx
 import numpy as np
@@ -62,8 +62,6 @@ def detect_communities(G: nx.Graph) -> Tuple[dict, float]:
     if LOUVAIN_AVAILABLE:
         try:
             partition = community_louvain.best_partition(G, weight="weight", random_state=42)
-            if G.number_of_edges() == 0:
-                return partition, 0.0
             modularity = community_louvain.modularity(partition, G, weight="weight")
             return partition, round(modularity, 4)
         except Exception:
@@ -174,7 +172,10 @@ def build_bibcoupling_network(df: pd.DataFrame, min_shared: int = 2) -> nx.Graph
     Uses an inverted-index approach — O(m) where m is the number of
     reference co-occurrences — instead of O(n²) over all work pairs.
     """
-    domain_map = df.set_index("id")["domain"].to_dict()
+    if "domain" in df.columns:
+        domain_map = df.set_index("id")["domain"].to_dict()
+    else:
+        domain_map = dict.fromkeys(df["id"], "Other")
     G = nx.Graph()
     for wid in df["id"]:
         G.add_node(wid, domain=domain_map.get(wid, "Other"))
@@ -255,7 +256,9 @@ def build_concept_cooccurrence_network(df: pd.DataFrame, top_n: int = 100) -> nx
         for c in safe_list(row.get("concepts")):
             if not isinstance(c, dict):
                 continue
-            concept_counts[c.get("name", "")] += 1
+            name = c.get("name", "")
+            if name:
+                concept_counts[name] += 1
 
     top_concepts = {name for name, _ in concept_counts.most_common(top_n)}
 
@@ -360,10 +363,10 @@ def enhanced_cross_domain_analysis(G_bibcoupling: nx.Graph, domain_map: Dict[str
 
     Returns dict with all metrics and interpretation guide.
     """
-    present = set(domain_map.values())
-    if any(d not in present for d in domain_map.values() if d is None or d == "Other"):
-        present.add("Other")
-    domains = sorted(present)
+    # Always include "Other" as a fallback domain — nodes not in domain_map
+    # are assigned "Other" via .get(node, "Other") in the accumulation loop,
+    # so the matrix keys must include it to avoid KeyError.
+    domains = sorted(set(domain_map.values()) | {"Other"})
 
     # Initialize matrices
     raw_matrix = {d: {d2: 0 for d2 in domains} for d in domains}
@@ -425,14 +428,16 @@ def enhanced_cross_domain_analysis(G_bibcoupling: nx.Graph, domain_map: Dict[str
             csi_value = observed / min_degree
             csi_matrix[d1][d2] = round(csi_value, 3)
 
-            # 3. Jaccard Similarity
-            # Jaccard = |intersection| / |union|
+            # 3. Jaccard Similarity (coupling-weight formulation)
+            # Node sets are disjoint by construction (each paper belongs to one domain),
+            # so node-set intersection is always empty. Use coupling weight instead:
+            # Jaccard(d1,d2) = shared_weight / (degree_d1 + degree_d2 - shared_weight)
             if d1 == d2:
                 jaccard_matrix[d1][d2] = 1.0
             else:
-                union_refs = len(domain_refs[d1] | domain_refs[d2])
-                intersection_refs = len(domain_refs[d1] & domain_refs[d2])
-                jaccard_value = intersection_refs / union_refs if union_refs > 0 else 0.0
+                shared = raw_matrix[d1][d2]
+                union_weight = degree_d1 + degree_d2 - shared
+                jaccard_value = shared / union_weight if union_weight > 0 else 0.0
                 jaccard_matrix[d1][d2] = round(jaccard_value, 3)
 
     # Calculate Inter-Domain Coupling Ratio
@@ -550,13 +555,12 @@ def build_subfield_cocitation_network(
     Build co-citation network for works within a specific sub-category.
     This allows analysis of citation patterns within sub-fields.
     """
-    # Filter to works in this subcategory
     subcat_df = df[df["subcategory"] == subcategory].copy()
     if len(subcat_df) < 5:
-        return nx.Graph()  # Too few works
+        return nx.Graph()
 
     logger = logging.getLogger("network_analysis")
-    logger.info(f"  Building {subcategory} network with {len(subcat_df)} works")
+    logger.info("  Building %s network with %d works", subcategory, len(subcat_df))
 
     return build_cocitation_network(subcat_df, min_cocitations)
 
@@ -578,7 +582,9 @@ def build_subfield_bibcoupling_network(
 # ── Enhanced Clustering with Spectral Clustering ──────────────────────────
 
 
-def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: float = 0.95) -> dict:
+def spectral_clustering(
+    G: nx.Graph, n_clusters: Optional[int] = None, lcc_threshold: float = 0.95
+) -> dict:
     """
     Apply spectral clustering robust to connectivity issues.
     Falls back to Louvain if graph is severely disconnected or sklearn unavailable.
@@ -596,15 +602,19 @@ def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: floa
     is_connected = n_components == 1
 
     logger.info(
-        f"Graph connectivity: {n_components} component(s), "
-        f"LCC = {len(lcc_nodes)} nodes ({lcc_frac:.1%})"
+        "Graph connectivity: %d component(s), LCC = %d nodes (%.1f%%)",
+        n_components,
+        len(lcc_nodes),
+        lcc_frac * 100,
     )
 
-    # Severely disconnected → Leiden fallback
+    # Severely disconnected → Louvain fallback
     if lcc_frac < lcc_threshold:
         logger.warning(
-            f"LCC fraction {lcc_frac:.1%} below threshold {lcc_threshold:.0%}. "
-            f"Spectral clustering not appropriate. Delegating to Louvain."
+            "LCC fraction %.1f%% below threshold %.0f%%. "
+            "Spectral clustering not appropriate. Delegating to Louvain.",
+            lcc_frac * 100,
+            lcc_threshold * 100,
         )
         return detect_communities(G)[0]
 
@@ -615,11 +625,12 @@ def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: floa
     else:
         G_lcc = G.subgraph(lcc_nodes).copy()
         strategy = "spectral_lcc_extraction"
-        outlier_nodes = [n for c in components[1:] for n in c]
+        outlier_nodes = [node for c in components[1:] for node in c]
         logger.info(
-            f"Extracted LCC ({len(lcc_nodes)} nodes). "
-            f"{len(outlier_nodes)} nodes in {n_components - 1} micro-components "
-            f"will be re-attached after clustering."
+            "Extracted LCC (%d nodes). %d nodes in %d micro-components will be re-attached.",
+            len(lcc_nodes),
+            len(outlier_nodes),
+            n_components - 1,
         )
 
     try:
@@ -667,13 +678,14 @@ def spectral_clustering(G: nx.Graph, n_clusters: int = None, lcc_threshold: floa
                 partition[node] = -1
 
         logger.info(
-            f"Clustering complete | strategy={strategy} | "
-            f"communities={len(set(partition.values()))}"
+            "Clustering complete | strategy=%s | communities=%d",
+            strategy,
+            len(set(partition.values())),
         )
         return partition
 
     except Exception as e:
-        logger.warning(f"Spectral clustering failed: {e}. Falling back to Louvain.")
+        logger.warning("Spectral clustering failed: %s. Falling back to Louvain.", e)
         return detect_communities(G)[0]
 
 
@@ -733,7 +745,7 @@ def enhanced_graph_metrics(G: nx.Graph, name: str) -> dict:
         return enhanced
 
     except Exception as e:
-        logging.getLogger("network_analysis").warning(f"Enhanced metrics failed: {e}")
+        logging.getLogger("network_analysis").warning("Enhanced metrics failed: %s", e)
         return base_metrics
 
 
@@ -807,6 +819,7 @@ def main():
     domain_map = df.set_index("id")["domain"].to_dict()
     subcategory_map = df.set_index("id")["subcategory"].to_dict()
     metrics = {"timestamp": datetime.now(timezone.utc).isoformat()}
+    G_bib_analysis: Optional[nx.Graph] = None
 
     # ── 1. Bibliographic Coupling ────────────────────────────────────
     logger.info("Building bibliographic coupling network...")
@@ -860,19 +873,19 @@ def main():
             bc = nx.betweenness_centrality(G_bib_analysis, weight="weight", normalized=True)
         except Exception as e:
             logger.warning("Betweenness centrality failed: %s, using zeros", e)
-            bc = {n: 0.0 for n in G_bib_analysis.nodes()}
+            bc = {node: 0.0 for node in G_bib_analysis.nodes()}
 
         try:
             pr = nx.pagerank(G_bib_analysis, weight="weight")
         except Exception as e:
             logger.warning("PageRank failed: %s, using zeros", e)
-            pr = {n: 0.0 for n in G_bib_analysis.nodes()}
+            pr = {node: 0.0 for node in G_bib_analysis.nodes()}
 
         try:
             ec = nx.eigenvector_centrality(G_bib_analysis, weight="weight", max_iter=1000)
         except Exception as e:
             logger.warning("Eigenvector centrality failed: %s, using zeros", e)
-            ec = {n: 0.0 for n in G_bib_analysis.nodes()}
+            ec = {node: 0.0 for node in G_bib_analysis.nodes()}
 
         for node in G_bib_analysis.nodes():
             # Safe degree access with node existence check
@@ -944,7 +957,7 @@ def main():
         major_subcats = subcat_counts[subcat_counts >= 10].index.tolist()
 
         for subcat in major_subcats[:5]:  # Limit to top 5 for performance
-            logger.info(f"Analyzing sub-field: {subcat}")
+            logger.info("Analyzing sub-field: %s", subcat)
 
             # Co-citation network for this sub-field
             G_sub_cc = build_subfield_cocitation_network(df, subcat, min_cocitations=min_cocit)
@@ -1022,7 +1035,7 @@ def main():
         metrics["concept_cooccurrence"]["vos_threshold"] = vos_threshold
 
     # ── 6. Bridge Detection ───────────────────────────────────────────
-    if "G_bib_analysis" in locals() and G_bib_analysis.number_of_nodes() >= 10:
+    if G_bib_analysis is not None and G_bib_analysis.number_of_nodes() >= 10:
         logger.info("Detecting interdisciplinary bridges...")
         bridges = find_interdisciplinary_bridges(G_bib_analysis, domain_map)
         metrics["interdisciplinary_bridges_count"] = len(bridges)
@@ -1030,7 +1043,7 @@ def main():
         logger.info("  Found %d bridge nodes", len(bridges))
 
     # ── 7. Network Layout Information ────────────────────────────────
-    if "G_bib_analysis" in locals() and G_bib_analysis.number_of_nodes() >= 5:
+    if G_bib_analysis is not None and G_bib_analysis.number_of_nodes() >= 5:
         logger.info("Computing VOS-inspired layout...")
         layout_2d = vos_layout(G_bib_analysis, dim=2)
         layout_3d = vos_layout(G_bib_analysis, dim=3)

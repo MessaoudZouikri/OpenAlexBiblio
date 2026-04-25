@@ -12,6 +12,7 @@ import argparse
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 import matplotlib
 
@@ -755,8 +756,8 @@ def _llm_interpret(client: OllamaClient, figure_stem: str, data_summary: str) ->
 def generate_html_report(
     fig_dir: str,
     config: dict,
-    proc_dir: str = None,
-    llm_client: OllamaClient = None,
+    proc_dir: Optional[str] = None,
+    llm_client: Optional[OllamaClient] = None,
 ) -> None:
     figures = sorted(Path(fig_dir).glob("*.png"))
     summaries = _build_figure_summaries(proc_dir) if proc_dir else {}
@@ -807,8 +808,8 @@ def generate_html_report(
 def generate_markdown_report(
     fig_dir: str,
     config: dict,
-    proc_dir: str = None,
-    llm_client: OllamaClient = None,
+    proc_dir: Optional[str] = None,
+    llm_client: Optional[OllamaClient] = None,
 ) -> None:
     figures = sorted(Path(fig_dir).glob("*.png"))
     summaries = _build_figure_summaries(proc_dir) if proc_dir else {}

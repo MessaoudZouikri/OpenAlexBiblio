@@ -56,8 +56,11 @@ class OpenAlexClient:
                 resp = self.session.get(url, params=params, timeout=self.timeout)
                 if resp.status_code == 429:
                     wait = int(resp.headers.get("Retry-After", 60))
-                    logger.warning("Rate limited. Waiting %ds", wait)
+                    logger.warning(
+                        "Rate limited. Waiting %ds (attempt %d/%d)", wait, attempt, self.max_retries
+                    )
                     time.sleep(wait)
+                    delay *= self.retry_backoff
                     continue
                 resp.raise_for_status()
                 return resp.json()
@@ -107,6 +110,7 @@ class OpenAlexClient:
             if not cursor:
                 break
             params["cursor"] = cursor
+            time.sleep(self.rate_limit_delay)
             logger.debug(
                 "Fetched %d records so far (cursor=%s)", fetched, cursor[:20] if cursor else "none"
             )
@@ -217,7 +221,7 @@ class OpenAlexClient:
             "is_open_access": oa.get("is_oa", False),
             "type": raw.get("type", ""),
             "references": raw.get("referenced_works", []) or [],
-            "mesh_terms": [m.get("descriptor_name", "") for m in raw.get("mesh", [])],
+            "mesh_terms": [m.get("descriptor_name", "") for m in (raw.get("mesh") or [])],
             "keywords_matched": [query_term],
             "query_batch": query_batch,
         }
