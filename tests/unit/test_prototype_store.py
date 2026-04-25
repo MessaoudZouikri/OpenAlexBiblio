@@ -6,15 +6,13 @@ update_centroids_from_corpus, save, load.
 A mock EmbeddingClient is used throughout — no real embeddings are computed.
 """
 
-import json
 from pathlib import Path
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock
 
 import numpy as np
 import pytest
 
 from src.utils.prototype_store import ALL_LABELS, SEED_TEXTS, PrototypeStore
-
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 

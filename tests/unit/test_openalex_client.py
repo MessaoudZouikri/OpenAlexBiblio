@@ -5,13 +5,12 @@ Covers: reconstruct_abstract, normalize_work, _build_filter, paginate_works.
 All HTTP calls are mocked via unittest.mock.
 """
 
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 import requests
 
 from src.utils.openalex_client import OpenAlexClient
-
 
 # ── reconstruct_abstract ──────────────────────────────────────────────────────
 

@@ -5,10 +5,8 @@ Covers: make_input_text, stage1_rule, HybridClassifier.classify_dataframe,
 run_feedback_loop — all using the real production implementations.
 """
 
-import logging
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -18,7 +16,6 @@ from src.agents.classification import (
     run_feedback_loop,
     stage1_rule,
 )
-
 
 # ── make_input_text ───────────────────────────────────────────────────────────
 

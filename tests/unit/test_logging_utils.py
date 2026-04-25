@@ -13,7 +13,6 @@ import pytest
 
 from src.utils.logging_utils import AuditTrail, setup_logger
 
-
 # ── setup_logger ───────────────────────────────────────────────────────────────
 
 

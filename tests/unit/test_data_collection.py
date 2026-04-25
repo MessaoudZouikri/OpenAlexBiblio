@@ -6,7 +6,7 @@ All HTTP calls are mocked — no network activity.
 """
 
 import logging
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pandas as pd
 import pytest
@@ -18,7 +18,6 @@ from src.agents.data_collection import (
     run_collection,
 )
 from src.utils.openalex_client import OpenAlexClient as _RealOpenAlexClient
-
 
 # ── _sanitize_term ────────────────────────────────────────────────────────────
 
@@ -388,8 +387,6 @@ class TestRunCollection:
         config = self._make_config(tmp_path)
         openalex_cfg = self._make_openalex_cfg()
         captured = {}
-
-        original_paginate = None
 
         with patch("src.agents.data_collection.OpenAlexClient") as MockClient:
             instance = MockClient.return_value
