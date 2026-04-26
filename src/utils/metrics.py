@@ -330,7 +330,7 @@ def _compute_statistics(
     domain_map: Dict[str, str],
 ) -> dict:
     """Compute summary statistics for the coupling network."""
-    domains = list(set(domain_map.values()))
+    domains = sorted(set(domain_map.values()))
     n_domains = len(domains)
 
     # Count edges and weights

@@ -238,23 +238,13 @@ def collect_openalex_data(
 
     records: List[dict] = []
     try:
-        pages = client.paginate_works(
+        for raw in client.paginate_works(
             search_term=search_term,
             search_field="search",
             filters={},
             sort="cited_by_count:desc",
             max_records=max_results,
-        )
-        # Guard against non-iterable mocks
-        try:
-            iterator = iter(pages)
-        except TypeError:
-            _logger.error(
-                "collect_openalex_data: paginate_works returned non-iterable for %r", search_term
-            )
-            return pd.DataFrame()
-
-        for raw in iterator:
+        ):
             if isinstance(raw, dict) and raw.get("id"):
                 records.append(
                     OpenAlexClient.normalize_work(raw, search_term, f"query_{search_term}")

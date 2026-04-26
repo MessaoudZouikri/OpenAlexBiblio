@@ -282,3 +282,122 @@ class TestDataframeCleaning:
         # Check coverage rates
         assert 0 <= report["abstract_coverage_rate"] <= 1
         assert 0 <= report["concept_coverage_rate"] <= 1
+
+
+# ── main() ────────────────────────────────────────────────────────────────────
+
+
+def _make_minimal_df():
+    import pandas as pd
+
+    return pd.DataFrame(
+        {
+            "id": ["W1", "W2"],
+            "title": ["Populism and Democracy", "Economic Inequality"],
+            "abstract": ["Study of populism", "Study of inequality"],
+            "year": [2019, 2020],
+            "cited_by_count": [5, 10],
+            "authors": [[{"id": "A1", "name": "Alice"}], [{"id": "A2", "name": "Bob"}]],
+            "institution": ["Univ A", "Univ B"],
+            "journal": ["J1", "J2"],
+            "concepts": [
+                [{"name": "Populism", "display_name": "Populism", "score": 0.9}],
+                [],
+            ],
+            "is_open_access": [True, False],
+            "type": ["article", "article"],
+            "references": [["R1"], ["R2"]],
+            "keywords_matched": [["populism"], ["inequality"]],
+        }
+    )
+
+
+def test_main_saves_clean_parquet_and_report(tmp_path):
+    """main() with --input saves clean parquet and cleaning report."""
+    from unittest.mock import MagicMock, patch
+
+    from src.agents.data_cleaning import main
+
+    raw_dir = tmp_path / "raw"
+    clean_dir = tmp_path / "clean"
+    logs_dir = tmp_path / "logs"
+    raw_dir.mkdir()
+    clean_dir.mkdir()
+    logs_dir.mkdir()
+
+    config = {
+        "paths": {
+            "data_raw": str(raw_dir),
+            "data_clean": str(clean_dir),
+            "logs": str(logs_dir),
+        },
+        "pipeline": {"min_year": 1990},
+    }
+
+    with (
+        patch("sys.argv", ["data_cleaning.py"]),
+        patch("src.agents.data_cleaning.load_yaml", return_value=config),
+        patch("src.agents.data_cleaning.setup_logger", return_value=MagicMock()),
+        patch("src.agents.data_cleaning.latest_file", return_value=tmp_path / "dummy.parquet"),
+        patch("src.agents.data_cleaning.load_parquet", return_value=_make_minimal_df()),
+        patch("src.agents.data_cleaning.save_parquet") as mock_save_parquet,
+        patch("src.agents.data_cleaning.save_json") as mock_save_json,
+    ):
+        main()
+
+    mock_save_parquet.assert_called_once()
+    mock_save_json.assert_called_once()
+
+
+def test_main_explicit_input_path(tmp_path):
+    """main() with --input flag uses the given path instead of auto-detect."""
+    from unittest.mock import MagicMock, patch
+
+    from src.agents.data_cleaning import main
+
+    config = {
+        "paths": {
+            "data_raw": str(tmp_path),
+            "data_clean": str(tmp_path),
+            "logs": str(tmp_path),
+        },
+        "pipeline": {"min_year": 1990},
+    }
+
+    with (
+        patch("sys.argv", ["data_cleaning.py", "--input", "some/raw.parquet"]),
+        patch("src.agents.data_cleaning.load_yaml", return_value=config),
+        patch("src.agents.data_cleaning.setup_logger", return_value=MagicMock()),
+        patch("src.agents.data_cleaning.load_parquet", return_value=_make_minimal_df()),
+        patch("src.agents.data_cleaning.save_parquet"),
+        patch("src.agents.data_cleaning.save_json"),
+    ):
+        main()  # should not raise
+
+
+def test_main_exits_when_no_raw_file(tmp_path):
+    """main() calls sys.exit(1) when no raw parquet is found and --input is not given."""
+    import pytest
+    from unittest.mock import MagicMock, patch
+
+    from src.agents.data_cleaning import main
+
+    config = {
+        "paths": {
+            "data_raw": str(tmp_path),
+            "data_clean": str(tmp_path),
+            "logs": str(tmp_path),
+        },
+        "pipeline": {"min_year": 1990},
+    }
+
+    with (
+        patch("sys.argv", ["data_cleaning.py"]),
+        patch("src.agents.data_cleaning.load_yaml", return_value=config),
+        patch("src.agents.data_cleaning.setup_logger", return_value=MagicMock()),
+        patch("src.agents.data_cleaning.latest_file", return_value=None),
+        pytest.raises(SystemExit) as exc_info,
+    ):
+        main()
+
+    assert exc_info.value.code == 1

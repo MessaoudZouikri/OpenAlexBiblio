@@ -479,3 +479,103 @@ def test_llm_interpret_returns_text_on_success():
     client.generate.return_value = ("This is an interpretation.", True)
     result = _llm_interpret(client, "publication_trends", "some data")
     assert result == "This is an interpretation."
+
+
+# ── main() ────────────────────────────────────────────────────────────────────
+
+
+@pytest.mark.unit
+def test_main_runs_without_crash(tmp_path, minimal_config):
+    """main() should run to completion without raising even when all data is missing."""
+    from unittest.mock import MagicMock, patch
+
+    from src.agents.visualization import main
+
+    full_config = {
+        **minimal_config,
+        "paths": {
+            "outputs": str(tmp_path / "outputs"),
+            "data_processed": str(tmp_path / "proc"),
+            "logs": str(tmp_path / "logs"),
+        },
+    }
+    (tmp_path / "outputs").mkdir(exist_ok=True)
+    (tmp_path / "proc").mkdir(exist_ok=True)
+    (tmp_path / "logs").mkdir(exist_ok=True)
+
+    with (
+        patch("sys.argv", ["visualization.py", "--config", "config/config.yaml"]),
+        patch("src.agents.visualization.load_yaml", return_value=full_config),
+        patch("src.agents.visualization.setup_logger", return_value=MagicMock()),
+        patch("src.agents.visualization.load_json", side_effect=FileNotFoundError),
+        patch("src.agents.visualization.load_parquet", side_effect=FileNotFoundError),
+        patch("src.agents.visualization.generate_html_report", side_effect=Exception("no data")),
+        patch("src.agents.visualization.generate_markdown_report", side_effect=Exception("no data")),
+    ):
+        main()  # should not raise
+
+
+@pytest.mark.unit
+def test_main_generates_figures_when_data_available(tmp_path):
+    """main() calls fig_* functions when the corresponding JSON files are available."""
+    from unittest.mock import MagicMock, call, patch
+
+    import pandas as pd
+
+    from src.agents.visualization import main
+
+    proc = tmp_path / "proc"
+    proc.mkdir()
+    fig = tmp_path / "outputs" / "figures"
+    fig.mkdir(parents=True)
+    logs = tmp_path / "logs"
+    logs.mkdir()
+
+    full_config = {
+        "pipeline": {"mode": "test"},
+        "paths": {
+            "outputs": str(tmp_path / "outputs"),
+            "data_processed": str(proc),
+            "logs": str(logs),
+        },
+    }
+
+    trends = {"annual": [], "domain_annual": []}
+    cit = {"total": 100, "mean": 5.0}
+    authors = {"top_by_output": [], "top_by_citations": [], "unique_authors": 10}
+    concepts = {"top_50_concepts": []}
+    types = {"types": [], "total": 0}
+    metrics = {}
+    domain_df = pd.DataFrame({"domain": ["Political Science"], "subcategory": ["radical_right"]})
+
+    with (
+        patch("sys.argv", ["visualization.py"]),
+        patch("src.agents.visualization.load_yaml", return_value=full_config),
+        patch("src.agents.visualization.setup_logger", return_value=MagicMock()),
+        patch(
+            "src.agents.visualization.load_json",
+            side_effect=[trends, cit, authors, concepts, types, metrics],
+        ),
+        patch("src.agents.visualization.load_parquet", return_value=domain_df),
+        patch("src.agents.visualization.fig_publication_trends") as mock_trends,
+        patch("src.agents.visualization.fig_citation_distribution") as mock_cit,
+        patch("src.agents.visualization.fig_top_authors") as mock_authors,
+        patch("src.agents.visualization.fig_domain_distribution") as mock_domain,
+        patch("src.agents.visualization.fig_type_by_domain") as mock_type_domain,
+        patch("src.agents.visualization.fig_concept_landscape") as mock_concepts,
+        patch("src.agents.visualization.fig_publication_types") as mock_types,
+        patch("src.agents.visualization.fig_cross_domain_heatmap") as mock_heatmap,
+        patch("src.agents.visualization.generate_html_report"),
+        patch("src.agents.visualization.generate_markdown_report"),
+        patch(
+            "src.agents.visualization.OllamaClient",
+            return_value=MagicMock(is_available=lambda: False),
+        ),
+    ):
+        main()
+
+    mock_trends.assert_called_once()
+    mock_cit.assert_called_once()
+    mock_authors.assert_called_once()
+    mock_domain.assert_called_once()
+    mock_type_domain.assert_called_once()

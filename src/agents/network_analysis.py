@@ -336,7 +336,7 @@ def _coerce_edge_weight(data: Any) -> float:
 
 def cross_domain_matrix(G_bibcoupling: nx.Graph, domain_map: Dict[str, str]) -> dict:
     """Compute domain × domain edge weight matrix (raw counts only)."""
-    domains = ["Political Science", "Economics", "Sociology", "Other"]
+    domains = sorted(set(domain_map.values()) | {"Other"})
     matrix = {d: {d2: 0 for d2 in domains} for d in domains}
 
     for a, b, data in G_bibcoupling.edges(data=True):
@@ -888,11 +888,8 @@ def main():
             ec = {node: 0.0 for node in G_bib_analysis.nodes()}
 
         for node in G_bib_analysis.nodes():
-            # Safe degree access with node existence check
-            degree_val = G_bib_analysis.degree(node) if node in G_bib_analysis else 0
-            weighted_degree_val = (
-                G_bib_analysis.degree(node, weight="weight") if node in G_bib_analysis else 0
-            )
+            degree_val = G_bib_analysis.degree(node)
+            weighted_degree_val = G_bib_analysis.degree(node, weight="weight")
 
             cluster_rows.append(
                 {

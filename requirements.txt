@@ -13,6 +13,7 @@ requests>=2.31.0
 
 # ── Config ────────────────────────────────────────────────────────────────
 pyyaml>=6.0
+portalocker>=2.8.0         # Cross-platform file locking (fcntl on Unix, Win32 on Windows)
 
 # ── Scientific computing ──────────────────────────────────────────────────
 scipy>=1.11.0

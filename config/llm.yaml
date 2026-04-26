@@ -13,7 +13,7 @@ endpoint: "http://localhost:11434"
 #   qwen2.5:14b  → ~10 GB  (solid subcategory discrimination)
 #   qwen2.5:7b   → ~5 GB   (coarse domain only — minimum viable)
 #   llama3.2:3b  → ~2.5 GB (lightweight fallback — coarse only)
-model: "qwen2.5:7b"             # DEFAULT: change to a larger model if you have the VRAM
+model: "qwen3:8b"             # DEFAULT: change to a larger model if you have the VRAM
 
 # Fallback chain — tried in order if the primary model is unavailable
 fallback_models:

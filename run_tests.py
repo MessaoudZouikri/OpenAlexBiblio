@@ -23,9 +23,10 @@ from pathlib import Path
 
 def _python_executable() -> str:
     """Return the venv Python if it exists, otherwise the current interpreter."""
-    venv_python = Path(__file__).parent / ".venv" / "bin" / "python"
-    if venv_python.exists():
-        return str(venv_python)
+    root = Path(__file__).parent
+    for candidate in (root / ".venv" / "bin" / "python", root / ".venv" / "Scripts" / "python.exe"):
+        if candidate.exists():
+            return str(candidate)
     return sys.executable
 
 
@@ -139,7 +140,7 @@ def main():
         print("=" * 60)
         print("Check the output above for details.")
         print("Common issues:")
-        print("  - Missing dependencies: pip install -r requirements-test.txt")
+        print("  - Missing dependencies: pip install -r requirements-test.txt  # includes core deps")
         print("  - Import errors: Check PYTHONPATH")
         print("  - External API failures: Check network connectivity")
 

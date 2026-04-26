@@ -2,14 +2,14 @@
 I/O utilities: checkpoint management, file discovery, schema helpers.
 All pipeline state is persisted to disk — no in-memory cross-agent state.
 """
-
-import fcntl
 import glob
 import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+import portalocker
 
 import pandas as pd
 
@@ -59,16 +59,18 @@ def mark_step_complete(
     """Mark a pipeline step as successfully completed (file-lock protected)."""
     lock_path = _checkpoint_lock_path(path)
     Path(lock_path).parent.mkdir(parents=True, exist_ok=True)
-    with open(lock_path, "w") as lock_file:
-        fcntl.flock(lock_file, fcntl.LOCK_EX)
-        try:
-            state = load_checkpoint(path)
-            if step_name not in state["completed_steps"]:
-                state["completed_steps"].append(step_name)
-            state.setdefault("step_outputs", {})[step_name] = outputs or {}
-            save_checkpoint(state, path)
-        finally:
-            fcntl.flock(lock_file, fcntl.LOCK_UN)
+    with portalocker.Lock(lock_path, mode="w", flags=portalocker.LOCK_EX):
+        state = load_checkpoint(path)
+        if step_name not in state["completed_steps"]:
+            state["completed_steps"].append(step_name)
+        state.setdefault("step_outputs", {})[step_name] = outputs or {}
+        save_checkpoint(state, path)
+
+
+def reset_checkpoint(path: str = CHECKPOINT_FILE) -> None:
+    """Delete the checkpoint file so the pipeline restarts from scratch."""
+    Path(path).unlink(missing_ok=True)
+    Path(_checkpoint_lock_path(path)).unlink(missing_ok=True)
 
 
 def is_step_complete(step_name: str, path: str = CHECKPOINT_FILE) -> bool:

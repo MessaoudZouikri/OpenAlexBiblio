@@ -348,24 +348,6 @@ class SPECTER2Backend:
                 continue
         return None
 
-    def _set_underlying_model(self, new_model) -> None:
-        """
-        Write back the modified underlying model into the sentence-transformers wrapper.
-        Mirrors _get_underlying_model()'s access patterns.
-        """
-        for setter in [
-            lambda m, v: setattr(m[0], "auto_model", v),
-            lambda m, v: setattr(list(m.children())[0], "auto_model", v),
-            lambda m, v: setattr(m._first_module(), "auto_model", v),
-            lambda m, v: setattr(next(iter(m._modules.values())), "auto_model", v),
-        ]:
-            try:
-                setter(self._model, new_model)
-                return
-            except Exception:
-                continue
-        raise RuntimeError("Could not write merged model back into SentenceTransformer")
-
     # ── Embedding ─────────────────────────────────────────────────────────────
 
     def embed_batch(self, texts: List[str]) -> np.ndarray:

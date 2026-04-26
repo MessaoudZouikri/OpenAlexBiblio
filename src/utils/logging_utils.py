@@ -117,5 +117,7 @@ class AuditTrail:
             "overall_status": overall_status,
             "entries": self.entries,
         }
-        with open(self.trail_path, "w", encoding="utf-8") as f:
+        tmp = str(self.trail_path) + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2, ensure_ascii=False)
+        os.replace(tmp, self.trail_path)

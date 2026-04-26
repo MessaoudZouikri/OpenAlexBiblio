@@ -4,6 +4,7 @@ Data Validation Utilities
 Comprehensive schema and data quality validation for pipeline stages.
 """
 
+import functools
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -83,7 +84,7 @@ class SchemaValidator:
             stage_name: Name of pipeline stage
 
         Returns:
-            Tuple of (is_valid, null_counts_dict)
+            (True, {}) on success — raises DataValidationError on failure.
 
         Raises:
             DataValidationError: If critical nulls found
@@ -215,12 +216,11 @@ def require_schema(required_columns: List[str], stage_name: str = "Unknown"):
     """Decorator to enforce schema validation on function input."""
 
     def decorator(func):
+        @functools.wraps(func)
         def wrapper(df: pd.DataFrame, *args, **kwargs):
             SchemaValidator.validate_columns(df, required_columns, stage_name)
             return func(df, *args, **kwargs)
 
-        wrapper.__name__ = func.__name__
-        wrapper.__doc__ = func.__doc__
         return wrapper
 
     return decorator

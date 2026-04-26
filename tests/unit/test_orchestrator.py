@@ -319,3 +319,246 @@ def test_run_step_extra_args_passed_to_subprocess(mock_logger, tmp_path):
 
     assert "--validator" in captured["cmd"]
     assert "D1" in captured["cmd"]
+
+
+# ── run_step (TimeoutExpired) ─────────────────────────────────────────────────
+
+
+@pytest.mark.unit
+def test_run_step_timeout_returns_false(mock_logger, tmp_path):
+    import subprocess
+
+    with patch(
+        "src.agents.orchestrator.subprocess.run",
+        side_effect=subprocess.TimeoutExpired(cmd="python", timeout=3600),
+    ):
+        success, duration = run_step(
+            step_name="network_analysis",
+            module_path="src.agents.network_analysis",
+            extra_args=[],
+            config_path="config/config.yaml",
+            logger=mock_logger,
+            dry_run=False,
+            logs_dir=str(tmp_path),
+        )
+
+    assert success is False
+    assert duration >= 0.0
+
+
+# ── run_pipeline ──────────────────────────────────────────────────────────────
+
+_MINIMAL_CONFIG = {
+    "pipeline": {"mode": "full"},
+    "paths": {"logs": "logs"},
+    "failure": {"on_validation_fail": "halt", "on_agent_error": "halt"},
+}
+
+
+def _make_pipeline_patches(
+    step_results=None,
+    is_complete=False,
+    from_step_name=None,
+):
+    """Return a dict of patches needed to run run_pipeline in isolation."""
+    if step_results is None:
+        step_results = [(True, 0.1)] * 11  # one result per pipeline step
+
+    patches = {
+        "load_yaml": patch(
+            "src.agents.orchestrator.load_yaml", return_value=_MINIMAL_CONFIG
+        ),
+        "setup_logger": patch(
+            "src.agents.orchestrator.setup_logger", return_value=MagicMock()
+        ),
+        "AuditTrail": patch("src.agents.orchestrator.AuditTrail"),
+        "load_checkpoint": patch(
+            "src.agents.orchestrator.load_checkpoint",
+            return_value={"completed_steps": [], "step_outputs": {}},
+        ),
+        "save_checkpoint": patch("src.agents.orchestrator.save_checkpoint"),
+        "is_step_complete": patch(
+            "src.agents.orchestrator.is_step_complete", return_value=is_complete
+        ),
+        "mark_step_complete": patch("src.agents.orchestrator.mark_step_complete"),
+        "reset_from_step": patch("src.agents.orchestrator.reset_from_step"),
+        "run_step": patch(
+            "src.agents.orchestrator.run_step", side_effect=step_results
+        ),
+    }
+    return patches
+
+
+@pytest.mark.unit
+def test_run_pipeline_all_success_returns_true(tmp_path):
+    p = _make_pipeline_patches()
+    with (
+        p["load_yaml"],
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"],
+        p["run_step"],
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        result = run_pipeline(config_path="config/config.yaml")
+
+    assert result is True
+
+
+@pytest.mark.unit
+def test_run_pipeline_step_failure_halt_returns_false(tmp_path):
+    results = [(False, 0.1)] + [(True, 0.1)] * 10
+    p = _make_pipeline_patches(step_results=results)
+    with (
+        p["load_yaml"],
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"],
+        p["run_step"],
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        result = run_pipeline(config_path="config/config.yaml")
+
+    assert result is False
+
+
+@pytest.mark.unit
+def test_run_pipeline_validation_fail_warn_continues(tmp_path):
+    warn_config = {
+        **_MINIMAL_CONFIG,
+        "failure": {"on_validation_fail": "warn", "on_agent_error": "warn"},
+    }
+    # validate_raw is step index 1 → fail it, rest succeed
+    results = [(True, 0.1), (False, 0.1)] + [(True, 0.1)] * 9
+    p = _make_pipeline_patches(step_results=results)
+    with (
+        patch("src.agents.orchestrator.load_yaml", return_value=warn_config),
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"],
+        p["run_step"],
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        result = run_pipeline(config_path="config/config.yaml")
+
+    # Pipeline completes but returns False because a step failed
+    assert result is False
+
+
+@pytest.mark.unit
+def test_run_pipeline_all_cached_skips_run_step(tmp_path):
+    p = _make_pipeline_patches(is_complete=True)
+    with (
+        p["load_yaml"],
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"],
+        p["run_step"] as mock_run_step,
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        run_pipeline(config_path="config/config.yaml")
+
+    mock_run_step.assert_not_called()
+
+
+@pytest.mark.unit
+def test_run_pipeline_force_reruns_cached_steps(tmp_path):
+    p = _make_pipeline_patches(is_complete=True)
+    with (
+        p["load_yaml"],
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"],
+        p["run_step"] as mock_run_step,
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        run_pipeline(config_path="config/config.yaml", force=True)
+
+    assert mock_run_step.call_count == 11
+
+
+@pytest.mark.unit
+def test_run_pipeline_from_step_resets_and_skips(tmp_path):
+    p = _make_pipeline_patches()
+    with (
+        p["load_yaml"],
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"] as mock_reset,
+        p["run_step"] as mock_run_step,
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        run_pipeline(config_path="config/config.yaml", from_step="network_analysis")
+
+    mock_reset.assert_called_once()
+    # network_analysis is step index 8 → 11 - 8 = 3 steps should run
+    assert mock_run_step.call_count == 3
+
+
+@pytest.mark.unit
+def test_run_pipeline_dry_run_calls_run_step_dry(tmp_path):
+    p = _make_pipeline_patches()
+    with (
+        p["load_yaml"],
+        p["setup_logger"],
+        p["AuditTrail"],
+        p["load_checkpoint"],
+        p["save_checkpoint"],
+        p["is_step_complete"],
+        p["mark_step_complete"],
+        p["reset_from_step"],
+        p["run_step"] as mock_run_step,
+    ):
+        from src.agents.orchestrator import run_pipeline
+
+        run_pipeline(config_path="config/config.yaml", dry_run=True)
+
+    for call in mock_run_step.call_args_list:
+        assert call.kwargs.get("dry_run") is True or call.args[5] is True
+
+
+# ── main() (--list-steps) ─────────────────────────────────────────────────────
+
+
+@pytest.mark.unit
+def test_main_list_steps_prints_and_exits(capsys):
+    import sys
+
+    with patch("sys.argv", ["orchestrator.py", "--list-steps"]):
+        from src.agents.orchestrator import main
+
+        main()
+
+    captured = capsys.readouterr()
+    assert "data_collection" in captured.out
+    assert "visualization" in captured.out

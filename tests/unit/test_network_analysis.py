@@ -681,3 +681,181 @@ def test_enhanced_graph_metrics_star(star_graph):
     result = enhanced_graph_metrics(star_graph, "star")
     assert "clustering_std" in result
     assert result["avg_degree"] > 0
+
+
+# ── find_interdisciplinary_bridges ────────────────────────────────────────────
+
+
+def test_find_bridges_too_small_returns_empty():
+    G = nx.Graph()
+    for i in range(5):
+        G.add_node(f"N{i}")
+    G.add_edge("N0", "N1", weight=1)
+    domain_map = {f"N{i}": "Political Science" for i in range(5)}
+    result = find_interdisciplinary_bridges(G, domain_map)
+    assert result == []
+
+
+def test_find_bridges_returns_list():
+    G = nx.Graph()
+    nodes = [f"N{i}" for i in range(15)]
+    for n in nodes:
+        G.add_node(n)
+    for i in range(14):
+        G.add_edge(nodes[i], nodes[i + 1], weight=1)
+    domain_map = {f"N{i}": ("Political Science" if i < 8 else "Economics") for i in range(15)}
+    result = find_interdisciplinary_bridges(G, domain_map)
+    assert isinstance(result, list)
+
+
+def test_find_bridges_cross_domain_nodes_detected():
+    G = nx.Graph()
+    nodes = [f"N{i}" for i in range(12)]
+    for n in nodes:
+        G.add_node(n)
+    # Bridge: N5 connects political science cluster to economics cluster
+    for i in range(5):
+        G.add_edge(nodes[i], nodes[i + 1], weight=2)
+    for i in range(6, 11):
+        G.add_edge(nodes[i], nodes[i + 1], weight=2)
+    G.add_edge("N5", "N6", weight=3)
+
+    domain_map = {f"N{i}": ("Political Science" if i <= 5 else "Economics") for i in range(12)}
+    result = find_interdisciplinary_bridges(G, domain_map)
+    assert isinstance(result, list)
+    if result:
+        for bridge in result:
+            assert "work_id" in bridge
+            assert "betweenness_centrality" in bridge
+            assert "bridge_domains" in bridge
+
+
+def test_find_bridges_capped_at_50():
+    """Result list never exceeds 50 entries."""
+    G = nx.complete_graph(60)
+    G = nx.relabel_nodes(G, {i: f"N{i}" for i in range(60)})
+    for u, v in G.edges():
+        G[u][v]["weight"] = 1
+    domain_map = {f"N{i}": ("Political Science" if i < 30 else "Economics") for i in range(60)}
+    result = find_interdisciplinary_bridges(G, domain_map, percentile=50.0)
+    assert len(result) <= 50
+
+
+# ── save_network (non-primitive attributes) ───────────────────────────────────
+
+
+def test_save_network_with_list_attributes(tmp_path):
+    """save_network must serialize list node/edge attrs to GraphML-safe strings."""
+    G = nx.Graph()
+    G.add_node("A", tags=["populism", "democracy"], score=0.9)
+    G.add_node("B", tags=["economics"], score=0.7)
+    G.add_edge("A", "B", weight=1, refs=["R1", "R2"])
+
+    out = str(tmp_path / "test.graphml")
+    save_network(G, out)
+
+    import os
+
+    assert os.path.exists(out)
+    content = open(out).read()
+    assert "__list__" in content
+
+
+def test_save_network_with_non_primitive_attributes(tmp_path):
+    """Non-list, non-primitive attrs (e.g. dicts) are repr()-ed safely."""
+    G = nx.Graph()
+    G.add_node("A", metadata={"key": "val"})
+    G.add_edge("A", "B", weight=1, extra={"x": 1})
+
+    out = str(tmp_path / "test2.graphml")
+    save_network(G, out)
+
+    import os
+
+    assert os.path.exists(out)
+
+
+def test_save_network_with_primitive_attributes(tmp_path):
+    """Standard primitive attrs pass through without modification."""
+    G = nx.Graph()
+    G.add_node("A", domain="Political Science", count=5, weight=1.2, active=True)
+    G.add_edge("A", "B", weight=2.5)
+
+    out = str(tmp_path / "test3.graphml")
+    save_network(G, out)
+
+    import os
+
+    assert os.path.exists(out)
+
+
+# ── build_bibcoupling_network (no domain column) ──────────────────────────────
+
+
+def test_build_bibcoupling_no_domain_column():
+    """When df has no 'domain' column, all nodes default to 'Other'."""
+    df = pd.DataFrame(
+        {
+            "id": ["W1", "W2", "W3"],
+            "references": [["R1", "R2"], ["R1", "R2"], ["R3"]],
+        }
+    )
+    G = build_bibcoupling_network(df, min_shared=2)
+    assert G.has_node("W1")
+    # W1 and W2 share 2 references → edge exists
+    assert G.has_edge("W1", "W2")
+    # Check that node domain defaults to 'Other'
+    for node, data in G.nodes(data=True):
+        assert data.get("domain") == "Other"
+
+
+# ── build_coauthorship_network (edge already exists path) ─────────────────────
+
+
+def test_build_coauthorship_edge_weight_increments():
+    """When two papers share the same author pair, edge weight is accumulated."""
+    df = pd.DataFrame(
+        {
+            "id": ["W1", "W2", "W3"],
+            "authors": [
+                [{"id": "A1", "name": "Alice"}, {"id": "A2", "name": "Bob"}],
+                [{"id": "A1", "name": "Alice"}, {"id": "A2", "name": "Bob"}],
+                [{"id": "A1", "name": "Alice"}, {"id": "A2", "name": "Bob"}],
+            ],
+        }
+    )
+    G = build_coauthorship_network(df, min_papers=1)
+    assert G.has_edge("A1", "A2")
+    assert G["A1"]["A2"]["weight"] == 3
+
+
+def test_build_coauthorship_non_dict_author_skipped():
+    """Non-dict entries in the authors list are silently skipped."""
+    df = pd.DataFrame(
+        {
+            "id": ["W1"],
+            "authors": [["not_a_dict", {"id": "A1", "name": "Alice"}]],
+        }
+    )
+    G = build_coauthorship_network(df, min_papers=1)
+    assert G.has_node("A1")
+    assert "not_a_dict" not in G.nodes
+
+
+# ── detect_communities (exception path) ──────────────────────────────────────
+
+
+def test_detect_communities_exception_fallback(monkeypatch):
+    """If greedy_modularity_communities raises, returns trivial partition."""
+    import src.agents.network_analysis as na
+
+    monkeypatch.setattr(na, "LOUVAIN_AVAILABLE", False)
+    monkeypatch.setattr(nx.community, "greedy_modularity_communities", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("fail")))
+
+    G = nx.Graph()
+    G.add_nodes_from(["A", "B", "C"])
+    G.add_edges_from([("A", "B"), ("B", "C")], weight=1)
+
+    partition, modularity = na.detect_communities(G)
+    assert isinstance(partition, dict)
+    assert modularity == 0.0

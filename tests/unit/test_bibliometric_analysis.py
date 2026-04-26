@@ -398,3 +398,119 @@ def test_publication_type_stats_no_type_column():
 def test_publication_type_stats_empty_df():
     result = publication_type_stats(pd.DataFrame())
     assert result["total"] == 0
+
+
+# ── main() ────────────────────────────────────────────────────────────────────
+
+
+@pytest.mark.unit
+def test_main_runs_without_error(tmp_path):
+    """main() should call all analysis functions and save JSON outputs."""
+    from pathlib import Path
+    from unittest.mock import MagicMock, patch
+
+    import pandas as pd
+
+    from src.agents.bibliometric_analysis import main
+
+    proc = tmp_path / "processed"
+    proc.mkdir()
+    clean = tmp_path / "clean"
+    clean.mkdir()
+    logs = tmp_path / "logs"
+    logs.mkdir()
+
+    config = {
+        "paths": {
+            "data_clean": str(clean),
+            "data_processed": str(proc),
+            "logs": str(logs),
+        }
+    }
+
+    df = pd.DataFrame(
+        {
+            "id": ["W1", "W2"],
+            "year": [2019, 2020],
+            "cited_by_count": [5, 10],
+            "authors": [[{"id": "A1", "name": "Alice"}], [{"id": "A2", "name": "Bob"}]],
+            "journal": ["J1", "J2"],
+            "institution": ["Inst1", "Inst2"],
+            "concepts": [[], []],
+            "type": ["article", "article"],
+            "is_open_access": [True, False],
+            "abstract": ["abstract one", "abstract two"],
+        }
+    )
+
+    with (
+        patch("sys.argv", ["bibliometric_analysis.py"]),
+        patch("src.agents.bibliometric_analysis.load_yaml", return_value=config),
+        patch("src.agents.bibliometric_analysis.setup_logger", return_value=MagicMock()),
+        patch("src.agents.bibliometric_analysis.load_parquet", return_value=df),
+        patch("src.agents.bibliometric_analysis.save_json") as mock_save_json,
+    ):
+        main()
+
+    assert mock_save_json.call_count >= 6
+
+
+@pytest.mark.unit
+def test_main_saves_all_expected_outputs(tmp_path):
+    """main() should save JSON for trends, citations, authors, journals, institutions, concepts, types."""
+    from unittest.mock import MagicMock, call, patch
+
+    import pandas as pd
+
+    from src.agents.bibliometric_analysis import main
+
+    config = {
+        "paths": {
+            "data_clean": str(tmp_path),
+            "data_processed": str(tmp_path),
+            "logs": str(tmp_path),
+        }
+    }
+
+    df = pd.DataFrame(
+        {
+            "id": ["W1"],
+            "year": [2020],
+            "cited_by_count": [3],
+            "authors": [[{"id": "A1", "name": "Alice"}]],
+            "journal": ["J1"],
+            "institution": ["Inst1"],
+            "concepts": [[]],
+            "type": ["article"],
+            "is_open_access": [True],
+            "abstract": ["abstract"],
+        }
+    )
+
+    from pathlib import Path
+
+    saved_paths = []
+
+    def capture_save(data, path):
+        saved_paths.append(Path(path).name)
+
+    with (
+        patch("sys.argv", ["bibliometric_analysis.py"]),
+        patch("src.agents.bibliometric_analysis.load_yaml", return_value=config),
+        patch("src.agents.bibliometric_analysis.setup_logger", return_value=MagicMock()),
+        patch("src.agents.bibliometric_analysis.load_parquet", return_value=df),
+        patch("src.agents.bibliometric_analysis.save_json", side_effect=capture_save),
+    ):
+        main()
+
+    expected = {
+        "publication_trends.json",
+        "citation_stats.json",
+        "top_authors.json",
+        "top_journals.json",
+        "top_institutions.json",
+        "concept_landscape.json",
+        "publication_types.json",
+        "bibliometric_summary.json",
+    }
+    assert expected <= set(saved_paths)

@@ -40,8 +40,6 @@ from src.utils.logging_utils import setup_logger
 from src.utils.taxonomy import (
     DOMAIN_CONCEPT_FRAGMENTS,
     DOMAIN_SUBCATEGORY,
-)
-from src.utils.taxonomy import (
     SUBCATEGORY_KEYWORDS as SUBCATEGORY_KEYWORD_MAP,
 )
 

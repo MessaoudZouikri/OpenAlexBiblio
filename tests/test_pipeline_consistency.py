@@ -41,7 +41,7 @@ def load_df(path: str) -> pd.DataFrame:
 
 
 def load_js(path: str) -> dict:
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -525,7 +525,7 @@ def test_visualization(fig_dir: str, outputs_dir: str):
     report_path = Path(outputs_dir) / "reports" / "report.html"
     check("HTML report exists", report_path.exists(), str(report_path))
     if report_path.exists():
-        html = report_path.read_text()
+        html = report_path.read_text(encoding="utf-8")
         check("HTML report references figures", "<img" in html, warn_only=True)
 
 

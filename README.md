@@ -333,7 +333,7 @@ pipeline:
 
 **Always reset the checkpoint before a full run**:
 ```bash
-rm -f checkpoints/pipeline_state.json
+python -c "from src.utils.io_utils import reset_checkpoint; reset_checkpoint()"
 python src/agents/orchestrator.py --config config/config.yaml
 ```
 
@@ -361,7 +361,7 @@ To reproduce this validation:
 
 ```bash
 python tests/generate_test_data.py --n 200
-rm -f checkpoints/pipeline_state.json
+python -c "from src.utils.io_utils import reset_checkpoint; reset_checkpoint()"
 python src/agents/orchestrator.py --config config/config.yaml
 python tests/test_pipeline_consistency.py
 ```

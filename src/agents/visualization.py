@@ -664,19 +664,20 @@ def _build_figure_summaries(proc_dir: str) -> dict:
         s["top_authors"] = ""
 
     try:
-        df = load_parquet(f"{proc_dir}/classified_works.parquet")
-        counts = df["domain"].value_counts()
-        total_w = len(df)
+        df_cls = load_parquet(f"{proc_dir}/classified_works.parquet")
+        counts = df_cls["domain"].value_counts()
+        total_w = len(df_cls)
         breakdown = "; ".join(f"{d}: {c} ({100 * c / total_w:.1f}%)" for d, c in counts.items())
         stage_str = ""
-        if "domain_source" in df.columns:
-            stages = df["domain_source"].value_counts().to_dict()
+        if "domain_source" in df_cls.columns:
+            stages = df_cls["domain_source"].value_counts().to_dict()
             stage_str = (
                 " Classification stages: " + ", ".join(f"{k}={v}" for k, v in stages.items()) + "."
             )
         s["domain_distribution"] = f"{total_w:,} works. {breakdown}.{stage_str}"
     except Exception:
         s["domain_distribution"] = ""
+        df_cls = None
 
     try:
         concepts = load_json(f"{proc_dir}/concept_landscape.json")
@@ -697,7 +698,8 @@ def _build_figure_summaries(proc_dir: str) -> dict:
         s["publication_types"] = ""
 
     try:
-        df_cls = load_parquet(f"{proc_dir}/classified_works.parquet")
+        if df_cls is None:
+            df_cls = load_parquet(f"{proc_dir}/classified_works.parquet")
         domain_order = ["Political Science", "Economics", "Sociology", "Other"]
         type_order = ["article", "book-chapter", "dissertation", "preprint"]
         df_f = df_cls[df_cls["domain"].isin(domain_order) & df_cls["type"].isin(type_order)]

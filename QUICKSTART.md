@@ -79,7 +79,7 @@ The pipeline tracks completed steps in `checkpoints/pipeline_state.json`.
 If you previously ran a test, this file marks steps as done — delete it so the full run starts fresh.
 
 ```bash
-rm -f checkpoints/pipeline_state.json
+python -c "from src.utils.io_utils import reset_checkpoint; reset_checkpoint()"
 ```
 
 ---
