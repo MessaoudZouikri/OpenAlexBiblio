@@ -510,7 +510,9 @@ def test_main_runs_without_crash(tmp_path, minimal_config):
         patch("src.agents.visualization.load_json", side_effect=FileNotFoundError),
         patch("src.agents.visualization.load_parquet", side_effect=FileNotFoundError),
         patch("src.agents.visualization.generate_html_report", side_effect=Exception("no data")),
-        patch("src.agents.visualization.generate_markdown_report", side_effect=Exception("no data")),
+        patch(
+            "src.agents.visualization.generate_markdown_report", side_effect=Exception("no data")
+        ),
     ):
         main()  # should not raise
 

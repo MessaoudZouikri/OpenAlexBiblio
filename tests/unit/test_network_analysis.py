@@ -850,7 +850,11 @@ def test_detect_communities_exception_fallback(monkeypatch):
     import src.agents.network_analysis as na
 
     monkeypatch.setattr(na, "LOUVAIN_AVAILABLE", False)
-    monkeypatch.setattr(nx.community, "greedy_modularity_communities", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("fail")))
+    monkeypatch.setattr(
+        nx.community,
+        "greedy_modularity_communities",
+        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("fail")),
+    )
 
     G = nx.Graph()
     G.add_nodes_from(["A", "B", "C"])

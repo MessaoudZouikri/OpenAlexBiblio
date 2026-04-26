@@ -365,12 +365,8 @@ def _make_pipeline_patches(
         step_results = [(True, 0.1)] * 11  # one result per pipeline step
 
     patches = {
-        "load_yaml": patch(
-            "src.agents.orchestrator.load_yaml", return_value=_MINIMAL_CONFIG
-        ),
-        "setup_logger": patch(
-            "src.agents.orchestrator.setup_logger", return_value=MagicMock()
-        ),
+        "load_yaml": patch("src.agents.orchestrator.load_yaml", return_value=_MINIMAL_CONFIG),
+        "setup_logger": patch("src.agents.orchestrator.setup_logger", return_value=MagicMock()),
         "AuditTrail": patch("src.agents.orchestrator.AuditTrail"),
         "load_checkpoint": patch(
             "src.agents.orchestrator.load_checkpoint",
@@ -382,9 +378,7 @@ def _make_pipeline_patches(
         ),
         "mark_step_complete": patch("src.agents.orchestrator.mark_step_complete"),
         "reset_from_step": patch("src.agents.orchestrator.reset_from_step"),
-        "run_step": patch(
-            "src.agents.orchestrator.run_step", side_effect=step_results
-        ),
+        "run_step": patch("src.agents.orchestrator.run_step", side_effect=step_results),
     }
     return patches
 

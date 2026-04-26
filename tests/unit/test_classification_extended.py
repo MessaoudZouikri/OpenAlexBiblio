@@ -388,7 +388,12 @@ class TestHybridClassifier:
         store = Mock()
         # Mid-range confidence → goes to stage3
         store.classify_batch.return_value = [
-            ("Political Science", "radical_right", 0.65, [("Political Science::radical_right", 0.65)])
+            (
+                "Political Science",
+                "radical_right",
+                0.65,
+                [("Political Science::radical_right", 0.65)],
+            )
         ]
         store.update_centroids_from_corpus.return_value = {}
 
@@ -425,7 +430,12 @@ class TestHybridClassifier:
         """Multiple ambiguous rows exercise the ThreadPoolExecutor path."""
         store = Mock()
         store.classify_batch.return_value = [
-            ("Political Science", "radical_right", 0.65, [("Political Science::radical_right", 0.65)])
+            (
+                "Political Science",
+                "radical_right",
+                0.65,
+                [("Political Science::radical_right", 0.65)],
+            )
         ] * 3
         store.update_centroids_from_corpus.return_value = {}
 
@@ -600,7 +610,11 @@ class TestValidateClassificationResult:
 
     @pytest.mark.unit
     def test_confidence_string_invalid(self):
-        result = {"domain": "Political Science", "subcategory": "radical_right", "confidence": "high"}
+        result = {
+            "domain": "Political Science",
+            "subcategory": "radical_right",
+            "confidence": "high",
+        }
         ok, errors = validate_classification_result(result)
         assert ok is False
         assert any("confidence" in e for e in errors)
@@ -710,9 +724,7 @@ from src.agents.classification import stage3_llm
 
 class TestStage3LLM:
     def _row(self, title="populism and democracy", abstract="study of populism"):
-        return pd.Series(
-            {"id": "W1", "title": title, "abstract": abstract, "concepts": []}
-        )
+        return pd.Series({"id": "W1", "title": title, "abstract": abstract, "concepts": []})
 
     def _llm_cfg(self):
         return {
@@ -867,11 +879,11 @@ class TestEmbeddingSimilarityClassification:
     def test_successful_embedding_path(self):
         mock_client = Mock()
         mock_store = Mock()
-        mock_store.classify_batch.return_value = [
-            ("Political Science", "radical_right", 0.88, [])
-        ]
+        mock_store.classify_batch.return_value = [("Political Science", "radical_right", 0.88, [])]
         with (
-            patch("src.agents.classification.EmbeddingClient.from_config", return_value=mock_client),
+            patch(
+                "src.agents.classification.EmbeddingClient.from_config", return_value=mock_client
+            ),
             patch("src.agents.classification.PrototypeStore", return_value=mock_store),
         ):
             result = embedding_similarity_classification({"title": "populism electoral"})
