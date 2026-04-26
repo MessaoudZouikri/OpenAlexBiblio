@@ -546,7 +546,6 @@ def test_run_pipeline_dry_run_calls_run_step_dry(tmp_path):
 
 @pytest.mark.unit
 def test_main_list_steps_prints_and_exits(capsys):
-    import sys
 
     with patch("sys.argv", ["orchestrator.py", "--list-steps"]):
         from src.agents.orchestrator import main

@@ -520,7 +520,7 @@ def test_main_runs_without_crash(tmp_path, minimal_config):
 @pytest.mark.unit
 def test_main_generates_figures_when_data_available(tmp_path):
     """main() calls fig_* functions when the corresponding JSON files are available."""
-    from unittest.mock import MagicMock, call, patch
+    from unittest.mock import MagicMock, patch
 
     import pandas as pd
 
@@ -564,9 +564,9 @@ def test_main_generates_figures_when_data_available(tmp_path):
         patch("src.agents.visualization.fig_top_authors") as mock_authors,
         patch("src.agents.visualization.fig_domain_distribution") as mock_domain,
         patch("src.agents.visualization.fig_type_by_domain") as mock_type_domain,
-        patch("src.agents.visualization.fig_concept_landscape") as mock_concepts,
-        patch("src.agents.visualization.fig_publication_types") as mock_types,
-        patch("src.agents.visualization.fig_cross_domain_heatmap") as mock_heatmap,
+        patch("src.agents.visualization.fig_concept_landscape"),
+        patch("src.agents.visualization.fig_publication_types"),
+        patch("src.agents.visualization.fig_cross_domain_heatmap"),
         patch("src.agents.visualization.generate_html_report"),
         patch("src.agents.visualization.generate_markdown_report"),
         patch(

@@ -10,9 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import portalocker
-
 import pandas as pd
+import portalocker
 
 # ── Checkpoint Management ──────────────────────────────────────────────────
 

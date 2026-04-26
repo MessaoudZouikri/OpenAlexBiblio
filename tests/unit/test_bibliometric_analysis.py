@@ -406,7 +406,6 @@ def test_publication_type_stats_empty_df():
 @pytest.mark.unit
 def test_main_runs_without_error(tmp_path):
     """main() should call all analysis functions and save JSON outputs."""
-    from pathlib import Path
     from unittest.mock import MagicMock, patch
 
     import pandas as pd
@@ -458,7 +457,7 @@ def test_main_runs_without_error(tmp_path):
 @pytest.mark.unit
 def test_main_saves_all_expected_outputs(tmp_path):
     """main() should save JSON for trends, citations, authors, journals, institutions, concepts, types."""
-    from unittest.mock import MagicMock, call, patch
+    from unittest.mock import MagicMock, patch
 
     import pandas as pd
 

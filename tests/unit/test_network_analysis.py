@@ -696,7 +696,7 @@ def test_find_bridges_too_small_returns_empty():
     assert result == []
 
 
-def test_find_bridges_returns_list():
+def test_find_bridges_returns_list_chain():
     G = nx.Graph()
     nodes = [f"N{i}" for i in range(15)]
     for n in nodes:

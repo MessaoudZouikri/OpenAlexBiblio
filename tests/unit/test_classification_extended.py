@@ -13,9 +13,14 @@ import pytest
 
 from src.agents.classification import (
     HybridClassifier,
+    embedding_similarity_classification,
+    llm_classification,
     make_input_text,
+    rule_based_classification,
     run_feedback_loop,
     stage1_rule,
+    stage3_llm,
+    validate_classification_result,
 )
 
 # ── make_input_text ───────────────────────────────────────────────────────────
@@ -563,9 +568,6 @@ class TestRunFeedbackLoop:
 # ── validate_classification_result ───────────────────────────────────────────
 
 
-from src.agents.classification import validate_classification_result
-
-
 class TestValidateClassificationResult:
     @pytest.mark.unit
     def test_valid_result_returns_true(self):
@@ -648,9 +650,6 @@ class TestValidateClassificationResult:
 # ── rule_based_classification (public API) ────────────────────────────────────
 
 
-from src.agents.classification import rule_based_classification
-
-
 class TestRuleBasedClassificationPublicAPI:
     @pytest.mark.unit
     def test_returns_dict_with_required_keys(self):
@@ -717,9 +716,6 @@ class TestRuleBasedClassificationPublicAPI:
 
 
 # ── stage3_llm ────────────────────────────────────────────────────────────────
-
-
-from src.agents.classification import stage3_llm
 
 
 class TestStage3LLM:
@@ -790,9 +786,6 @@ class TestStage3LLM:
 # ── llm_classification (public API) ──────────────────────────────────────────
 
 
-from src.agents.classification import llm_classification
-
-
 class TestLLMClassification:
     @pytest.mark.unit
     def test_no_client_returns_other(self):
@@ -847,9 +840,6 @@ class TestLLMClassification:
 
 
 # ── embedding_similarity_classification (fallback path) ───────────────────────
-
-
-from src.agents.classification import embedding_similarity_classification
 
 
 class TestEmbeddingSimilarityClassification:

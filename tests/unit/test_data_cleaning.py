@@ -377,8 +377,9 @@ def test_main_explicit_input_path(tmp_path):
 
 def test_main_exits_when_no_raw_file(tmp_path):
     """main() calls sys.exit(1) when no raw parquet is found and --input is not given."""
-    import pytest
     from unittest.mock import MagicMock, patch
+
+    import pytest
 
     from src.agents.data_cleaning import main
 
